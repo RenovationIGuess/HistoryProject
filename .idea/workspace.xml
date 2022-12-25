@@ -5,14 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f66bb4ec-6e9a-464c-9041-46d38bbe83a4" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/history/HistoricalEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/history/era/Era.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/history/event/Event.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/history/festival/Festival.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/history/historicalfigure/HistoricalFigure.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/history/historicsite/HistoricSite.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/json/Era3.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/json/Event1.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/json/HistoricSite1.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jsonHistoricSite1.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jsonhistory.historicsite.HistoricSite1.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Test.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/history/Storable.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/history/era/Eras.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/json/JSON.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/json/data.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/history/HistoricalEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/history/HistoricalEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/history/era/Era.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/history/era/Era.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/history/event/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/history/event/Event.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/history/festival/Festival.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/history/festival/Festival.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/history/historicalfigure/HistoricalFigure.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/history/historicalfigure/HistoricalFigure.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/history/historicsite/HistoricSite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/history/historicsite/HistoricSite.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,6 +33,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -33,13 +44,16 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2JOUIYOBncvBNi4Bn82RLR42vfA" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "last_opened_file_path": "E:/historysummary",
@@ -83,5 +97,8 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
 </project>

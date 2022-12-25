@@ -37,6 +37,12 @@ public abstract class HistoricalEntity {
         }
     }
 
+    public void addAlias(String ...aliases){
+        for (String alias: aliases){
+            this.addAlias(alias);
+        }
+    }
+
     public void removeAlias(String alias){
         if (this.aliases.contains(alias)){
             this.aliases.remove(alias);

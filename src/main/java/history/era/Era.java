@@ -1,6 +1,10 @@
 package history.era;
 
 import history.HistoricalEntity;
+import history.Storable;
+import json.JSON;
+
+import java.io.IOException;
 
 /**
  * Đây là lớp cho thực thể triều đại lịch sử
@@ -13,7 +17,7 @@ import history.HistoricalEntity;
  *      succeededEra: triều đại kế tiếp
  */
 
-public class Era extends HistoricalEntity {
+public class Era extends HistoricalEntity implements Storable {
     private static long nbEras = 0;
     private int fromYear;
     private int toYear;
@@ -53,6 +57,7 @@ public class Era extends HistoricalEntity {
     }
 
     public Era() {
+        super();
         this.id = ++nbEras;
     }
 
@@ -66,5 +71,10 @@ public class Era extends HistoricalEntity {
     public Era(String name){
         super(name);
         this.id = ++nbEras;
+    }
+
+    public void save() throws IOException {
+        String filename = "\\Era" + this.id + ".json";
+        JSON.writeJSON(filename, this);
     }
 }

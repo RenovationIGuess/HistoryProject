@@ -1,7 +1,11 @@
 package history.event;
 
 import history.HistoricalEntity;
+import history.Storable;
 import history.era.Era;
+import json.JSON;
+
+import java.io.IOException;
 
 /**
  * Đây là lớp cho thực thể sự kiện lịch sử
@@ -14,7 +18,7 @@ import history.era.Era;
  *      relatedEra: triều đại liên quan
  */
 
-public class Event extends HistoricalEntity {
+public class Event extends HistoricalEntity implements Storable {
     private static long nbEvents = 0;
     private int startDate;
     private int endDate;
@@ -54,16 +58,21 @@ public class Event extends HistoricalEntity {
         this.relatedEra = relatedEra;
     }
 
-    public Event(){}
+    public Event(){
+        super();
+        this.id = ++nbEvents;
+    }
 
     public Event(String name, int startDate, int endDate) {
         super(name);
+        this.id = ++nbEvents;
         this.startDate = startDate;
         this.endDate = endDate;
     }
 
     public Event(String name, int startDate, int endDate, String location) {
         super(name);
+        this.id = ++nbEvents;
         this.startDate = startDate;
         this.endDate = endDate;
         this.location = location;
@@ -71,5 +80,11 @@ public class Event extends HistoricalEntity {
 
     public Event(String name){
         super(name);
+        this.id = ++nbEvents;
+    }
+
+    public void save() throws IOException {
+        String filename = "\\Event" + this.id + ".json";
+        JSON.writeJSON(filename, this);
     }
 }
