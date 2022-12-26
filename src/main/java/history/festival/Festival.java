@@ -3,7 +3,9 @@ package history.festival;
 import history.HistoricalEntity;
 import history.event.Event;
 import history.historicsite.HistoricSite;
+import json.JSON;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 public class Festival extends HistoricalEntity {
@@ -30,5 +32,14 @@ public class Festival extends HistoricalEntity {
         this.location = location;
         this.relatedSite = relatedSite;
         this.relatedEvent = relatedEvent;
+    }
+
+    /**
+     * Dùng để lưu đối tượng vào file json
+     * Tên file: Festival+id.json
+     */
+    public void save() {
+        String filename = "\\Fesitval" + this.id + ".json";
+        JSON.writeJSON(filename, this);
     }
 }

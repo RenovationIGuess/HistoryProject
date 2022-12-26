@@ -12,7 +12,11 @@ public class JSON {
     //Cần chỉnh sửa khi clone project
     public static final String PREFIX_URL = "E:\\OOP_history_prj\\src\\json";
 
-    public static void writeJSON(String filename, HistoricalEntity entity) throws IOException {
-        MAPPER.writeValue(new File(PREFIX_URL + filename), entity);
+    public static void writeJSON(String filename, HistoricalEntity entity) {
+        try {
+            MAPPER.writeValue(new File(PREFIX_URL + filename), entity);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

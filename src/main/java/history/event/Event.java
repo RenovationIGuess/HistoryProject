@@ -83,7 +83,11 @@ public class Event extends HistoricalEntity implements Storable {
         this.id = ++nbEvents;
     }
 
-    public void save() throws IOException {
+    /**
+     * Dùng để lưu đối tượng vào file JSON
+     * tên file: Event+id
+     */
+    public void save(){
         String filename = "\\Event" + this.id + ".json";
         JSON.writeJSON(filename, this);
     }

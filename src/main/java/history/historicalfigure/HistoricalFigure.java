@@ -94,7 +94,11 @@ public class HistoricalFigure extends HistoricalEntity implements Storable {
         this.died = died;
     }
 
-    public void save() throws IOException {
+    /**
+     * Dùng để lưu đối tượng vào file JSON
+     * tên file: HistoricalFigure+id
+     */
+    public void save() {
         String filename = "\\HistoricalFigure" + this.id + ".json";
         JSON.writeJSON(filename, this);
     }

@@ -56,7 +56,11 @@ public class HistoricSite extends HistoricalEntity implements Storable {
         this.builtInEra = builtInEra;
     }
 
-    public void save() throws IOException {
+    /**
+     * Dùng để lưu đối tượng vào file json
+     * Tên file: HistoricSite+id.json
+     */
+    public void save() {
         String filename = "\\HistoricSite" + this.id + ".json";
         JSON.writeJSON(filename, this);
     }

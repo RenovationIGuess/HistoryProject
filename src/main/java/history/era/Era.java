@@ -73,8 +73,23 @@ public class Era extends HistoricalEntity implements Storable {
         this.id = ++nbEras;
     }
 
-    public void save() throws IOException {
+    /**
+     * Dùng để lưu đối tượng vào file json
+     * Tên file: Era+id.json
+     */
+    public void save() {
         String filename = "\\Era" + this.id + ".json";
         JSON.writeJSON(filename, this);
+    }
+
+    public String toJSON() {
+        String result = null;
+        try {
+            result = JSON.MAPPER.writeValueAsString(this);
+        } catch (IOException e){
+            e.printStackTrace();
+        } finally {
+            return result;
+        }
     }
 }
