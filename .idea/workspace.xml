@@ -5,15 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f66bb4ec-6e9a-464c-9041-46d38bbe83a4" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/crawl/Test.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/crawl/crawlCharacter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/crawl/event/crawlEvent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Test.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/history/era/Era.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/history/era/Era.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/history/era/Eras.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/history/era/Eras.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/history/event/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/history/event/Event.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/history/festival/Festival.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/history/festival/Festival.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/history/historicalfigure/HistoricalFigure.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/history/historicalfigure/HistoricalFigure.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/history/historicsite/HistoricSite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/history/historicsite/HistoricSite.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/json/JSON.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/json/JSON.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,8 +19,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -47,13 +43,18 @@
     &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;E:/historysummary&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Hoc/oop/lth&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;
   }
 }</component>
-  <component name="RunManager" selected="Application.Test">
+  <component name="RecentsManager">
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="crawl.event" />
+    </key>
+  </component>
+  <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="OOP_history_prj" />
