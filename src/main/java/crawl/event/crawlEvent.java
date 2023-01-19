@@ -131,6 +131,23 @@ public class crawlEvent {
                 if (name.equals("Chưa rõ")) name = eventNameTag.text();
             }
 
+            // Lay ra div cua info Box :)) -> lay nhan vat lien quan
+            Element infoBoxDiv = doc.selectFirst("div[class^=infobox]");
+            if (infoBoxDiv != null) {
+                Elements aTagsInInfoBox = infoBoxDiv.select("a");
+                if (aTagsInInfoBox != null) {
+                    for (Element a : aTagsInInfoBox) {
+                        String hrefValue = a.attr("href");
+                        if (hrefValue.contains("/nhan-vat") && !hrefValue.contains("nha-")) {
+                            String aTagValue = a.text();
+                            if (!relatedChar.contains(aTagValue)) {
+                                relatedChar.add(aTagValue);
+                            }
+                        }
+                    }
+                }
+            }
+
             // Lay ra bang thong tin gom thoi gian dia diem ket qua
             Element infoTable = doc
                     .selectFirst("table[cellpadding=0]");
