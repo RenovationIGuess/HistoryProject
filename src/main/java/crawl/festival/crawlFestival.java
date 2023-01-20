@@ -52,12 +52,12 @@ public class crawlFestival {
                 nbFestival = i;
                 i++;
                 System.out.println("id: "+ nbFestival);
-                System.out.println(Name.get(nbFestival));
-                System.out.println(Location.get(nbFestival));
-                System.out.println(Day.get(nbFestival));
-                System.out.println(RelatedFigure.get(nbFestival));
-                System.out.println(FirstTime.get(nbFestival));
-                System.out.println(Note.get(nbFestival));
+                System.out.println("Name: "+ Name.get(nbFestival));
+                System.out.println("Location: "+ Location.get(nbFestival));
+                System.out.println("Day: "+ Day.get(nbFestival));
+                System.out.println("Related Figure: " + RelatedFigure.get(nbFestival));
+                System.out.println("First time: "+FirstTime.get(nbFestival));
+                System.out.println("Note: "+ Note.get(nbFestival));
                 System.out.println("------");
             }
         }catch (Exception ex){
