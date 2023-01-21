@@ -154,7 +154,10 @@ public class crawlCharacter {
 
     public boolean alterNameCheck(String alterName) {
         return alterName.equals("Thụy hiệu") ||
-                alterName.equals("Niên hiệu");
+                alterName.equals("Niên hiệu") ||
+                alterName.equals("Tên khác") ||
+                alterName.equals("Hiệu");
+//                alterName.equals("Bút danh");
                 // Con truong hop mieu hieu nhung ma thoi k lay
 //                alterName.equals("Miếu hiệu");
     }
@@ -421,6 +424,7 @@ public class crawlCharacter {
                             } else outLoop = false;
                         }
 
+                        firstPContent = firstParagraph.text();
                         Pattern posiRegex = Pattern.compile("(là|làm)[^.]*[.]");
                         Matcher posiMatcher = posiRegex.matcher(firstPContent);
 
@@ -452,7 +456,9 @@ public class crawlCharacter {
 
                             if (posiMatcher.find()) {
                                 String result = posiMatcher.group(0);
-                                realName = result.substring(0, result.length() - 1);
+                                if (result.charAt(result.length() - 1) == ')' && result.indexOf("(") != -1) {
+                                    realName = result;
+                                } else realName = result.substring(0, result.length() - 1);
                             } else realName = charName;
                         }
 
@@ -460,12 +466,14 @@ public class crawlCharacter {
                         // Lay ra cac ten khac
                         // Cac truong hop: con goi la, tu, tên tự, nien hieu, duoi ten goi, thông gọi, biet hieu => ,.;
                         if (alterName.size() == 0) {
-                            posiRegex = Pattern.compile("(còn gọi|tên tự|niên hiệu| dưới tên gọi|thông gọi|biệt hiệu)[^,.;)]*[,.;)]", Pattern.CASE_INSENSITIVE);
+                            posiRegex = Pattern.compile("(còn gọi|tên tự|niên hiệu|dưới tên gọi|thông gọi|biệt hiệu)[^,.;)]*[,.;)]", Pattern.CASE_INSENSITIVE);
                             posiMatcher = posiRegex.matcher(firstPContent);
 
                             if (posiMatcher.find()) {
                                 String result = posiMatcher.group(0);
-                                alterName.add(result.substring(0, result.length() - 1));
+                                if (result.charAt(result.length() - 1) == ')' && result.indexOf("(") != -1) {
+                                    alterName.add(result);
+                                } else alterName.add(result.substring(0, result.length() - 1));
                             }
                         }
                         break;
