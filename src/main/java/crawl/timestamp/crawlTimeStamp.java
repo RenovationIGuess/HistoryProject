@@ -350,6 +350,9 @@ public class crawlTimeStamp {
                                             } else {
                                                 System.out.print("]\n");
                                             }
+
+                                            // Reset lai cac mang chua vua
+                                            kingList.clear();
                                         }
                                     }
                                 }
