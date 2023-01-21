@@ -424,7 +424,6 @@ public class crawlCharacter {
                             } else outLoop = false;
                         }
 
-                        firstPContent = firstParagraph.text();
                         Pattern posiRegex = Pattern.compile("(là|làm)[^.]*[.]");
                         Matcher posiMatcher = posiRegex.matcher(firstPContent);
 
@@ -436,6 +435,9 @@ public class crawlCharacter {
                                 }
                             }
                         }
+
+                        // Reset lai para cho loc cai khac
+                        firstPContent = firstParagraph.text();
 
                         // Lay trieu dai, nha???
                         for (Element a : pATags) {
