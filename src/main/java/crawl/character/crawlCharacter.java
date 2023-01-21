@@ -453,7 +453,7 @@ public class crawlCharacter {
                         // Lay ra ten that
                         // Cac truong hop: ten that la, ten khai sinh la, ten huy => ,.;
                         if (realName.equals("Chưa rõ")) {
-                            posiRegex = Pattern.compile("(nguyên danh|tên thật| tên khai sinh|tên húy)[^,.;)]*[,.;)]", Pattern.CASE_INSENSITIVE);
+                            posiRegex = Pattern.compile("(nguyên danh|tên thật|tên khai sinh|tên húy)[^,.;)]*[,.;)]", Pattern.CASE_INSENSITIVE);
                             posiMatcher = posiRegex.matcher(firstPContent);
 
                             if (posiMatcher.find()) {
