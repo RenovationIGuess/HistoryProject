@@ -7,6 +7,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.lang.annotation.ElementType;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.regex.*;
 
@@ -144,6 +145,20 @@ public class crawlCharacter {
                 birth.equals("Sinh");
     }
 
+    public boolean realNameCheck(String realName) {
+        return realName.equals("Húy") ||
+                realName.equals("Tên thật") ||
+                realName.equals("Tên đầy đủ") ||
+                realName.equals("Tên húy");
+    }
+
+    public boolean alterNameCheck(String alterName) {
+        return alterName.equals("Thụy hiệu") ||
+                alterName.equals("Niên hiệu");
+                // Con truong hop mieu hieu nhung ma thoi k lay
+//                alterName.equals("Miếu hiệu");
+    }
+
     // Truy cap vao link nhan vat va crawl
     public void crawlCharInfo(String link) {
         System.out.println("\nDang crawl nhan vat o link: " + link);
@@ -151,6 +166,8 @@ public class crawlCharacter {
             Document doc = Jsoup.connect(link).timeout(120000).get();
 
             String charName = "Chưa rõ"; // ten
+            String realName = "Chưa rõ"; // Ten that - neu k crawl dc j thi ten that la ten luc dau
+            ArrayList<String> alterName = new ArrayList<>();
             String charMother = "Chưa rõ"; // me
             String charFather = "Chưa rõ"; // cha
             String dateOfBirth = "Chưa rõ"; // ngay sinh
@@ -233,6 +250,14 @@ public class crawlCharacter {
                             } else if (tableHeadContent.equals("Mất") && lostDate.equals("Chưa rõ")) { // Lost
                                 Element tableData = infoTableRows.get(i).selectFirst("td");
                                 lostDate = tableData.text();
+                            } else if (realNameCheck(tableHeadContent) && realName.equals("Chưa rõ")) {
+                                Element tableData = infoTableRows.get(i).selectFirst("td");
+                                realName = tableData.text();
+                            } else if (alterNameCheck(tableHeadContent)) {
+                                Element tableData = infoTableRows.get(i).selectFirst("td");
+                                if (tableData != null) {
+                                    alterName.add(tableData.text());
+                                }
                             }
                         } else {
                             Elements numberOfTd = infoTableRows.get(i).select("td");
@@ -295,6 +320,12 @@ public class crawlCharacter {
                                 } else if (tableDataAlterContent.equals("Mất") && lostDate.equals("Chưa rõ")) { // Lost
                                     Element tableData = infoTableRows.get(i).select("td").get(1);
                                     lostDate = tableData.text();
+                                } else if (realNameCheck(tableDataAlterContent) && realName.equals("Chưa rõ")) {
+                                    Element tableData = infoTableRows.get(i).select("td").get(1);
+                                    realName = tableData.text();
+                                } else if (alterNameCheck(tableDataAlterContent)) {
+                                    Element tableData = infoTableRows.get(i).select("td").get(1);
+                                    alterName.add(tableData.text());
                                 }
                             }
                         }
@@ -412,11 +443,45 @@ public class crawlCharacter {
                                 }
                             }
                         }
+
+                        // Lay ra ten that
+                        // Cac truong hop: ten that la, ten khai sinh la, ten huy => ,.;
+                        if (realName.equals("Chưa rõ")) {
+                            posiRegex = Pattern.compile("(nguyên danh|tên thật| tên khai sinh|tên húy)[^,.;)]*[,.;)]", Pattern.CASE_INSENSITIVE);
+                            posiMatcher = posiRegex.matcher(firstPContent);
+
+                            if (posiMatcher.find()) {
+                                String result = posiMatcher.group(0);
+                                realName = result.substring(0, result.length() - 1);
+                            } else realName = charName;
+                        }
+
+
+                        // Lay ra cac ten khac
+                        // Cac truong hop: con goi la, tu, tên tự, nien hieu, duoi ten goi, thông gọi, biet hieu => ,.;
+                        if (alterName.size() == 0) {
+                            posiRegex = Pattern.compile("(còn gọi|tên tự|niên hiệu| dưới tên gọi|thông gọi|biệt hiệu)[^,.;)]*[,.;)]", Pattern.CASE_INSENSITIVE);
+                            posiMatcher = posiRegex.matcher(firstPContent);
+
+                            if (posiMatcher.find()) {
+                                String result = posiMatcher.group(0);
+                                alterName.add(result.substring(0, result.length() - 1));
+                            }
+                        }
                         break;
                     }
                 }
 
             System.out.println("Name: " + charName);
+            System.out.println("Real name: " + realName);
+            System.out.print("Alter name: [");
+            if (alterName.size() > 0) {
+                for (int i = 0; i < alterName.size(); ++i) {
+                    if (i < alterName.size() - 1) {
+                        System.out.print(alterName.get(i) + ", ");
+                    } else System.out.print(alterName.get(i) + "]\n");
+                }
+            } else System.out.print("]\n");
             System.out.println("Date of birth and birth place: " + dateOfBirth);
             System.out.println("Lost date and lost place: " + lostDate);
             System.out.println("Position: " + position);
