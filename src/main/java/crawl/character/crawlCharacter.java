@@ -191,8 +191,10 @@ public class crawlCharacter {
                     // Chi muc dau tien la ten
                     if (i == 0) {
                         Element tableHead = infoTableRows.get(i).selectFirst("th");
+
                         // Chua co cach tach xau
                         if (tableHead != null) {
+                            tableHead.select("sup").remove();
                             charName = tableHead.text();
                         }
                     } else {
@@ -201,6 +203,7 @@ public class crawlCharacter {
                         // Trong khi crawl co 1 so nhan vat co nhieu chuc vu, tien nhiem
                         // ke nhiem,... => lay nhung cai dau crawl duoc, bo nhung cai sau
                         if (tableHead != null) {
+                            tableHead.select("sup").remove();
                             String tableHeadContent = tableHead.text();
 
                             // Chuc vu se dung truoc thoi gian tai vi hoac nhiem ky =>
@@ -210,6 +213,7 @@ public class crawlCharacter {
                                 Element nextTableHead = infoTableRows.get(i + 1).selectFirst("th");
 
                                 if (nextTableHead != null) {
+                                    nextTableHead.select("sup").remove();
                                     if (workTimeCheck(nextTableHead.text())) {
                                         if (!tableHeadContent.equals("Thuộc")) {
                                             position = tableHeadContent;
@@ -222,11 +226,15 @@ public class crawlCharacter {
                             if (positionCheck(tableHeadContent) && (position.equals("Chưa rõ") || position.equals("Thuộc"))) { // Neu trong xau co hoang de,... => chuc vu
                                 Element tableData = infoTableRows.get(i).selectFirst("td");
                                 if (tableData != null) {
+                                    tableData.select("sup").remove();
                                     position = tableData.text();
                                 } else position = tableHeadContent;
                             } else if (workTimeCheck(tableHeadContent) && workTime.equals("Chưa rõ")) { // thoi gian tai chuc
                                 Element tableData = infoTableRows.get(i).selectFirst("td");
-                                workTime = tableData.text();
+                                if (tableData != null) {
+                                    tableData.select("sup").remove();
+                                    workTime = tableData.text();
+                                }
                             } else if (tableHeadContent.equals("Tiền nhiệm") && preceeded.equals("Chưa rõ")) { // Preceeded
                                 Element tableData = infoTableRows.get(i).selectFirst("td");
                                 // Co cac truong hop
@@ -234,31 +242,56 @@ public class crawlCharacter {
                                 // 2 la co the a
                                 // 3 chac la k co j?
                                 // ...
-                                preceeded = tableData.text();
+                                if (tableData != null) {
+                                    tableData.select("sup").remove();
+                                    preceeded = tableData.text();
+                                }
                             } else if (tableHeadContent.equals("Kế nhiệm") && succeeded.equals("Chưa rõ")) { // Succeeded
                                 Element tableData = infoTableRows.get(i).selectFirst("td");
-                                succeeded = tableData.text();
+                                if (tableData != null) {
+                                    tableData.select("sup").remove();
+                                    succeeded = tableData.text();
+                                }
                             } else if (eraCheck(tableHeadContent) && era.equals("Chưa rõ")) {
                                 Element tableData = infoTableRows.get(i).selectFirst("td");
-                                era = tableData.text();
+                                if (tableData != null) {
+                                    tableData.select("sup").remove();
+                                    era = tableData.text();
+                                }
                             } else if (fatherCheck(tableHeadContent) && charFather.equals("Chưa rõ")) { // Father
                                 Element tableData = infoTableRows.get(i).selectFirst("td");
-                                charFather = tableData.text();
+                                if (tableData != null) {
+                                    tableData.select("sup").remove();
+                                    charFather = tableData.text();
+                                }
                             } else if (motherCheck(tableHeadContent) && charMother.equals("Chưa rõ")) { // Mother
                                 Element tableData = infoTableRows.get(i).selectFirst("td");
-                                charMother = tableData.text();
+                                if (tableData != null) {
+                                    tableData.select("sup").remove();
+                                    charMother = tableData.text();
+                                }
                             } else if (birthCheck(tableHeadContent) && dateOfBirth.equals("Chưa rõ")) { // Birth
                                 Element tableData = infoTableRows.get(i).selectFirst("td");
-                                dateOfBirth = tableData.text();
+                                if (tableData != null) {
+                                    tableData.select("sup").remove();
+                                    dateOfBirth = tableData.text();
+                                }
                             } else if (tableHeadContent.equals("Mất") && lostDate.equals("Chưa rõ")) { // Lost
                                 Element tableData = infoTableRows.get(i).selectFirst("td");
-                                lostDate = tableData.text();
+                                if (tableData != null) {
+                                    tableData.select("sup").remove();
+                                    lostDate = tableData.text();
+                                }
                             } else if (realNameCheck(tableHeadContent) && realName.equals("Chưa rõ")) {
                                 Element tableData = infoTableRows.get(i).selectFirst("td");
-                                realName = tableData.text();
+                                if (tableData != null) {
+                                    tableData.select("sup").remove();
+                                    realName = tableData.text();
+                                }
                             } else if (alterNameCheck(tableHeadContent)) {
                                 Element tableData = infoTableRows.get(i).selectFirst("td");
                                 if (tableData != null) {
+                                    tableData.select("sup").remove();
                                     alterName.add(tableData.text());
                                 }
                             }
@@ -274,12 +307,14 @@ public class crawlCharacter {
                             Element tableDataAlter = infoTableRows.get(i).selectFirst("td");
 
                             if (tableDataAlter != null) {
+                                tableDataAlter.select("sup").remove();
                                 String tableDataAlterContent = tableDataAlter.text();
 
                                 if (i < numberOfTr - 1 && (position.equals("Chưa rõ") || positionCheck(position))) {
                                     Element nextTableData = infoTableRows.get(i + 1).selectFirst("td");
 
                                     if (nextTableData != null) {
+                                        nextTableData.select("sup").remove();
                                         if (workTimeCheck(nextTableData.text())) {
                                             if (!tableDataAlterContent.equals("Thuộc")) {
                                                 position = tableDataAlterContent;
@@ -292,11 +327,15 @@ public class crawlCharacter {
                                 if (positionCheck(tableDataAlterContent) && (position.equals("Chưa rõ") || position.equals("Thuộc"))) { // Neu trong xau co hoang de,... => chuc vu
                                     Element tableData = infoTableRows.get(i).select("td").get(1);
                                     if (tableData != null) {
+                                        tableData.select("sup").remove();
                                         position = tableData.text();
                                     } else position = tableDataAlterContent;
                                 } else if (workTimeCheck(tableDataAlterContent) && workTime.equals("Chưa rõ")) { // thoi gian tai chuc
                                     Element tableData = infoTableRows.get(i).select("td").get(1);
-                                    workTime = tableData.text();
+                                    if (tableData != null) {
+                                        tableData.select("sup").remove();
+                                        workTime = tableData.text();
+                                    }
                                 } else if (tableDataAlterContent.equals("Tiền nhiệm") && preceeded.equals("Chưa rõ")) { // Preceeded
                                     Element tableData = infoTableRows.get(i).select("td").get(1);
                                     // Co cac truong hop
@@ -304,31 +343,58 @@ public class crawlCharacter {
                                     // 2 la co the a
                                     // 3 chac la k co j?
                                     // ...
-                                    preceeded = tableData.text();
+                                    if (tableData != null) {
+                                        tableData.select("sup").remove();
+                                        preceeded = tableData.text();
+                                    }
                                 } else if (tableDataAlterContent.equals("Kế nhiệm") && succeeded.equals("Chưa rõ")) { // Succeeded
                                     Element tableData = infoTableRows.get(i).select("td").get(1);
-                                    succeeded = tableData.text();
+                                    if (tableData != null) {
+                                        tableData.select("sup").remove();
+                                        succeeded = tableData.text();
+                                    }
                                 } else if (eraCheck(tableDataAlterContent) && era.equals("Chưa rõ")) {
                                     Element tableData = infoTableRows.get(i).select("td").get(1);
-                                    era = tableData.text();
+                                    if (tableData != null) {
+                                        tableData.select("sup").remove();
+                                        era = tableData.text();
+                                    }
                                 } else if (fatherCheck(tableDataAlterContent) && charFather.equals("Chưa rõ")) { // Father
                                     Element tableData = infoTableRows.get(i).select("td").get(1);
-                                    charFather = tableData.text();
+                                    if (tableData != null) {
+                                        tableData.select("sup").remove();
+                                        charFather = tableData.text();
+                                    }
                                 } else if (motherCheck(tableDataAlterContent) && charMother.equals("Chưa rõ")) { // Mother
                                     Element tableData = infoTableRows.get(i).select("td").get(1);
-                                    charMother = tableData.text();
+                                    if (tableData != null) {
+                                        tableData.select("sup").remove();
+                                        charMother = tableData.text();
+                                    }
                                 } else if (birthCheck(tableDataAlterContent) && dateOfBirth.equals("Chưa rõ")) { // Birth
                                     Element tableData = infoTableRows.get(i).select("td").get(1);
-                                    dateOfBirth = tableData.text();
+                                    if (tableData != null) {
+                                        tableData.select("sup").remove();
+                                        dateOfBirth = tableData.text();
+                                    }
                                 } else if (tableDataAlterContent.equals("Mất") && lostDate.equals("Chưa rõ")) { // Lost
                                     Element tableData = infoTableRows.get(i).select("td").get(1);
-                                    lostDate = tableData.text();
+                                    if (tableData != null) {
+                                        tableData.select("sup").remove();
+                                        lostDate = tableData.text();
+                                    }
                                 } else if (realNameCheck(tableDataAlterContent) && realName.equals("Chưa rõ")) {
                                     Element tableData = infoTableRows.get(i).select("td").get(1);
-                                    realName = tableData.text();
+                                    if (tableData != null) {
+                                        tableData.select("sup").remove();
+                                        realName = tableData.text();
+                                    }
                                 } else if (alterNameCheck(tableDataAlterContent)) {
                                     Element tableData = infoTableRows.get(i).select("td").get(1);
-                                    alterName.add(tableData.text());
+                                    if (tableData != null) {
+                                        tableData.select("sup").remove();
+                                        alterName.add(tableData.text());
+                                    }
                                 }
                             }
                         }
@@ -345,6 +411,9 @@ public class crawlCharacter {
                 for (Element item : contentBodyElements) {
                     if (item.tagName().equals("p")) {
                         Element firstParagraph = item;
+                        // Loc ra cac the chu thich
+                        // [class~=(annotation).*]
+                        firstParagraph.select("sup").remove();
                         // Lay cac the a la con the p
                         Elements pATags = firstParagraph.select("a");
 

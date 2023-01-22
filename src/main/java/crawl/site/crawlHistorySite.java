@@ -131,6 +131,7 @@ public class crawlHistorySite {
                     Element tableHead = infoTableRows.get(i).selectFirst("th");
 
                     if (tableHead != null) {
+                        tableHead.select("sup").remove();
                         String tableHeadContent = tableHead.text();
                         if (i == 0) {
                             // Ten cua dia danh
@@ -140,11 +141,13 @@ public class crawlHistorySite {
                             if (locationCheck(tableHeadContent) && location.equals("Chưa rõ")) {
                                 Element tableData = infoTableRows.get(i).selectFirst("td");
                                 if (tableData != null) {
+                                    tableData.select("sup").remove();
                                     location = tableData.text();
                                 }
                             } else if (timeCheck(tableHeadContent)) {
                                 Element tableData = infoTableRows.get(i).selectFirst("td");
                                 if (tableData != null) {
+                                    tableData.select("sup").remove();
                                     if (time.equals("Chưa rõ")) {
                                         // Thoi gian khoi tao
                                         time = tableData.text();
@@ -156,6 +159,7 @@ public class crawlHistorySite {
                             } else if (tableHeadContent.equals("Người sáng lập") && founder.equals("Chưa rõ")) {
                                 Element tableData = infoTableRows.get(i).selectFirst("td");
                                 if (tableData != null) {
+                                    tableData.select("sup").remove();
                                     founder = tableData.text();
                                 }
                             }
@@ -174,6 +178,7 @@ public class crawlHistorySite {
             for (Element item : contentBodyElements) {
                 if (item.tagName().equals("p")) {
                     Element firstParagraph = item;
+                    firstParagraph.select("sup").remove(); // [class~=(annotation).*]
                     String firstPContent = firstParagraph.text();
                     Pattern p;
                     Matcher m;

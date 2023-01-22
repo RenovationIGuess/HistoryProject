@@ -305,6 +305,7 @@ public class crawlTimeStamp {
                                         Elements tableDatas = currentElement.select("tbody > tr > td:nth-child(2)");
                                         if (tableDatas != null) {
                                             for (Element td : tableDatas) {
+                                                td.select("sup").remove();
                                                 Element tdATag = td.selectFirst("a");
                                                 if (tdATag != null) {
                                                     String kingName = tdATag.text();
@@ -324,6 +325,10 @@ public class crawlTimeStamp {
                                                         if (eraValue.contains(currentEra)) {
                                                             Elements currentRowTds = tableRows.get(j).select("td");
                                                             if (currentRowTds != null) {
+                                                                // Loai bo chu thich
+                                                                currentRowTds.get(1).select("sup").remove();
+                                                                currentRowTds.get(2).select("sup").remove();
+                                                                currentRowTds.get(3).select("sup").remove();
                                                                 founder = currentRowTds.get(1).text();
                                                                 hometown = currentRowTds.get(2).text();
                                                                 location = currentRowTds.get(3).text();
