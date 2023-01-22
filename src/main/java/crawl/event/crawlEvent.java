@@ -122,12 +122,14 @@ public class crawlEvent {
             // Lay tu the div dau tien truoc
             Element firstPageHeader = doc.selectFirst("div[class=page-header]");
             if (firstPageHeader != null) {
+                firstPageHeader.select("sup").remove();
                 if (name.equals("Chưa rõ")) name = firstPageHeader.text();
             }
 
             Element eventNameTag = doc
                     .selectFirst("#content > div.com-content-article.item-page > div.com-content-article__body > div.infobox > table > tbody > tr > td > table > tbody > tr:nth-child(1) > td > table > tbody > tr:nth-child(1) > td > span");
             if (eventNameTag != null) {
+                eventNameTag.select("sup").remove();
                 if (name.equals("Chưa rõ")) name = eventNameTag.text();
             }
 
@@ -137,6 +139,7 @@ public class crawlEvent {
                 Elements aTagsInInfoBox = infoBoxDiv.select("a");
                 if (aTagsInInfoBox != null) {
                     for (Element a : aTagsInInfoBox) {
+//                        a.select("sup").remove();
                         String hrefValue = a.attr("href");
                         if (hrefValue.contains("/nhan-vat") && !hrefValue.contains("nha-")) {
                             String aTagValue = a.text();
@@ -156,11 +159,14 @@ public class crawlEvent {
                 Elements infoTableRows = infoTable.select("tr");
 //                System.out.println("Number of tr: " + infoTableRows.size());
                 for (Element tr : infoTableRows) {
+//                    tr.select("sup").remove();
                     Elements tableDatas = tr.select("td");
 //                    System.out.println("Number of td: " + tableDatas.size());
 
                     if (tableDatas != null) {
                         if (tableDatas.size() > 1) {
+                            tableDatas.get(0).select("sup").remove();
+                            tableDatas.get(1).select("sup").remove();
                             String title = tableDatas.get(0).text();
 //                            System.out.println(title);
                             if (title.equals("Thời gian") && time.equals("Chưa rõ")) {
@@ -187,6 +193,7 @@ public class crawlEvent {
                     if (!firstPFound) {
                         firstPFound = true;
                         Element firstParagraph = item;
+                        firstParagraph.select("sup").remove(); // [class~=(annotation).*]
                         String firstPContent = firstParagraph.text();
 
                         // The b dau tien la ten cua su kien, co the gom ca thoi gian
@@ -225,7 +232,7 @@ public class crawlEvent {
                         }
 
                         // Loc ra thoi gian cua su kien
-                        p = Pattern.compile("(xảy ra|diễn ra)(từ|vào)[^.]*[.]", Pattern.CASE_INSENSITIVE);
+                        p = Pattern.compile("(xảy ra|diễn ra) (từ|vào)[^.]*[.]", Pattern.CASE_INSENSITIVE);
                         m = p.matcher(firstPContent);
 
                         if (m.find()) {
