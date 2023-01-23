@@ -1,7 +1,7 @@
 package history.historicalfigure;
 
 import history.HistoricalEntity;
-import javafx.util.Pair;
+import history.relation.Pair;
 
 import java.util.ArrayList;
 
@@ -97,11 +97,6 @@ public class HistoricalFigure extends HistoricalEntity {
         this.died = lost;
         this.overview = position;
         this.workTime = workTime;
-//        this.era.put(era, null);
-//        this.father.put(father, null);
-//        this.mother.put(mother, null);
-//        this.PrecededBy.put(preceded, null);
-//        this.SucceededBy.put(succeeded, null);
         this.era = new Pair<>(era, null);
         this.father = new Pair<>(father, null);
         this.mother = new Pair<>(mother, null);
