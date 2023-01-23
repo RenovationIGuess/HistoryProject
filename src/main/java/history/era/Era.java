@@ -77,10 +77,6 @@ public class Era extends HistoricalEntity {
         this.time = time;
     }
 
-    public void createRelation(String name, HistoricalFigure figure){
-        listOfKingsId.put(name, figure.getId());
-    }
-
     public List<HistoricalEntity> fetchListOfKings(){
         List<HistoricalEntity> kings = new ArrayList<>();
         for (Map.Entry<String, Integer> king : listOfKingsId.entrySet())
@@ -121,5 +117,8 @@ public class Era extends HistoricalEntity {
         this.locationOfCapital = locationOfCapital;
         this.time = time;
         Eras.collection.add(this);
+        for (String king : listOfKings){
+            listOfKingsId.put(king, null);
+        }
     }
 }

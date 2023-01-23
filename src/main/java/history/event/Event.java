@@ -116,6 +116,9 @@ public class Event extends HistoricalEntity {
         this.reason = reason;
         this.result = result;
         this.overview = desc;
+        for (String relatedChar : relatedChars){
+            this.relatedFiguresId.put(relatedChar, null);
+        }
         Events.collection.add(this);
     }
 }

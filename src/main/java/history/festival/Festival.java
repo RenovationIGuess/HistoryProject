@@ -91,7 +91,7 @@ public class Festival extends HistoricalEntity {
         String location,
         String date,
         String note,
-        String relatedChars,
+        List<String> relatedChars,
         String firstTime
     ) {
         super(name);
@@ -100,6 +100,9 @@ public class Festival extends HistoricalEntity {
         this.location = location;
         this.note = note;
         this.firstTime = firstTime;
+        for (String relatedChar : relatedChars){
+            this.relatedFiguresId.put(relatedChar, null);
+        }
         Festivals.collection.add(this);
     }
 }
