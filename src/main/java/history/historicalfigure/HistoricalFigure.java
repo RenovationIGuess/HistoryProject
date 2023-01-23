@@ -1,105 +1,95 @@
 package history.historicalfigure;
 
 import history.HistoricalEntity;
-import history.Storable;
-import history.era.Era;
-import history.event.Event;
-import json.JSON;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-public class HistoricalFigure extends HistoricalEntity implements Storable {
+public class HistoricalFigure extends HistoricalEntity {
 
-    public static long nbHistoricalFigures = 0;
-    private int born;
-    private int died;
-    private List<Era> livedInEras = new ArrayList<>();
-    private List<Event> relatedEvents = new ArrayList<>();
-    private HistoricalFigure isChildOf;
-    private HistoricalFigure isParentOf;
+    private String born;
+    private String died;
+    private String overview;
+    private Map<String, Integer> era = new HashMap<>();
+    private Map<String, Integer> father = new HashMap<>();
+    private Map<String, Integer> mother = new HashMap<>();
+    private Map<String, Integer> PrecededBy = new HashMap<>();
+    private Map<String, Integer> SucceededBy = new HashMap<>();
 
+    /* Getters */
 
-    public int getBorn() {
+    public String getBorn() {
         return born;
     }
 
-    public void setBorn(int born) {
-        this.born = born;
-    }
-
-    public int getDied() {
+    public String getDied() {
         return died;
     }
 
-    public void setDied(int died) {
+    public String getOverview() {
+        return overview;
+    }
+
+    public Map<String, Integer> getEra() {
+        return era;
+    }
+
+    public Map<String, Integer> getFather() {
+        return father;
+    }
+
+    public Map<String, Integer> getMother() {
+        return mother;
+    }
+
+    public Map<String, Integer> getPrecededBy() {
+        return PrecededBy;
+    }
+
+    public Map<String, Integer> getSucceededBy() {
+        return SucceededBy;
+    }
+    /* Setters */
+    public void setBorn(String born) {
+        this.born = born;
+    }
+
+    public void setDied(String died) {
         this.died = died;
     }
 
-    public List<Era> getLivedInEras() {
-        return livedInEras;
+    public void setOverview(String overview) {
+        this.overview = overview;
     }
 
-    public void setLivedInEras(Era ...livedInEras) {
-        this.livedInEras.clear();
-
-        for (Era era: livedInEras){
-            this.livedInEras.add(era);
-        }
+    public void setEra(Map<String, Integer> era) {
+        this.era = era;
     }
 
-    public List<Event> getRelatedEvents() {
-        return relatedEvents;
+    public void setFather(Map<String, Integer> father) {
+        this.father = father;
     }
 
-    public void setRelatedEvents(Event ...relatedEvents) {
-        this.relatedEvents.clear();
-
-        for (Event event: relatedEvents){
-            this.relatedEvents.add(event);
-        }
+    public void setMother(Map<String, Integer> mother) {
+        this.mother = mother;
     }
 
-    public HistoricalFigure getIsChildOf() {
-        return isChildOf;
+    public void setPrecededBy(Map<String, Integer> precededBy) {
+        PrecededBy = precededBy;
     }
 
-    public void setIsChildOf(HistoricalFigure isChildOf) {
-        this.isChildOf = isChildOf;
+    public void setSucceededBy(Map<String, Integer> succeededBy) {
+        SucceededBy = succeededBy;
     }
 
-    public HistoricalFigure getIsParentOf() {
-        return isParentOf;
-    }
-
-    public void setIsParentOf(HistoricalFigure isParentOf) {
-        this.isParentOf = isParentOf;
-    }
-
+    /* Constructors */
     public HistoricalFigure(){
         super();
-        this.id = ++nbHistoricalFigures;
+        this.id = HistoricalFigures.collection.getSequenceId();
     }
 
     public HistoricalFigure(String name) {
         super(name);
-        this.id = ++nbHistoricalFigures;
-    }
-
-    public HistoricalFigure(String name, int born, int died) {
-        super(name);
-        this.id = ++nbHistoricalFigures;
-        this.born = born;
-        this.died = died;
-    }
-
-    /**
-     * Dùng để lưu đối tượng vào file JSON
-     * tên file: HistoricalFigure+id
-     */
-    public void save() {
-        String filename = "\\HistoricalFigure" + this.id + ".json";
-        JSON.writeJSON(filename, this);
+        this.id = HistoricalFigures.collection.getSequenceId();
     }
 }

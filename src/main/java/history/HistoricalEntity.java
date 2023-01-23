@@ -1,14 +1,18 @@
 package history;
 
+import json.JSON;
+
 import java.util.*;
 
 public abstract class HistoricalEntity {
 
-    protected long id;
+    protected int id;
     protected String name;
     protected List<String> aliases = new ArrayList<>();
+    protected String sourceURL;
+    protected String overview;
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
@@ -24,15 +28,12 @@ public abstract class HistoricalEntity {
         return aliases;
     }
 
-    public void setAliases(List<String> aliases) {
-        this.aliases = aliases;
+    public void setAliases(String... aliases) {
+        this.aliases = List.of(aliases);
     }
 
     public void addAlias(String alias){
-        if (this.aliases.contains(alias)){
-            //Already has this alias
-            return;
-        } else {
+        if (!this.aliases.contains(alias)){
             this.aliases.add(alias);
         }
     }
@@ -44,10 +45,44 @@ public abstract class HistoricalEntity {
     }
 
     public void removeAlias(String alias){
-        if (this.aliases.contains(alias)){
-            this.aliases.remove(alias);
-        }
+        this.aliases.remove(alias);
     }
+
+    public void clearAlias() {
+        this.aliases.clear();
+    }
+
+    public boolean isMatch(int id){
+        return this.getId() == id;
+    }
+
+    public boolean isMatch(String name){
+        return this.getName().toLowerCase().contains(name.toLowerCase());
+    }
+
+    public boolean hasName(String name){
+        return this.getName().equals(name);
+    }
+
+    /**
+     * @return String dạng JSON của đối tượng
+     */
+    public String toJSON(){
+        return JSON.toJSON(this);
+    }
+
+    /**
+     * Dùng để lưu đối tượng vào file JSON
+     * fileName = Tên class + id
+     * extensions: json
+     */
+    public void save(){
+        String className = this.getClass().getSimpleName();
+        String fileName = "\\" + className + "\\" + this.getId() + ".json";
+        JSON.writeJSON(fileName, this);
+    }
+
+    /* Constructor */
 
     public HistoricalEntity() {
     }
@@ -55,4 +90,5 @@ public abstract class HistoricalEntity {
     public HistoricalEntity(String name) {
         this.name = name;
     }
+
 }
