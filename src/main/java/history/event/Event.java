@@ -89,15 +89,12 @@ public class Event extends HistoricalEntity {
     public Event(){
         super();
         this.id = Events.collection.getSequenceId();
-    }
-
-    public Event(String name, String time) {
-        super(name);
-        this.id = Events.collection.getSequenceId();
+        Events.collection.add(this);
     }
 
     public Event(String name){
         super(name);
         this.id = Events.collection.getSequenceId();
+        Events.collection.add(this);
     }
 }

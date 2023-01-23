@@ -77,10 +77,12 @@ public class HistoricSite extends HistoricalEntity {
     public HistoricSite() {
         super();
         this.id = HistoricSites.collection.getSequenceId();
+        HistoricSites.collection.add(this);
     }
 
     public HistoricSite(String name) {
         super(name);
         this.id = HistoricSites.collection.getSequenceId();
+        HistoricSites.collection.add(this);
     }
 }

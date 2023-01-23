@@ -86,10 +86,12 @@ public class HistoricalFigure extends HistoricalEntity {
     public HistoricalFigure(){
         super();
         this.id = HistoricalFigures.collection.getSequenceId();
+        HistoricalFigures.collection.add(this);
     }
 
     public HistoricalFigure(String name) {
         super(name);
         this.id = HistoricalFigures.collection.getSequenceId();
+        HistoricalFigures.collection.add(this);
     }
 }

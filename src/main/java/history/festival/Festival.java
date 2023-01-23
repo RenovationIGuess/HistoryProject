@@ -77,10 +77,12 @@ public class Festival extends HistoricalEntity {
     /* Constructors */
     public Festival() {
         this.id = Festivals.collection.getSequenceId();
+        Festivals.collection.add(this);
     }
 
     public Festival(String name){
         super(name);
         this.id = Festivals.collection.getSequenceId();
+        Festivals.collection.add(this);
     }
 }
