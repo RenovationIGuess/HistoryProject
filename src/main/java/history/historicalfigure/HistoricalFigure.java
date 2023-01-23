@@ -2,14 +2,16 @@ package history.historicalfigure;
 
 import history.HistoricalEntity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class HistoricalFigure extends HistoricalEntity {
-
-    private String born;
-    private String died;
-    private String overview;
+    private String realName; // Ten that
+    private String born; // Ngay sinh voi noi sinh
+    private String died; // Ngay mat va noi mat
+    private String overview; // Mo ta ngan gon
+    private String workTime; // Thoi gian tai chuc
     private Map<String, Integer> era = new HashMap<>();
     private Map<String, Integer> father = new HashMap<>();
     private Map<String, Integer> mother = new HashMap<>();
@@ -92,6 +94,35 @@ public class HistoricalFigure extends HistoricalEntity {
     public HistoricalFigure(String name) {
         super(name);
         this.id = HistoricalFigures.collection.getSequenceId();
+        HistoricalFigures.collection.add(this);
+    }
+
+    public HistoricalFigure(
+        String name,
+        String realName,
+        ArrayList<String> alterName,
+        String birth,
+        String lost,
+        String position,
+        String workTime,
+        String era,
+        String father,
+        String mother,
+        String preceded,
+        String succeeded
+    ) {
+        super(name, alterName);
+        this.id = HistoricalFigures.collection.getSequenceId();
+        this.realName = realName;
+        this.born = birth;
+        this.died = lost;
+        this.overview = position;
+        this.workTime = workTime;
+        this.era.put(era, null);
+        this.father.put(father, null);
+        this.mother.put(mother, null);
+        this.PrecededBy.put(preceded, null);
+        this.SucceededBy.put(succeeded, null);
         HistoricalFigures.collection.add(this);
     }
 }

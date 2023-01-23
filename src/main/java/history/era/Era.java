@@ -103,4 +103,23 @@ public class Era extends HistoricalEntity {
         this.id = Eras.collection.getSequenceId();
         Eras.collection.add(this);
     }
+
+    public Era(
+        String name,
+        String timestamp,
+        String hometown,
+        String founder,
+        String locationOfCapital,
+        String time,
+        ArrayList<String> listOfKings
+    ) {
+        super(name);
+        this.id = Eras.collection.getSequenceId();
+        this.belongsToTimestamp = timestamp;
+        this.homeland = hometown;
+        this.founder = founder;
+        this.locationOfCapital = locationOfCapital;
+        this.time = time;
+        Eras.collection.add(this);
+    }
 }
