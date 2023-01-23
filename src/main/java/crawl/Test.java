@@ -11,7 +11,7 @@ public class Test {
 //        new crawlEvent();
 //        new crawlCharacter();
 //        new crawlHistorySite();
-//        new crawlTimeStamp();
+        new crawlTimeStamp();
 //        new crawlFestival();
     }
 }
