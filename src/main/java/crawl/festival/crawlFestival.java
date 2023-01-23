@@ -5,6 +5,7 @@ import org.jsoup.Jsoup;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ public class crawlFestival {
         HashMap<Integer, String> FirstTime  = new HashMap<Integer,String>();
         HashMap<Integer, String> RelatedFigure  = new HashMap<Integer,String>();
         HashMap<Integer, String> Note  = new HashMap<Integer,String>();
+        HashMap<Integer, String> Link  = new HashMap<Integer,String>();
 
         try{
             final Document document = Jsoup.connect(url_lehoi).get();
@@ -47,12 +49,20 @@ public class crawlFestival {
                 final String relatedFigure = row.select("td:nth-of-type(5)").text();
                 final String note = row.select("td:nth-of-type(6)").text();
 
+                // lấy links có liên quan ( có thể là chi tiết lế hội hoặc địa điểm có liên quan)
+                Elements links = row.select("td:nth-of-type(3) a[href]");
+                final ArrayList<String> linksArr= new ArrayList<String>();
+                for(Element link: links){
+                    linksArr.add(link.absUrl("href"));
+                }
+
                 addHashmap(i, Name, name);
                 addHashmap(i, Location, location);
                 addHashmap(i, Day, day);
                 addHashmap(i, FirstTime, firstTime);
                 addHashmap(i, RelatedFigure, relatedFigure);
                 addHashmap(i, Note, note);
+                //addHashmap(i,Link,link);
                 nbFestival = i;
                 i++;
                 System.out.println("id: "+ nbFestival);
@@ -62,6 +72,7 @@ public class crawlFestival {
                 System.out.println("Related Figure: " + RelatedFigure.get(nbFestival));
                 System.out.println("First time: "+FirstTime.get(nbFestival));
                 System.out.println("Note: "+ Note.get(nbFestival));
+                System.out.println("Link: "+ linksArr);
                 System.out.println("------");
             }
         }catch (Exception ex){
