@@ -1,11 +1,10 @@
 package history.event;
 
 import history.HistoricalEntity;
-import history.Storable;
-import history.era.Era;
-import json.JSON;
-
-import java.io.IOException;
+import history.historicalfigure.HistoricalFigure;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Đây là lớp cho thực thể sự kiện lịch sử
@@ -18,77 +17,84 @@ import java.io.IOException;
  *      relatedEra: triều đại liên quan
  */
 
-public class Event extends HistoricalEntity implements Storable {
-    private static long nbEvents = 0;
-    private int startDate;
-    private int endDate;
+public class Event extends HistoricalEntity {
+    private String date;
     private String location;
-    private Era relatedEra;
+    private String overview;
+    private String reason;
+    private String result;
+    private Map<String, Integer> relatedFiguresId = new HashMap<>();
 
+    /* Getters */
 
-    public int getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(int startDate) {
-        this.startDate = startDate;
-    }
-
-    public int getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(int endDate) {
-        this.endDate = endDate;
+    public String getDate() {
+        return date;
     }
 
     public String getLocation() {
         return location;
     }
 
+    public String getOverview() {
+        return overview;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public String getResult() {
+        return result;
+    }
+
+    public Map<String, Integer> getRelatedFiguresId() {
+        return relatedFiguresId;
+    }
+
+    /* Setters */
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     public void setLocation(String location) {
         this.location = location;
     }
 
-    public Era getRelatedEra() {
-        return relatedEra;
+    public void setOverview(String overview) {
+        this.overview = overview;
     }
 
-    public void setRelatedEra(Era relatedEra) {
-        this.relatedEra = relatedEra;
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
+    public void setResult(String result) {
+        this.result = result;
+    }
+
+    public void setRelatedFigures(List<String> relatedFigures){
+        relatedFiguresId.clear();
+
+        for (String figure : relatedFigures){
+            relatedFiguresId.put(figure, null);
+        }
+    }
+
+    public void putRelatedFigures(String name, HistoricalFigure figure){
+        relatedFiguresId.put(name, figure.getId());
+    }
+
+    /* Constructors */
     public Event(){
         super();
-        this.id = ++nbEvents;
-    }
-
-    public Event(String name, int startDate, int endDate) {
-        super(name);
-        this.id = ++nbEvents;
-        this.startDate = startDate;
-        this.endDate = endDate;
-    }
-
-    public Event(String name, int startDate, int endDate, String location) {
-        super(name);
-        this.id = ++nbEvents;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.location = location;
+        this.id = Events.collection.getSequenceId();
+        Events.collection.add(this);
     }
 
     public Event(String name){
         super(name);
-        this.id = ++nbEvents;
-    }
-
-    /**
-     * Dùng để lưu đối tượng vào file JSON
-     * tên file: Event+id
-     */
-    public void save(){
-        String filename = "\\Event" + this.id + ".json";
-        JSON.writeJSON(filename, this);
+        this.id = Events.collection.getSequenceId();
+        Events.collection.add(this);
     }
 }
