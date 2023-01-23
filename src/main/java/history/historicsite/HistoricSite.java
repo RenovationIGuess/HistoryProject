@@ -1,67 +1,88 @@
 package history.historicsite;
 
 import history.HistoricalEntity;
-import history.Storable;
-import history.era.Era;
-import json.JSON;
 
-import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
-public class HistoricSite extends HistoricalEntity implements Storable {
+public class HistoricSite extends HistoricalEntity {
 
-    public static long nbHistoricSites = 0;
     private String location;
-    private int constructionYear;
-    private Era builtInEra;
+    private String constructionDate;
+    private String founder;
+    private Map<String, Integer> relatedFestivalId;
+    private String overview;
+    private Map<String, Integer> relatedFiguresId;
+
+    /* Getters */
 
     public String getLocation() {
         return location;
     }
 
+    public String getConstructionDate() {
+        return constructionDate;
+    }
+
+    public String getFounder() {
+        return founder;
+    }
+
+    public Map<String, Integer> getRelatedFestivalId() {
+        return relatedFestivalId;
+    }
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public Map<String, Integer> getRelatedFiguresId() {
+        return relatedFiguresId;
+    }
+
+    /* Setters */
     public void setLocation(String location) {
         this.location = location;
     }
 
-    public int getConstructionYear() {
-        return constructionYear;
+    public void setConstructionDate(String constructionDate) {
+        this.constructionDate = constructionDate;
     }
 
-    public void setConstructionYear(int constructionYear) {
-        this.constructionYear = constructionYear;
+    public void setFounder(String founder) {
+        this.founder = founder;
     }
 
-    public Era getBuiltInEra() {
-        return builtInEra;
+    public void setOverview(String overview) {
+        this.overview = overview;
     }
 
-    public void setBuiltInEra(Era builtInEra) {
-        this.builtInEra = builtInEra;
+    public void setRelatedFestival(String festival){
+        relatedFestivalId.clear();
+        relatedFestivalId.put(festival, null);
     }
+
+    public void setRelatedFigures(List<String> figures){
+        relatedFiguresId.clear();
+        for (String figure : figures){
+            relatedFiguresId.put(figure, null);
+        }
+    }
+
+    /* Helpers */
+    //Add sau
+
+    /* Constructors */
 
     public HistoricSite() {
         super();
-        this.id = ++nbHistoricSites;
+        this.id = HistoricSites.collection.getSequenceId();
+        HistoricSites.collection.add(this);
     }
 
     public HistoricSite(String name) {
         super(name);
-        this.id = ++nbHistoricSites;
-    }
-
-    public HistoricSite(String name, String location, int constructionYear, Era builtInEra) {
-        super(name);
-        this.id = ++nbHistoricSites;
-        this.location = location;
-        this.constructionYear = constructionYear;
-        this.builtInEra = builtInEra;
-    }
-
-    /**
-     * Dùng để lưu đối tượng vào file json
-     * Tên file: HistoricSite+id.json
-     */
-    public void save() {
-        String filename = "\\HistoricSite" + this.id + ".json";
-        JSON.writeJSON(filename, this);
+        this.id = HistoricSites.collection.getSequenceId();
+        HistoricSites.collection.add(this);
     }
 }

@@ -8,9 +8,9 @@ import crawl.timestamp.crawlTimeStamp;
 public class Test {
     public static void main(String[] args) {
 //        new crawlEvent();
-        new crawlCharacter();
+//        new crawlCharacter();
 //        new crawlHistorySite();
-//        new crawlTimeStamp();
+        new crawlTimeStamp();
     }
 }
 

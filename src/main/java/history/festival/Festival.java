@@ -1,45 +1,88 @@
 package history.festival;
 
 import history.HistoricalEntity;
-import history.event.Event;
-import history.historicsite.HistoricSite;
-import json.JSON;
-
-import java.io.IOException;
-import java.time.LocalDate;
+import history.historicalfigure.HistoricalFigure;
+import history.historicalfigure.HistoricalFigures;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Festival extends HistoricalEntity {
 
-    private static long nbFestivals = 0;
-    private LocalDate date;
+    private String date;
     private String location;
-    private HistoricSite relatedSite;
-    private Event relatedEvent;
+    private Map<String, Integer> relatedFiguresId = new HashMap<>();
+    private String firstTime;
+    private String note;
 
+    /* Getters */
+
+    public String getDate() {
+        return date;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public String getFirstTime() {
+        return firstTime;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public Map<String, Integer> getRelatedFiguresId() {
+        return relatedFiguresId;
+    }
+
+    /* Setters */
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setFirstTime(String firstTime) {
+        this.firstTime = firstTime;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public void setRelatedFigures(List<String> figures){
+        relatedFiguresId.clear();
+
+        for (String figure : figures){
+            relatedFiguresId.put(figure, null);
+        }
+    }
+
+    /* Helpers */
+    public List<HistoricalFigure> fetchRelatedFigures(){
+        List<HistoricalFigure> figures = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry: relatedFiguresId.entrySet()){
+            HistoricalFigure figure = HistoricalFigures.collection.get(entry.getValue());
+            figures.add(figure);
+        }
+        return figures;
+    }
+
+    /* Constructors */
     public Festival() {
-        this.id = ++nbFestivals;
+        this.id = Festivals.collection.getSequenceId();
+        Festivals.collection.add(this);
     }
 
     public Festival(String name){
         super(name);
-        this.id = ++nbFestivals;
-    }
-
-    public Festival(String name, LocalDate date, String location, HistoricSite relatedSite, Event relatedEvent) {
-        super(name);
-        this.id = ++nbFestivals;
-        this.date = date;
-        this.location = location;
-        this.relatedSite = relatedSite;
-        this.relatedEvent = relatedEvent;
-    }
-
-    /**
-     * Dùng để lưu đối tượng vào file json
-     * Tên file: Festival+id.json
-     */
-    public void save() {
-        String filename = "\\Fesitval" + this.id + ".json";
-        JSON.writeJSON(filename, this);
+        this.id = Festivals.collection.getSequenceId();
+        Festivals.collection.add(this);
     }
 }
