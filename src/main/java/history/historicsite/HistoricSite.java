@@ -103,9 +103,9 @@ public class HistoricSite extends HistoricalEntity {
         this.founder = founder;
         this.relatedFestivalId.put(relatedFes, null);
         this.overview = desc;
-//        for (String char : relatedChars) {
-//            this.relatedFiguresId.put(char, null);
-//        }
+        for (String relatedChar : relatedChars) {
+            this.relatedFiguresId.put(relatedChar, null);
+        }
         HistoricSites.collection.add(this);
     }
 }

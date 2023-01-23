@@ -1,10 +1,9 @@
 package history.historicalfigure;
 
 import history.HistoricalEntity;
+import javafx.util.Pair;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class HistoricalFigure extends HistoricalEntity {
     private String realName; // Ten that
@@ -12,11 +11,11 @@ public class HistoricalFigure extends HistoricalEntity {
     private String died; // Ngay mat va noi mat
     private String overview; // Mo ta ngan gon
     private String workTime; // Thoi gian tai chuc
-    private Map<String, Integer> era = new HashMap<>();
-    private Map<String, Integer> father = new HashMap<>();
-    private Map<String, Integer> mother = new HashMap<>();
-    private Map<String, Integer> PrecededBy = new HashMap<>();
-    private Map<String, Integer> SucceededBy = new HashMap<>();
+    private Pair<String, Integer> era;
+    private Pair<String, Integer> father;
+    private Pair<String, Integer> mother;
+    private Pair<String, Integer> precededBy;
+    private Pair<String, Integer> succeededBy;
 
     /* Getters */
 
@@ -32,24 +31,24 @@ public class HistoricalFigure extends HistoricalEntity {
         return overview;
     }
 
-    public Map<String, Integer> getEra() {
+    public Pair<String, Integer> getEra() {
         return era;
     }
 
-    public Map<String, Integer> getFather() {
+    public Pair<String, Integer> getFather() {
         return father;
     }
 
-    public Map<String, Integer> getMother() {
+    public Pair<String, Integer> getMother() {
         return mother;
     }
 
-    public Map<String, Integer> getPrecededBy() {
-        return PrecededBy;
+    public Pair<String, Integer> getPrecededBy() {
+        return precededBy;
     }
 
-    public Map<String, Integer> getSucceededBy() {
-        return SucceededBy;
+    public Pair<String, Integer> getSucceededBy() {
+        return succeededBy;
     }
     /* Setters */
     public void setBorn(String born) {
@@ -62,26 +61,6 @@ public class HistoricalFigure extends HistoricalEntity {
 
     public void setOverview(String overview) {
         this.overview = overview;
-    }
-
-    public void setEra(Map<String, Integer> era) {
-        this.era = era;
-    }
-
-    public void setFather(Map<String, Integer> father) {
-        this.father = father;
-    }
-
-    public void setMother(Map<String, Integer> mother) {
-        this.mother = mother;
-    }
-
-    public void setPrecededBy(Map<String, Integer> precededBy) {
-        PrecededBy = precededBy;
-    }
-
-    public void setSucceededBy(Map<String, Integer> succeededBy) {
-        SucceededBy = succeededBy;
     }
 
     /* Constructors */
@@ -118,11 +97,16 @@ public class HistoricalFigure extends HistoricalEntity {
         this.died = lost;
         this.overview = position;
         this.workTime = workTime;
-        this.era.put(era, null);
-        this.father.put(father, null);
-        this.mother.put(mother, null);
-        this.PrecededBy.put(preceded, null);
-        this.SucceededBy.put(succeeded, null);
+//        this.era.put(era, null);
+//        this.father.put(father, null);
+//        this.mother.put(mother, null);
+//        this.PrecededBy.put(preceded, null);
+//        this.SucceededBy.put(succeeded, null);
+        this.era = new Pair<>(era, null);
+        this.father = new Pair<>(father, null);
+        this.mother = new Pair<>(mother, null);
+        this.precededBy = new Pair<>(preceded, null);
+        this.succeededBy = new Pair<>(succeeded, null);
         HistoricalFigures.collection.add(this);
     }
 }
