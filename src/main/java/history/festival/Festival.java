@@ -85,4 +85,21 @@ public class Festival extends HistoricalEntity {
         this.id = Festivals.collection.getSequenceId();
         Festivals.collection.add(this);
     }
+
+    public Festival(
+        String name,
+        String location,
+        String date,
+        String note,
+        String relatedChars,
+        String firstTime
+    ) {
+        super(name);
+        this.id = Festivals.collection.getSequenceId();
+        this.date = date;
+        this.location = location;
+        this.note = note;
+        this.firstTime = firstTime;
+        Festivals.collection.add(this);
+    }
 }

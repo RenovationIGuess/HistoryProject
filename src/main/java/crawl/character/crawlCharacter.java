@@ -1,5 +1,6 @@
 package crawl.character;
 
+import history.historicalfigure.HistoricalFigure;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -570,6 +571,22 @@ public class crawlCharacter {
             System.out.println("Mother: " + charMother);
             System.out.println("Preceeded: " + preceeded);
             System.out.println("Succeeded: " + succeeded);
+
+            // Them nhan vat crawl duoc vao database
+            new HistoricalFigure(
+                charName,
+                realName,
+                alterName,
+                dateOfBirth,
+                lostDate,
+                position,
+                workTime,
+                era,
+                charFather,
+                charMother,
+                preceeded,
+                succeeded
+            );
 
         } catch (IOException e) {
             throw new RuntimeException(e);

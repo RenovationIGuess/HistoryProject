@@ -2,6 +2,8 @@ package history.event;
 
 import history.HistoricalEntity;
 import history.historicalfigure.HistoricalFigure;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -95,6 +97,25 @@ public class Event extends HistoricalEntity {
     public Event(String name){
         super(name);
         this.id = Events.collection.getSequenceId();
+        Events.collection.add(this);
+    }
+
+    public Event(
+        String name,
+        String date,
+        String location,
+        String result,
+        String reason,
+        String desc,
+        ArrayList<String> relatedChars
+    ) {
+        super(name);
+        this.id = Events.collection.getSequenceId();
+        this.date = date;
+        this.location = location;
+        this.reason = reason;
+        this.result = result;
+        this.overview = desc;
         Events.collection.add(this);
     }
 }

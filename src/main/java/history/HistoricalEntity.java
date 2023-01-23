@@ -91,4 +91,11 @@ public abstract class HistoricalEntity {
         this.name = name;
     }
 
+    public HistoricalEntity(
+        String name,
+        ArrayList<String> alterName
+    ) {
+        this.name = name;
+        this.aliases = alterName;
+    }
 }

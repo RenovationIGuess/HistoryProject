@@ -2,6 +2,7 @@ package history.historicsite;
 
 import history.HistoricalEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -83,6 +84,28 @@ public class HistoricSite extends HistoricalEntity {
     public HistoricSite(String name) {
         super(name);
         this.id = HistoricSites.collection.getSequenceId();
+        HistoricSites.collection.add(this);
+    }
+
+    public HistoricSite(
+            String name,
+            String builtDate,
+            String location,
+            String founder,
+            String relatedFes,
+            String desc,
+            ArrayList<String> relatedChars
+    ) {
+        super(name);
+        this.id = HistoricSites.collection.getSequenceId();
+        this.constructionDate = builtDate;
+        this.location = location;
+        this.founder = founder;
+        this.relatedFestivalId.put(relatedFes, null);
+        this.overview = desc;
+//        for (String char : relatedChars) {
+//            this.relatedFiguresId.put(char, null);
+//        }
         HistoricSites.collection.add(this);
     }
 }
