@@ -83,6 +83,10 @@ public class Event extends HistoricalEntity {
         }
     }
 
+    public void setRelatedFigures(Map<String, Integer> newRelateFigs) {
+        this.relatedFiguresId = newRelateFigs;
+    }
+
     public void putRelatedFigures(String name, HistoricalFigure figure){
         relatedFiguresId.put(name, figure.getId());
     }

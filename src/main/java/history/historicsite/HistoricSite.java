@@ -3,6 +3,7 @@ package history.historicsite;
 import history.HistoricalEntity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,9 +12,9 @@ public class HistoricSite extends HistoricalEntity {
     private String location;
     private String constructionDate;
     private String founder;
-    private Map<String, Integer> relatedFestivalId;
+    private Map<String, Integer> relatedFestivalId = new HashMap<>();;
     private String overview;
-    private Map<String, Integer> relatedFiguresId;
+    private Map<String, Integer> relatedFiguresId = new HashMap<>();;
 
     /* Getters */
 
@@ -68,6 +69,10 @@ public class HistoricSite extends HistoricalEntity {
         for (String figure : figures){
             relatedFiguresId.put(figure, null);
         }
+    }
+
+    public void setRelatedFigures(Map<String, Integer> newRelateFigs) {
+        this.relatedFiguresId = newRelateFigs;
     }
 
     /* Helpers */

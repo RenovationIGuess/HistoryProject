@@ -1,5 +1,6 @@
 package crawl.event;
 
+import history.event.Event;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -284,6 +285,17 @@ public class crawlEvent {
             } else {
                 System.out.print("]\n");
             }
+
+            // Tao object su kien
+            new Event(
+                name,
+                time,
+                location,
+                result,
+                reason,
+                description,
+                relatedChar
+            );
 
         } catch (IOException e) {
             throw new RuntimeException(e);

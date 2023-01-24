@@ -1,5 +1,6 @@
 package crawl.festival;
 
+import history.festival.Festival;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 
@@ -9,6 +10,7 @@ import org.jsoup.nodes.Element;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 public class crawlFestival {
@@ -47,6 +49,12 @@ public class crawlFestival {
                 final String relatedFigure = row.select("td:nth-of-type(5)").text();
                 final String note = row.select("td:nth-of-type(6)").text();
 
+                String[] splittedChars = relatedFigure.split(", ");
+                ArrayList<String> relateChars = new ArrayList<>();
+                for (String relateChar : splittedChars) {
+                    relateChars.add(relateChar);
+                }
+
                 addHashmap(i, Name, name);
                 addHashmap(i, Location, location);
                 addHashmap(i, Day, day);
@@ -63,6 +71,17 @@ public class crawlFestival {
                 System.out.println("First time: "+FirstTime.get(nbFestival));
                 System.out.println("Note: "+ Note.get(nbFestival));
                 System.out.println("------");
+
+                // Tao object moi
+                new Festival(
+                    Name.get(nbFestival),
+                    Location.get(nbFestival),
+                    Day.get(nbFestival),
+                    Note.get(nbFestival),
+                    relateChars,
+                    FirstTime.get(nbFestival)
+                );
+
             }
         } catch (Exception ex) {
             ex.printStackTrace();

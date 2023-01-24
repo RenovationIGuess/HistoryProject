@@ -64,6 +64,10 @@ public class Festival extends HistoricalEntity {
         }
     }
 
+    public void setRelatedFigures(Map<String, Integer> newRelateFigs) {
+        this.relatedFiguresId = newRelateFigs;
+    }
+
     /* Helpers */
     public List<HistoricalFigure> fetchRelatedFigures(){
         List<HistoricalFigure> figures = new ArrayList<>();

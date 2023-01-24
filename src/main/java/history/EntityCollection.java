@@ -7,7 +7,7 @@ import javafx.collections.transformation.FilteredList;
 import java.util.List;
 
 public class EntityCollection <T extends HistoricalEntity> {
-    private ObservableList<T> data;
+    private ObservableList<T> data = FXCollections.observableArrayList();
 
     private int numberOfRecords = 0;
 

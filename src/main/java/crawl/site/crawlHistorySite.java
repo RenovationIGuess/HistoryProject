@@ -1,5 +1,6 @@
 package crawl.site;
 
+import history.historicsite.HistoricSite;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -320,6 +321,17 @@ public class crawlHistorySite {
             } else {
                 System.out.print("]\n");
             }
+
+            // Tao object moi va them vao list di tich
+            new HistoricSite(
+                name,
+                time,
+                location,
+                founder,
+                festival,
+                description,
+                relatedChar
+            );
 
         } catch (IOException e) {
             throw new RuntimeException(e);

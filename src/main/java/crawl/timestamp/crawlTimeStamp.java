@@ -1,5 +1,6 @@
 package crawl.timestamp;
 
+import history.era.Era;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -355,6 +356,17 @@ public class crawlTimeStamp {
                                             } else {
                                                 System.out.print("]\n");
                                             }
+
+                                            // Tao object
+                                            new Era(
+                                                currentEra,
+                                                currentTimeStamp,
+                                                hometown,
+                                                founder,
+                                                location,
+                                                eraTime,
+                                                kingList
+                                            );
 
                                             // Reset lai cac mang chua vua
                                             kingList.clear();
