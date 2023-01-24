@@ -6,6 +6,7 @@ import org.jsoup.Jsoup;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -49,6 +50,13 @@ public class crawlFestival {
                 final String relatedFigure = row.select("td:nth-of-type(5)").text();
                 final String note = row.select("td:nth-of-type(6)").text();
 
+                // lấy links có liên quan ( có thể là chi tiết lế hội hoặc địa điểm có liên quan (từ wiki)
+                Elements links = row.select("td:nth-of-type(3) a[href]");
+                ArrayList<String> linkArr= new ArrayList<>();
+                for(Element link: links){
+                    linkArr.add(link.absUrl("href"));
+                }
+
                 String[] splittedChars = relatedFigure.split(", ");
                 ArrayList<String> relateChars = new ArrayList<>();
                 for (String relateChar : splittedChars) {
@@ -70,6 +78,7 @@ public class crawlFestival {
                 System.out.println("Related Figure: " + RelatedFigure.get(nbFestival));
                 System.out.println("First time: "+FirstTime.get(nbFestival));
                 System.out.println("Note: "+ Note.get(nbFestival));
+                System.out.println("Link: "+ linkArr);
                 System.out.println("------");
 
                 // Tao object moi
