@@ -77,6 +77,10 @@ public class Era extends HistoricalEntity {
         this.time = time;
     }
 
+    public void setListOfKingsId(Map<String, Integer> newListOfKings) {
+        this.listOfKingsId = newListOfKings;
+    }
+
     public List<HistoricalEntity> fetchListOfKings(){
         List<HistoricalEntity> kings = new ArrayList<>();
         for (Map.Entry<String, Integer> king : listOfKingsId.entrySet())

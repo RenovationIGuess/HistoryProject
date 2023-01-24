@@ -11,16 +11,24 @@ public class HistoricalFigure extends HistoricalEntity {
     private String died; // Ngay mat va noi mat
     private String overview; // Mo ta ngan gon
     private String workTime; // Thoi gian tai chuc
-    private Pair<String, Integer> era;
-    private Pair<String, Integer> father;
-    private Pair<String, Integer> mother;
-    private Pair<String, Integer> precededBy;
-    private Pair<String, Integer> succeededBy;
+    private Pair<String, Integer> era = new Pair<>();
+    private Pair<String, Integer> father = new Pair<>();
+    private Pair<String, Integer> mother = new Pair<>();
+    private Pair<String, Integer> precededBy = new Pair<>();
+    private Pair<String, Integer> succeededBy = new Pair<>();
 
     /* Getters */
 
     public String getBorn() {
         return born;
+    }
+
+    public String getWorkTime() {
+        return workTime;
+    }
+
+    public String getRealName() {
+        return realName;
     }
 
     public String getDied() {
@@ -62,6 +70,30 @@ public class HistoricalFigure extends HistoricalEntity {
     public void setOverview(String overview) {
         this.overview = overview;
     }
+
+    public void setEra(String name, Integer id) {
+        this.era.setEntry(name, id);
+    }
+
+    public void setFather(String name, Integer id) {
+        this.father.setEntry(name, id);
+    }
+
+    public void setMother(String name, Integer id) {
+        this.mother.setEntry(name, id);
+    }
+
+    public void setPrecededBy(String name, Integer id) {
+        this.precededBy.setEntry(name, id);
+    }
+
+    public void setSucceededBy(String name, Integer id) {
+        this.succeededBy.setEntry(name, id);
+    }
+
+//    public boolean equals(String name) {
+//        return name.equals(this.name);
+//    }
 
     /* Constructors */
     public HistoricalFigure(){
