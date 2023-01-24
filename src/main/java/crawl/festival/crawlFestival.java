@@ -40,7 +40,7 @@ public class crawlFestival {
 
         try {
             final Document document = Jsoup.connect(url_lehoi).get();
-            int i =1;
+            int i = 1;
             for (Element row : document.select("table.prettytable.wikitable tr")) {
                 final String day = row.select("td:nth-of-type(1)").text();
                 final String location = row.select("td:nth-of-type(2)").text();
@@ -48,6 +48,9 @@ public class crawlFestival {
                 final String firstTime = row.select("td:nth-of-type(4)").text();
                 final String relatedFigure = row.select("td:nth-of-type(5)").text();
                 final String note = row.select("td:nth-of-type(6)").text();
+
+                // Truong hop cot dau tien
+                if (name.equals("")) continue;
 
                 String[] splittedChars = relatedFigure.split(", ");
                 ArrayList<String> relateChars = new ArrayList<>();
@@ -90,7 +93,7 @@ public class crawlFestival {
 
     public static void addHashmap(int i,HashMap<Integer,String> list,String text) {
         if (text.equals("")) {
-            list.put(i,"None");
+            list.put(i,"Chưa rõ");
         } else {
             list.put(i,text);
         }

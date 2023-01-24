@@ -64,6 +64,10 @@ public class HistoricSite extends HistoricalEntity {
         relatedFestivalId.put(festival, null);
     }
 
+    public void setRelatedFestival(Map<String, Integer> newRelateFes) {
+        this.relatedFestivalId = newRelateFes;
+    }
+
     public void setRelatedFigures(List<String> figures){
         relatedFiguresId.clear();
         for (String figure : figures){

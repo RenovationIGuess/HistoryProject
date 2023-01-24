@@ -63,21 +63,26 @@ public class Relation {
         // Tao lien ket giua nhan vat voi le hoi
         for (Festival f : listOfFestivals) {
             Map<String, Integer> relatedCharList = new HashMap<>();
-            for (Map.Entry<String, Integer> entry : f.getRelatedFiguresId().entrySet()) {
-                // Duyet qua cac figures
-                // Neu figures nao co ten == ten nhan vat trong relate char
-                // phan le hoi thi lay id cua no
-                boolean found = false;
-                for (HistoricalFigure c : listOfFigures) {
-                    if (c.isMatch(entry.getKey())) {
-                        found = true;
-                        relatedCharList.put(c.getName(), c.getId());
-                        break;
+            if (f.getRelatedFiguresId().size() > 0) {
+                for (Map.Entry<String, Integer> entry : f.getRelatedFiguresId().entrySet()) {
+                    // Duyet qua cac figures
+                    // Neu figures nao co ten == ten nhan vat trong relate char
+                    // phan le hoi thi lay id cua no
+                    boolean found = false;
+                    for (HistoricalFigure c : listOfFigures) {
+                        Pattern p = Pattern.compile(Pattern.quote(entry.getKey()), Pattern.CASE_INSENSITIVE);
+                        Matcher m = p.matcher(c.getName());
+
+                        if (m.find()) {
+                            found = true;
+                            relatedCharList.put(c.getName(), c.getId());
+                            break;
+                        }
                     }
+                    if (!found) relatedCharList.put(entry.getKey(), null);
                 }
-                if (!found) relatedCharList.put(entry.getKey(), null);
+                f.setRelatedFigures(relatedCharList);
             }
-            f.setRelatedFigures(relatedCharList);
         }
 
         // Tao lien ket giua nhan vat, le hoi voi di tich
@@ -86,21 +91,26 @@ public class Relation {
             Map<String, Integer> relatedCharList = new HashMap<>();
             Map<String, Integer> relatedFesList = new HashMap<>();
 
-            for (Map.Entry<String, Integer> entry : s.getRelatedFiguresId().entrySet()) {
-                // Duyet qua cac char
-                // Neu char nao co ten == ten nhan vat trong relate char
-                // phan site thi lay id cua no
-                boolean found = false;
-                for (HistoricalFigure c : listOfFigures) {
-                    if (c.isMatch(entry.getKey())) {
-                        found = true;
-                        relatedCharList.put(c.getName(), c.getId());
-                        break;
+            if (s.getRelatedFiguresId().size() > 0) {
+                for (Map.Entry<String, Integer> entry : s.getRelatedFiguresId().entrySet()) {
+                    // Duyet qua cac char
+                    // Neu char nao co ten == ten nhan vat trong relate char
+                    // phan site thi lay id cua no
+                    boolean found = false;
+                    for (HistoricalFigure c : listOfFigures) {
+                        Pattern p = Pattern.compile(Pattern.quote(entry.getKey()), Pattern.CASE_INSENSITIVE);
+                        Matcher m = p.matcher(c.getName());
+
+                        if (m.find()) {
+                            found = true;
+                            relatedCharList.put(c.getName(), c.getId());
+                            break;
+                        }
                     }
+                    if (!found) relatedCharList.put(entry.getKey(), null);
                 }
-                if (!found) relatedCharList.put(entry.getKey(), null);
+                s.setRelatedFigures(relatedCharList);
             }
-            s.setRelatedFigures(relatedCharList);
 
             // Tao lien ket giua di tich voi le hoi
             for (Map.Entry<String, Integer> entry : s.getRelatedFestivalId().entrySet()) {
@@ -123,7 +133,7 @@ public class Relation {
                 // Neu le hoi duoc tim thay con khong thi cu de gia tri cu
                 if (!found) relatedFesList.put(fesContent, null);
             }
-            s.setRelatedFigures(relatedFesList);
+            s.setRelatedFestival(relatedFesList);
         }
 
         // Tao lien ket giua nhan vat voi trieu dai lich su
@@ -140,6 +150,7 @@ public class Relation {
 
                     if (m.find()) {
                         relatedCharList.put(c.getName(), c.getId());
+                        found = true;
                         break;
                     }
                 }
@@ -160,20 +171,35 @@ public class Relation {
 //            boolean[] escapeLoop = {false, false, false, false};
 
             for (HistoricalFigure c : listOfFigures) {
-                if (c.isMatch(fatherName)) {
-                    if (hf.getFather().getValue() == null) {
+                if (hf.getFather().getValue() == null) {
+                    Pattern p = Pattern.compile(Pattern.quote(fatherName), Pattern.CASE_INSENSITIVE);
+                    Matcher m = p.matcher(c.getName());
+
+                    if (m.find()) {
                         hf.setFather(fatherName, c.getId());
                     }
-                } else if (c.isMatch(motherName)) {
-                    if (hf.getMother().getValue() == null) {
-                        hf.setFather(motherName, c.getId());
+                }
+                if (hf.getMother().getValue() == null) {
+                    Pattern p = Pattern.compile(Pattern.quote(motherName), Pattern.CASE_INSENSITIVE);
+                    Matcher m = p.matcher(c.getName());
+
+                    if (m.find()) {
+                        hf.setMother(motherName, c.getId());
                     }
-                } else if (c.isMatch(precededName)) {
-                    if (hf.getFather().getValue() == null) {
+                }
+                if (hf.getPrecededBy().getValue() == null) {
+                    Pattern p = Pattern.compile(Pattern.quote(precededName), Pattern.CASE_INSENSITIVE);
+                    Matcher m = p.matcher(c.getName());
+
+                    if (m.find()) {
                         hf.setPrecededBy(precededName, c.getId());
                     }
-                } else if (c.isMatch(succeededName)) {
-                    if (hf.getFather().getValue() == null) {
+                }
+                if (hf.getSucceededBy().getValue() == null) {
+                    Pattern p = Pattern.compile(Pattern.quote(succeededName), Pattern.CASE_INSENSITIVE);
+                    Matcher m = p.matcher(c.getName());
+
+                    if (m.find()) {
                         hf.setSucceededBy(succeededName, c.getId());
                     }
                 }
@@ -182,7 +208,10 @@ public class Relation {
             // Lien ket trieu dai
             String eraName = hf.getEra().getKey();
             for (Era e : listOfEras) {
-                if (e.isMatch(eraName)) {
+                Pattern p = Pattern.compile(Pattern.quote(eraName), Pattern.CASE_INSENSITIVE);
+                Matcher m = p.matcher(e.getName());
+
+                if (m.find()) {
                     hf.setEra(eraName, e.getId());
                     break;
                 }
@@ -202,6 +231,7 @@ public class Relation {
                     Matcher m = p.matcher(c.getName());
 
                     if (m.find()) {
+                        found = true;
                         relatedCharList.put(c.getName(), c.getId());
                         break;
                     }
