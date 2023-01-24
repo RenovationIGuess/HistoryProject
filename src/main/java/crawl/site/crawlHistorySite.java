@@ -323,7 +323,7 @@ public class crawlHistorySite {
             }
 
             // Tao object moi va them vao list di tich
-            new HistoricSite(
+            HistoricSite site = new HistoricSite(
                 name,
                 time,
                 location,
@@ -332,6 +332,7 @@ public class crawlHistorySite {
                 description,
                 relatedChar
             );
+            site.save();
 
         } catch (IOException e) {
             throw new RuntimeException(e);

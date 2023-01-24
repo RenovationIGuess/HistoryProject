@@ -287,7 +287,7 @@ public class crawlEvent {
             }
 
             // Tao object su kien
-            new Event(
+            Event event = new Event(
                 name,
                 time,
                 location,
@@ -296,6 +296,7 @@ public class crawlEvent {
                 description,
                 relatedChar
             );
+            event.save();
 
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -358,7 +358,7 @@ public class crawlTimeStamp {
                                             }
 
                                             // Tao object
-                                            new Era(
+                                            Era era = new Era(
                                                 currentEra,
                                                 currentTimeStamp,
                                                 hometown,
@@ -367,6 +367,7 @@ public class crawlTimeStamp {
                                                 eraTime,
                                                 kingList
                                             );
+                                            era.save();
 
                                             // Reset lai cac mang chua vua
                                             kingList.clear();

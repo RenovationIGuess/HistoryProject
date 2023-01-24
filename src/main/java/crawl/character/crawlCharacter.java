@@ -573,7 +573,7 @@ public class crawlCharacter {
             System.out.println("Succeeded: " + succeeded);
 
             // Them nhan vat crawl duoc vao database
-            new HistoricalFigure(
+            HistoricalFigure figure = new HistoricalFigure(
                 charName,
                 realName,
                 alterName,
@@ -587,6 +587,7 @@ public class crawlCharacter {
                 preceeded,
                 succeeded
             );
+            figure.save();
 
         } catch (IOException e) {
             throw new RuntimeException(e);

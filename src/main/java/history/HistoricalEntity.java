@@ -57,7 +57,15 @@ public abstract class HistoricalEntity {
     }
 
     public boolean isMatch(String name){
-        return this.getName().toLowerCase().contains(name.toLowerCase());
+        if(this.getName().toLowerCase().contains(name.toLowerCase()))
+            return true;
+        else {
+            for (String alias : aliases){
+                if (alias.toLowerCase().contains(name.toLowerCase()))
+                    return true;
+            }
+        }
+        return false;
     }
 
     public boolean hasName(String name){

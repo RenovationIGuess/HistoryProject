@@ -73,7 +73,7 @@ public class crawlFestival {
                 System.out.println("------");
 
                 // Tao object moi
-                new Festival(
+                Festival fes = new Festival(
                     Name.get(nbFestival),
                     Location.get(nbFestival),
                     Day.get(nbFestival),
@@ -81,6 +81,7 @@ public class crawlFestival {
                     relateChars,
                     FirstTime.get(nbFestival)
                 );
+                fes.save();
 
             }
         } catch (Exception ex) {

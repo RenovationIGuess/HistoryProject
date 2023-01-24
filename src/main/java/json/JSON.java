@@ -23,7 +23,7 @@ public class JSON {
      */
     public static void writeJSON(String filename, HistoricalEntity entity) {
         try {
-            System.out.println(PREFIX_URL + filename);
+            System.out.println("Saved successfully into " + PREFIX_URL + filename);
             MAPPER.writeValue(new File(PREFIX_URL + filename), entity);
         } catch (IOException e) {
             e.printStackTrace();
