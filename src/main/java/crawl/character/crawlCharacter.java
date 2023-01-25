@@ -114,6 +114,11 @@ public class crawlCharacter {
                 position.equals("Vị trí");
     }
 
+    public boolean checkNotPosition(String text) {
+        return text.contains("làng") ||
+                text.contains("con của");
+    }
+
     public boolean workTimeCheck(String workTime) {
         return workTime.equals("Trị vì") ||
                 workTime.equals("trị vì") ||
@@ -502,16 +507,31 @@ public class crawlCharacter {
                             } else outLoop = false;
                         }
 
+                        String backupInfo = "";
                         Pattern posiRegex = Pattern.compile("(là|làm)[^.]*[.]");
                         Matcher posiMatcher = posiRegex.matcher(firstPContent);
 
-                        if (posiMatcher.find()) {
+                        while (posiMatcher.find()) {
                             String result = posiMatcher.group(0);
                             if (!result.contains(":")) {
-                                if (position.equals("Chưa rõ") || positionCheck(position) || position.equals("Thuộc")) {
-                                    position = result.substring(0, result.length() - 1);
+                                // Ham check not position de kiem tra truong hop
+                                // la nguoi lang nao, la con cua ai,... => khong phai vi tri
+                                if (checkNotPosition(result)) {
+                                    // Chi lay ket qua dau tien tim duoc
+                                    if (backupInfo.equals("")) backupInfo = result;
+                                } else {
+                                    if (position.equals("Chưa rõ") || positionCheck(position) || position.equals("Thuộc")) {
+                                        position = result.substring(0, result.length() - 1);
+                                        break;
+                                    }
                                 }
                             }
+                        }
+
+                        // Trong truong hop khong co ket qua nao khac ngoai: la con cua, la nguoi lang abc,...
+                        // Thi ta lay tam
+                        if (position.equals("Chưa rõ") || positionCheck(position) || position.equals("Thuộc")) {
+                            position = backupInfo;
                         }
 
                         // Reset lai para cho loc cai khac

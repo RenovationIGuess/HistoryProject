@@ -14,26 +14,31 @@ public class TestRegex {
 
         // Bùi Quốc Khái (chữ Hán: 裴國愾, 1141-1234) là người đỗ đầu khoa thi Tiến sĩ năm Trinh Phù thứ 10 (Ất Tỵ, 1185) dưới thời vua Lý Cao Tông (ở ngôi: 1176-1210), nước Đại Việt (nay là Việt Nam).
 
-        String paragraph = "Cao Lỗ (? - 179 trước Công nguyên) (còn gọi là Cao Nỗ, Cao Thông, Đô Lỗ1 , Thạch Thần, hay Đại Than Đô Lỗ Thạch Thần) là một tướng tài của Thục Phán An Dương Vương, quê quán tại xã Cao Đức, huyện Gia Bình, tỉnh Bắc Ninh ngày nay.";
+        String paragraph = "Nhà Hậu Lê – giai đoạn Lê sơ";
 
         Pattern p = Pattern.compile("\\(([^)]*)\\)", Pattern.CASE_INSENSITIVE);
         Matcher m = p.matcher(paragraph);
 
-        ArrayList<String> test = new ArrayList<>();
-        System.out.println(test.size());
+//        ArrayList<String> test = new ArrayList<>();
+//        System.out.println(test.size());
+        String s1 = "–";
+        String s2 = "–";
+        System.out.println(s1.equals(s2));
 
         // Test nhat ten real and alter
         // Tùy Văn Đế (chữ Hán: 隋文帝; 21 tháng 7, 541 - 13 tháng 8, 604), tên thật là Dương Kiên (楊堅), là vị Hoàng đế sáng lập triều đại nhà Tùy trong lịch sử Trung Quốc. Ông ở ngôi từ năm 581 đến năm 604, tổng cộng 23 năm.
         // Cao Lỗ (? - 179 trước Công nguyên) (còn gọi là Cao Nỗ, Cao Thông, Đô Lỗ1 , Thạch Thần, hay Đại Than Đô Lỗ Thạch Thần) là một tướng tài của Thục Phán An Dương Vương, quê quán tại xã Cao Đức, huyện Gia Bình, tỉnh Bắc Ninh ngày nay.
-        p = Pattern.compile("(còn gọi|tên tự|niên hiệu| dưới tên gọi|thông gọi|biệt hiệu)[^,.;)]*[,.;)]", Pattern.CASE_INSENSITIVE);
+        p = Pattern.compile("(nhà)[^-––]*([-––]|$)", Pattern.CASE_INSENSITIVE);
         m = p.matcher(paragraph);
 
         if (m.find()) {
-            String result = m.group(0);
-            if (result.charAt(result.length() - 1) == ')') {
-                System.out.println(result);
-            } else System.out.println(result.substring(0, result.length() - 1));
-        }
+            String result = m.group();
+//            if (result.contains("làng")) continue;
+//            if (result.charAt(result.length() - 1) == ')') {
+//                System.out.println(result);
+//            } else System.out.println(result.substring(0, result.length() - 1));
+            System.out.println("\"" + result + "\"");
+        } else System.out.println("Not found!");
 
 //        while (m.find()) {
 //            String result = m.group(0);

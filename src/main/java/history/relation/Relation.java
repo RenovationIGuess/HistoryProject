@@ -63,26 +63,27 @@ public class Relation {
         // Tao lien ket giua nhan vat voi le hoi
         for (Festival f : listOfFestivals) {
             Map<String, Integer> relatedCharList = new HashMap<>();
-            if (f.getRelatedFiguresId().size() > 0) {
-                for (Map.Entry<String, Integer> entry : f.getRelatedFiguresId().entrySet()) {
-                    // Duyet qua cac figures
-                    // Neu figures nao co ten == ten nhan vat trong relate char
-                    // phan le hoi thi lay id cua no
-                    boolean found = false;
-                    for (HistoricalFigure c : listOfFigures) {
-                        Pattern p = Pattern.compile(Pattern.quote(entry.getKey()), Pattern.CASE_INSENSITIVE);
-                        Matcher m = p.matcher(c.getName());
-
-                        if (m.find()) {
-                            found = true;
-                            relatedCharList.put(c.getName(), c.getId());
-                            break;
-                        }
-                    }
-                    if (!found) relatedCharList.put(entry.getKey(), null);
-                }
-                f.setRelatedFigures(relatedCharList);
+            if (f.getRelatedFiguresId().size() == 1 && f.getRelatedFiguresId().get("") == null) {
+                continue;
             }
+            for (Map.Entry<String, Integer> entry : f.getRelatedFiguresId().entrySet()) {
+                // Duyet qua cac figures
+                // Neu figures nao co ten == ten nhan vat trong relate char
+                // phan le hoi thi lay id cua no
+                boolean found = false;
+                for (HistoricalFigure c : listOfFigures) {
+                    Pattern p = Pattern.compile(Pattern.quote(entry.getKey()), Pattern.CASE_INSENSITIVE);
+                    Matcher m = p.matcher(c.getName());
+
+                    if (m.find()) {
+                        found = true;
+                        relatedCharList.put(c.getName(), c.getId());
+                        break;
+                    }
+                }
+                if (!found) relatedCharList.put(entry.getKey(), null);
+            }
+            f.setRelatedFigures(relatedCharList);
         }
 
         // Tao lien ket giua nhan vat, le hoi voi di tich
@@ -217,6 +218,7 @@ public class Relation {
                     String lowerCaseEraName = eraName.toLowerCase();
                     int startIndex = lowerCaseEraName.indexOf("nhà");
                     String shortenEraName = eraName.substring(startIndex + 3);
+
                     for (Era e : listOfEras) {
                         if (e.getName().toLowerCase().contains("nhà")) {
                             String lowerCaseCurEraName = e.getName().toLowerCase();
@@ -227,6 +229,8 @@ public class Relation {
                                 Pattern p = Pattern.compile(Pattern.quote(shortenEraName), Pattern.CASE_INSENSITIVE);
                                 Matcher m = p.matcher(shortenCurEraName);
 
+                                // Neu tim trong trieu dai ma khong thay
+                                // Thi thu tim trong nghe nghiep - position cua may o do :v
                                 if (m.find()) {
                                     // Neu ten 2 trieu dai k giong nhau thi cho vao alias
                                     e.addAlias(eraName);
@@ -270,6 +274,38 @@ public class Relation {
                                 break;
                             }
                         }
+                    }
+                }
+            } else {
+                // Neu chua co trieu dai => thu tim trong position
+                for (Era e : listOfEras) {
+                    String eraNameToSearch = "";
+                    Pattern p;
+                    Matcher m;
+                    if (e.getName().contains("nhà")) {
+                        p = Pattern.compile("(nhà)[^-–]*([-–]|$)", Pattern.CASE_INSENSITIVE);
+                        m = p.matcher(e.getName());
+
+                        if (m.find()) {
+                            String result = m.group(0);
+                            if (result.contains("-")) {
+                                // Neu co dau - thi chac chan no se o cuoi xau boi gi regex no the :v
+                                // Bo qua ca chu nha
+                                result = result.substring(3, result.length() - 1);
+                            }
+                            result.trim();
+                            eraNameToSearch = result;
+                        }
+                    } else {
+                        eraNameToSearch = e.getName();
+                    }
+
+                    p = Pattern.compile(Pattern.quote(eraNameToSearch), Pattern.CASE_INSENSITIVE);
+                    m = p.matcher(hf.getOverview());
+
+                    if (m.find()) {
+                        hf.setEra(e.getName(), e.getId());
+                        break;
                     }
                 }
             }
