@@ -5,6 +5,20 @@ import history.relation.Pair;
 
 import java.util.ArrayList;
 
+/**
+ * Đây là lớp cho loại thực thể Nhân vật lịch sử
+ * gồm các thuộc tính:
+ *      realName: tên thật
+ *      born: ngày sinh và nơi sinh
+ *      died: ngày mất và nơi mất
+ *      overview: mô tả ngắn gọn
+ *      workTime: thời gian tại chức
+ *      era: sống thời thời đại
+ *      father: bố
+ *      mother: mẹ
+ *      precededBy: tiền nhiệm
+ *      succeededBy: kế nhiệm
+ */
 public class HistoricalFigure extends HistoricalEntity {
     private String realName; // Ten that
     private String born; // Ngay sinh voi noi sinh
@@ -90,10 +104,6 @@ public class HistoricalFigure extends HistoricalEntity {
     public void setSucceededBy(String name, Integer id) {
         this.succeededBy.setEntry(name, id);
     }
-
-//    public boolean equals(String name) {
-//        return name.equals(this.name);
-//    }
 
     /* Constructors */
     public HistoricalFigure(){

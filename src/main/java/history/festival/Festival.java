@@ -8,6 +8,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Đây là lớp cho loại thực thể Lễ hội
+ * gồm các thuộc tính
+ *      name: tên lễ hội
+ *      alias: tên gọi khác
+ *      date: ngày tổ chức (bắt đầu)
+ *      location: địa điểm tổ chức
+ *      relatedFiguresId: danh sách nhân vật lịch sử liên quan
+ *      firstTime: lần đầu tổ chức
+ *      note: chú thích
+ */
 public class Festival extends HistoricalEntity {
 
     private String date;
@@ -54,14 +65,6 @@ public class Festival extends HistoricalEntity {
 
     public void setNote(String note) {
         this.note = note;
-    }
-
-    public void setRelatedFigures(List<String> figures){
-        relatedFiguresId.clear();
-
-        for (String figure : figures){
-            relatedFiguresId.put(figure, null);
-        }
     }
 
     public void setRelatedFigures(Map<String, Integer> newRelateFigs) {

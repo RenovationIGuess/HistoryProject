@@ -10,14 +10,16 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Đây là lớp cho thực thể triều đại lịch sử
+ * Đây là lớp cho loại thực thể triều đại lịch sử
  * gồm các thuộc tính
  *      name: tên triều đại
  *      aliases: tên gọi khác
- *      fromYear: năm bắt đầu
- *      toYear: năm kết thúc
- *      precededEra: triều đại liền trước
- *      succeededEra: triều đại kế tiếp
+ *      belongsToTimestamp:
+ *      homeland: quê hương
+ *      founder: người sáng lập
+ *      locationOfCaptal: vị trí kinh đô
+ *      time: thời gian
+ *      listOfKings: danh sách vua cai trị
  */
 
 public class Era extends HistoricalEntity {
