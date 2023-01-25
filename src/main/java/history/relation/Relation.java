@@ -38,6 +38,7 @@ public class Relation {
         new crawlCharacter();
     }
 
+    // Dung de luu tat ca cung luc
     public void createRelation() {
         // Lay cac gia tri crawl duoc
         // Lay nhan vat
@@ -63,13 +64,11 @@ public class Relation {
         // Tao lien ket giua nhan vat voi le hoi
         for (Festival f : listOfFestivals) {
             Map<String, Integer> relatedCharList = new HashMap<>();
-            if (f.getRelatedFiguresId().size() == 1 && f.getRelatedFiguresId().get("") == null) {
-                continue;
-            }
             for (Map.Entry<String, Integer> entry : f.getRelatedFiguresId().entrySet()) {
                 // Duyet qua cac figures
                 // Neu figures nao co ten == ten nhan vat trong relate char
                 // phan le hoi thi lay id cua no
+                if (entry.getKey().equals("")) continue;
                 boolean found = false;
                 for (HistoricalFigure c : listOfFigures) {
                     Pattern p = Pattern.compile(Pattern.quote(entry.getKey()), Pattern.CASE_INSENSITIVE);
