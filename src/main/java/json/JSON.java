@@ -2,6 +2,7 @@ package json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import history.HistoricalEntity;
+import history.era.Era;
 
 import java.io.File;
 import java.io.IOException;
