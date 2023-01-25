@@ -116,6 +116,7 @@ public class crawlCharacter {
 
     public boolean workTimeCheck(String workTime) {
         return workTime.equals("Trị vì") ||
+                workTime.equals("trị vì") ||
                 workTime.equals("Tại vị") ||
                 workTime.equals("Nhiệm kỳ") ||
                 workTime.equals("Năm tại ngũ") ||
@@ -149,6 +150,7 @@ public class crawlCharacter {
     public boolean realNameCheck(String realName) {
         return realName.equals("Húy") ||
                 realName.equals("Tên thật") ||
+                realName.equals("tên thật") ||
                 realName.equals("Tên đầy đủ") ||
                 realName.equals("Tên húy");
     }
@@ -424,7 +426,7 @@ public class crawlCharacter {
                             if (charName.equals("Chưa rõ")) charName = firstBTag.text();
                         }
 
-                        // Tim ngay sinh
+                        // Tim ngay sinh / hoac thoi gian lam viec
                         String firstPContent = firstParagraph.text();
                         Pattern birthRegex = Pattern.compile("\\(([^)]*)\\)", Pattern.UNICODE_CASE);
                         Matcher birthMatch = birthRegex.matcher(firstPContent);
@@ -451,19 +453,25 @@ public class crawlCharacter {
                                 } else startIndex++;
 
                                 String contentInParen = firstResult.substring(startIndex, firstResult.length() - 1);
-                                // Chia ra nam sinh voi nam mat
-                                String[] splitString = {};
-                                if (contentInParen.contains("-")) {
-                                    splitString = contentInParen.split("-");
+                                if (contentInParen.contains("trị vì")) {
+                                    if (workTime.equals("Chưa rõ")) {
+                                        workTime = contentInParen;
+                                    }
                                 } else {
-                                    splitString = contentInParen.split("–");
-                                }
+                                    // Chia ra nam sinh voi nam mat
+                                    String[] splitString = {};
+                                    if (contentInParen.contains("-")) {
+                                        splitString = contentInParen.split("-");
+                                    } else {
+                                        splitString = contentInParen.split("–");
+                                    }
 
-                                if (splitString.length == 1) {
-                                    if (dateOfBirth.equals("Chưa rõ")) dateOfBirth = splitString[0].trim();
-                                } else {
-                                    if (dateOfBirth.equals("Chưa rõ")) dateOfBirth = splitString[0].trim();
-                                    if (lostDate.equals("Chưa rõ")) lostDate = splitString[1].trim();
+                                    if (splitString.length == 1) {
+                                        if (dateOfBirth.equals("Chưa rõ")) dateOfBirth = splitString[0].trim();
+                                    } else {
+                                        if (dateOfBirth.equals("Chưa rõ")) dateOfBirth = splitString[0].trim();
+                                        if (lostDate.equals("Chưa rõ")) lostDate = splitString[1].trim();
+                                    }
                                 }
                                 break;
                             } else {
@@ -573,20 +581,22 @@ public class crawlCharacter {
             System.out.println("Succeeded: " + succeeded);
 
             // Them nhan vat crawl duoc vao database
-            new HistoricalFigure(
-                charName,
-                realName,
-                alterName,
-                dateOfBirth,
-                lostDate,
-                position,
-                workTime,
-                era,
-                charFather,
-                charMother,
-                preceeded,
-                succeeded
-            );
+            if (!charName.equals("Chưa rõ")) {
+                new HistoricalFigure(
+                        charName,
+                        realName,
+                        alterName,
+                        dateOfBirth,
+                        lostDate,
+                        position,
+                        workTime,
+                        era,
+                        charFather,
+                        charMother,
+                        preceeded,
+                        succeeded
+                );
+            }
 
         } catch (IOException e) {
             throw new RuntimeException(e);
