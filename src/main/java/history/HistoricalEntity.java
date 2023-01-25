@@ -125,9 +125,9 @@ public abstract class HistoricalEntity {
     }
 
     /**
-     * @return tên gọi khác nhau của một đối tượng
+     * @return tất cả tên gọi khác nhau của một đối tượng
      */
-    public List<String> getAllPossibleNames() {
+    public List<String> fetchAllPossibleNames() {
         List<String> names = new ArrayList<>(this.aliases);
         names.add(this.name);
         return names;
