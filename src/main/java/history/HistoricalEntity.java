@@ -30,6 +30,10 @@ public abstract class HistoricalEntity {
         this.aliases = List.of(aliases);
     }
 
+    /**
+     * Thêm một tên gọi khác cho đối tượng
+     * @param alias tên gọi khác của đối tượng cần thêm
+     */
     public void addAlias(String alias){
         if (!this.aliases.contains(alias)){
             this.aliases.add(alias);
@@ -50,10 +54,19 @@ public abstract class HistoricalEntity {
         this.aliases.clear();
     }
 
+    /**
+     * @param id id cần kiểm tra
+     * @return Đối tượng có id như vậy không
+     */
     public boolean isMatch(int id){
         return this.getId() == id;
     }
 
+    /**
+     * Kiểm tra tên đối tượng có khớp với tên tìm kiếm không
+     * @param name tên tìm kiếm
+     * @return true nếu tên đối tượng khớp 1 phần với tên tìm kiếm
+     */
     public boolean isMatch(String name){
         if (this.getName().toLowerCase().contains(name.toLowerCase()))
             return true;
@@ -64,8 +77,13 @@ public abstract class HistoricalEntity {
         return false;
     }
 
+    /**
+     * Kiểm tra đối tượng có tên xác định
+     * @param name
+     * @return true nếu tên trùng
+     */
     public boolean hasName(String name){
-        return this.getName().equals(name);
+        return this.name.equalsIgnoreCase(name);
     }
 
     /**
@@ -77,7 +95,7 @@ public abstract class HistoricalEntity {
 
     /**
      * Dùng để lưu đối tượng vào file JSON
-     * fileName = Tên class + id
+     * fileName = /[Tên class]/[id đối tượng].json
      * extensions: json
      */
     public void save(){
@@ -86,15 +104,33 @@ public abstract class HistoricalEntity {
         JSON.writeJSON(fileName, this);
     }
 
+    /**
+     * So sánh 2 đối tượng
+     * nếu id giống nhau hoặc tên giống nhau trả về true
+     */
     @Override
     public boolean equals(Object obj){
         if (obj instanceof HistoricalEntity) {
             if (this.isMatch(((HistoricalEntity) obj).getId()))
                 return true;
-            else if (this.name.toLowerCase().equals(((HistoricalEntity) obj).getName().toLowerCase()))
-                return true;
+            else {
+                if (this.name == null){
+                    return false;
+                }
+                else if (this.hasName(((HistoricalEntity) obj).getName()))
+                    return true;
+            }
         }
         return false;
+    }
+
+    /**
+     * @return tên gọi khác nhau của một đối tượng
+     */
+    public List<String> getAllPossibleNames() {
+        List<String> names = new ArrayList<>(this.aliases);
+        names.add(this.name);
+        return names;
     }
 
     /* Constructor */

@@ -11,15 +11,28 @@ public class EntityCollection <T extends HistoricalEntity> {
 
     private int numberOfRecords = 0;
 
+    /**
+     * Sinh ra số id tăng dần không trùng lặp
+     * @return Số id để tạo đối tượng
+     */
     public int getSequenceId(){
         return ++numberOfRecords;
     }
 
+    /**
+     * Chuyển đổi danh sách tập hợp dạng List
+     * sang dạng ObservableList để lưu tập hợp
+     * @param data danh sách tập hợp đối tượng dạng list
+     */
     public void setData(List<T> data){
         this.data = FXCollections.observableList(data);
         this.numberOfRecords = data.size();
     }
 
+    /**
+     * Trả về danh sách các đối tượng lưu trữ trong tập hợp
+     * @return Danh sách đối tượng được lưu trữ
+     */
     public ObservableList<T> getData(){
         return data;
     }

@@ -1,29 +1,28 @@
 package history.event;
 
 import history.HistoricalEntity;
-import history.historicalfigure.HistoricalFigure;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
- * Đây là lớp cho thực thể sự kiện lịch sử
+ * Đây là lớp cho loại thực thể Sự kiện lịch sử
  * gồm các thuộc tính:
  *      name: tên sự kiện
  *      aliases: tên gọi khác
- *      startDate: thời gian bắt đầu
- *      endDate: thời gian kết thúc
- *      location: địa điểm
- *      relatedEra: triều đại liên quan
+ *      date: thời gian diễn ra
+ *      location: địa điểm diễn ra
+ *      cause: nguyên nhân
+ *      result: kết quả
+ *      relatedFiguresId: các nhân vật lịch sử liên quan
  */
 
 public class Event extends HistoricalEntity {
     private String date;
     private String location;
     private String overview;
-    private String reason;
+    private String cause;
     private String result;
     private Map<String, Integer> relatedFiguresId = new HashMap<>();
 
@@ -41,8 +40,8 @@ public class Event extends HistoricalEntity {
         return overview;
     }
 
-    public String getReason() {
-        return reason;
+    public String getCause() {
+        return cause;
     }
 
     public String getResult() {
@@ -67,28 +66,16 @@ public class Event extends HistoricalEntity {
         this.overview = overview;
     }
 
-    public void setReason(String reason) {
-        this.reason = reason;
+    public void setCause(String cause) {
+        this.cause = cause;
     }
 
     public void setResult(String result) {
         this.result = result;
     }
 
-    public void setRelatedFigures(List<String> relatedFigures){
-        relatedFiguresId.clear();
-
-        for (String figure : relatedFigures){
-            relatedFiguresId.put(figure, null);
-        }
-    }
-
     public void setRelatedFigures(Map<String, Integer> newRelateFigs) {
         this.relatedFiguresId = newRelateFigs;
-    }
-
-    public void putRelatedFigures(String name, HistoricalFigure figure){
-        relatedFiguresId.put(name, figure.getId());
     }
 
     /* Constructors */
@@ -117,7 +104,7 @@ public class Event extends HistoricalEntity {
         this.id = Events.collection.getSequenceId();
         this.date = date;
         this.location = location;
-        this.reason = reason;
+        this.cause = reason;
         this.result = result;
         this.overview = desc;
         for (String relatedChar : relatedChars){
