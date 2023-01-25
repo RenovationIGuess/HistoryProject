@@ -164,10 +164,11 @@ public class crawlCharacter {
         return alterName.equals("Thụy hiệu") ||
                 alterName.equals("Niên hiệu") ||
                 alterName.equals("Tên khác") ||
-                alterName.equals("Hiệu");
-//                alterName.equals("Bút danh");
-                // Con truong hop mieu hieu nhung ma thoi k lay
-//                alterName.equals("Miếu hiệu");
+                alterName.equals("Tước hiệu") ||
+                alterName.equals("Tước vị") ||
+                alterName.equals("Hiệu") ||
+                alterName.equals("Bút danh") ||
+                alterName.equals("Miếu hiệu");
     }
 
     // Truy cap vao link nhan vat va crawl
@@ -192,18 +193,24 @@ public class crawlCharacter {
             // Lay ra bang thong tin (neu co) => neu k co thi loc text
             Element infoTable = doc.selectFirst("table[class^=infobox]");
 
+            // Lay ra ten nhan vat dau tien tim duoc
+            Element firstFoundCharName = doc
+                    .selectFirst("div[class=page-header] > h2");
+            if (firstFoundCharName != null) charName = firstFoundCharName.text();
+
             if (infoTable != null) {
                 Elements infoTableRows = infoTable.select("tr");
                 int numberOfTr = infoTableRows.size();
                 for (int i = 0; i < numberOfTr; ++i) {
-                    // Chi muc dau tien la ten
+                    // Chi muc dau tien la ten => cho vao cac ten phu
                     if (i == 0) {
                         Element tableHead = infoTableRows.get(i).selectFirst("th");
 
                         // Chua co cach tach xau
                         if (tableHead != null) {
                             tableHead.select("sup").remove();
-                            charName = tableHead.text();
+//                            charName = tableHead.text();
+                            alterName.add(tableHead.text());
                         }
                     } else {
                         Element tableHead = infoTableRows.get(i).selectFirst("th");
@@ -428,7 +435,9 @@ public class crawlCharacter {
                         // The b dau tien la ten cua nhan vat?
                         Element firstBTag = firstParagraph.selectFirst("b");
                         if (firstBTag != null) {
-                            if (charName.equals("Chưa rõ")) charName = firstBTag.text();
+                            // if (charName.equals("Chưa rõ"))
+                            // Uu tien lay ten tu paragraph
+                            charName = firstBTag.text();
                         }
 
                         // Tim ngay sinh / hoac thoi gian lam viec
