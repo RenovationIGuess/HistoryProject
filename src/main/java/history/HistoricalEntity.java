@@ -9,8 +9,6 @@ public abstract class HistoricalEntity {
     protected int id;
     protected String name;
     protected List<String> aliases = new ArrayList<>();
-    protected String sourceURL;
-    protected String overview;
 
     public int getId() {
         return id;
@@ -57,7 +55,13 @@ public abstract class HistoricalEntity {
     }
 
     public boolean isMatch(String name){
-        return this.getName().toLowerCase().contains(name.toLowerCase());
+        if (this.getName().toLowerCase().contains(name.toLowerCase()))
+            return true;
+        for (String alias : aliases){
+            if (alias.toLowerCase().contains(name.toLowerCase()))
+                return true;
+        }
+        return false;
     }
 
     public boolean hasName(String name){
@@ -80,6 +84,17 @@ public abstract class HistoricalEntity {
         String className = this.getClass().getSimpleName();
         String fileName = "\\" + className + "\\" + this.getId() + ".json";
         JSON.writeJSON(fileName, this);
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        if (obj instanceof HistoricalEntity) {
+            if (this.isMatch(((HistoricalEntity) obj).getId()))
+                return true;
+            else if (this.name.toLowerCase().equals(((HistoricalEntity) obj).getName().toLowerCase()))
+                return true;
+        }
+        return false;
     }
 
     /* Constructor */
