@@ -150,6 +150,9 @@ public class Relation {
 
                     if (m.find()) {
                         relatedCharList.put(c.getName(), c.getId());
+                        if (c.getEra().getKey().equals("Chưa rõ")) {
+                            c.setEra(e.getName(), e.getId());
+                        }
                         found = true;
                         break;
                     }
@@ -206,14 +209,68 @@ public class Relation {
             }
 
             // Lien ket trieu dai
+            // Chi xet nhung nhan vat co trieu dai co ten nhung chua co id
             String eraName = hf.getEra().getKey();
-            for (Era e : listOfEras) {
-                Pattern p = Pattern.compile(Pattern.quote(eraName), Pattern.CASE_INSENSITIVE);
-                Matcher m = p.matcher(e.getName());
+            if (!eraName.equals("Chưa rõ") && hf.getEra().getValue() == null) {
+                if (eraName.toLowerCase().contains("nhà")) {
+                    // new => ten lowercase
+                    String lowerCaseEraName = eraName.toLowerCase();
+                    int startIndex = lowerCaseEraName.indexOf("nhà");
+                    String shortenEraName = eraName.substring(startIndex + 3);
+                    for (Era e : listOfEras) {
+                        if (e.getName().toLowerCase().contains("nhà")) {
+                            String lowerCaseCurEraName = e.getName().toLowerCase();
+                            startIndex = lowerCaseCurEraName.indexOf("nhà");
+                            String shortenCurEraName = e.getName().substring(startIndex + 3);
 
-                if (m.find()) {
-                    hf.setEra(eraName, e.getId());
-                    break;
+                            if (shortenCurEraName.length() > shortenEraName.length()) {
+                                Pattern p = Pattern.compile(Pattern.quote(shortenEraName), Pattern.CASE_INSENSITIVE);
+                                Matcher m = p.matcher(shortenCurEraName);
+
+                                if (m.find()) {
+                                    // Neu ten 2 trieu dai k giong nhau thi cho vao alias
+                                    e.addAlias(eraName);
+                                    hf.setEra(e.getName(), e.getId());
+                                    break;
+                                }
+                            } else {
+                                Pattern p = Pattern.compile(Pattern.quote(shortenCurEraName), Pattern.CASE_INSENSITIVE);
+                                Matcher m = p.matcher(shortenEraName);
+
+                                if (m.find()) {
+                                    if (!eraName.equalsIgnoreCase(e.getName())) {
+                                        e.addAlias(eraName);
+                                    }
+                                    hf.setEra(e.getName(), e.getId());
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    for (Era e : listOfEras) {
+                        if (eraName.length() > e.getName().length()) {
+                            Pattern p = Pattern.compile(Pattern.quote(e.getName()), Pattern.CASE_INSENSITIVE);
+                            Matcher m = p.matcher(eraName);
+
+                            if (m.find()) {
+                                e.addAlias(eraName);
+                                hf.setEra(e.getName(), e.getId());
+                                break;
+                            }
+                        } else {
+                            Pattern p = Pattern.compile(Pattern.quote(eraName), Pattern.CASE_INSENSITIVE);
+                            Matcher m = p.matcher(e.getName());
+
+                            if (m.find()) {
+                                if (!eraName.equalsIgnoreCase(e.getName())) {
+                                    e.addAlias(eraName);
+                                }
+                                hf.setEra(e.getName(), e.getId());
+                                break;
+                            }
+                        }
+                    }
                 }
             }
         }
