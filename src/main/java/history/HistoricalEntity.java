@@ -133,6 +133,10 @@ public abstract class HistoricalEntity {
         return names;
     }
 
+    public void printObject(){
+        System.out.println(this.toJSON());
+    }
+
     /* Constructor */
 
     public HistoricalEntity() {
