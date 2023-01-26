@@ -14,16 +14,25 @@ public class TestRegex {
 
         // Bùi Quốc Khái (chữ Hán: 裴國愾, 1141-1234) là người đỗ đầu khoa thi Tiến sĩ năm Trinh Phù thứ 10 (Ất Tỵ, 1185) dưới thời vua Lý Cao Tông (ở ngôi: 1176-1210), nước Đại Việt (nay là Việt Nam).
 
-        String paragraph = "(Hậu) Nam Việt Hoàng Đế (後)南越皇帝 Anh Liệt Nhân Hiếu Khâm Minh Thánh Vũ Hoàng Đế (英烈仁孝欽明聖武皇帝)";
+        String paragraph = "Tôn Đức Thắng (Quyền Chủ tịch)";
+        String name = paragraph;
+        String realName = "Tôn Đức Thắng";
+
+        if (
+                paragraph.equals(name) && paragraph.contains("(") && paragraph.lastIndexOf("(") > 0
+        ) {
+            paragraph = paragraph.substring(0, paragraph.lastIndexOf("(")).trim();
+        }
+        System.out.println(paragraph.equalsIgnoreCase(realName));
 
         Pattern p = Pattern.compile("\\(([^)]*)\\)", Pattern.CASE_INSENSITIVE);
         Matcher m = p.matcher(paragraph);
 
 //        ArrayList<String> test = new ArrayList<>();
 //        System.out.println(test.size());
-//        String s1 = "–";
-//        String s2 = "–";
-//        System.out.println(s1.equals(s2));
+        String s1 = "-";
+        String s2 = "-";
+        System.out.println(s1.equals(s2));
 
         // Test nhat ten real and alter
         // Tùy Văn Đế (chữ Hán: 隋文帝; 21 tháng 7, 541 - 13 tháng 8, 604), tên thật là Dương Kiên (楊堅), là vị Hoàng đế sáng lập triều đại nhà Tùy trong lịch sử Trung Quốc. Ông ở ngôi từ năm 581 đến năm 604, tổng cộng 23 năm.
@@ -38,7 +47,7 @@ public class TestRegex {
 //                System.out.println(result);
 //            } else System.out.println(result.substring(0, result.length() - 1));
             if (result.contains("(")) {
-                System.out.println("\"" + result.substring(0, result.indexOf("(")) + "\"");
+                System.out.println("\"" + result.substring(0, result.lastIndexOf("(")) + "\"");
             } else {
                 System.out.println("\"" + result.substring(0, result.length() - 1) + "\"");
             }

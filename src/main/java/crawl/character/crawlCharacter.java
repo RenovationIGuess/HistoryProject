@@ -307,7 +307,9 @@ public class crawlCharacter {
                                 Element tableData = infoTableRows.get(i).selectFirst("td");
                                 if (tableData != null) {
                                     tableData.select("sup").remove();
-                                    alterName.add(tableData.text());
+                                    if (!tableData.text().toLowerCase().contains("không")) {
+                                        alterName.add(tableData.text());
+                                    }
                                 }
                             }
                         } else {
@@ -408,7 +410,9 @@ public class crawlCharacter {
                                     Element tableData = infoTableRows.get(i).select("td").get(1);
                                     if (tableData != null) {
                                         tableData.select("sup").remove();
-                                        alterName.add(tableData.text());
+                                        if (!tableData.text().toLowerCase().contains("không")) {
+                                            alterName.add(tableData.text());
+                                        }
                                     }
                                 }
                             }
