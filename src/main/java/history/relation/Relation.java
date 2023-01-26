@@ -82,8 +82,9 @@ public class Relation {
                         if (m.find()) {
                             String result = m.group();
                             if (!result.substring(0, result.length() - 1).equals("")) {
+                                // Loc ra cac dau ngoac hoac chu Han neu co
                                 if (result.contains("(")) {
-                                    nameToCompare = result.substring(0, result.indexOf("(")).trim();
+                                    nameToCompare = result.substring(0, result.lastIndexOf("(")).trim();
                                 } else {
                                     nameToCompare = result.substring(0, result.length() - 1).trim();
                                 }
@@ -92,6 +93,16 @@ public class Relation {
                             }
                         } else {
                             nameToCompare = name;
+                        }
+
+                        // Loc ra cac dau ngoac - trong truong hop ten k co chu Han
+                        // K tinh truong hop co ngoac o dau VD - (abc) abc...
+                        if (
+                            nameToCompare.equals(name) &&
+                            nameToCompare.contains("(") &&
+                            nameToCompare.lastIndexOf("(") > 0
+                        ) {
+                            nameToCompare = name.substring(0, name.lastIndexOf("(")).trim();
                         }
 
                         // Neu ten de so sanh = ten tu tieu de crawl duoc
@@ -152,7 +163,7 @@ public class Relation {
                                 String result = m.group();
                                 if (!result.substring(0, result.length() - 1).equals("")) {
                                     if (result.contains("(")) {
-                                        nameToCompare = result.substring(0, result.indexOf("(")).trim();
+                                        nameToCompare = result.substring(0, result.lastIndexOf("(")).trim();
                                     } else {
                                         nameToCompare = result.substring(0, result.length() - 1).trim();
                                     }
@@ -161,6 +172,16 @@ public class Relation {
                                 }
                             } else {
                                 nameToCompare = name;
+                            }
+
+                            // Loc ra cac dau ngoac - trong truong hop ten k co chu Han
+                            // K tinh truong hop co ngoac o dau VD - (abc) abc...
+                            if (
+                                    nameToCompare.equals(name) &&
+                                    nameToCompare.contains("(") &&
+                                    nameToCompare.lastIndexOf("(") > 0
+                            ) {
+                                nameToCompare = name.substring(0, name.lastIndexOf("(")).trim();
                             }
 
                             // Neu ten de so sanh = ten tu tieu de crawl duoc
@@ -218,83 +239,40 @@ public class Relation {
             s.setRelatedFestival(relatedFesList);
         }
 
-        // Tao lien ket giua nhan vat voi trieu dai lich su
-        for (Era e : listOfEras) {
-            Map<String, Integer> relatedCharList = new HashMap<>();
-            for (Map.Entry<String, Integer> entry : e.getListOfKingsId().entrySet()) {
-                // String kingName = entry.getKey();
-                if (entry.getKey().equals("")) continue;
-                boolean found = false;
-                for (HistoricalFigure c : listOfFigures) {
-                    Set<String> allPossibleNames = c.fetchAllPossibleNames();
-                    for (String name : allPossibleNames) {
-                        // Loc het chu TQ voi dau ngoac ra
-                        String nameToCompare = ""; // Ten nay se dung de tim nhan vat
-                        Pattern p = Pattern.compile("[^\\p{IsHan}]*[\\p{IsHan}]", Pattern.CASE_INSENSITIVE);
-                        Matcher m = p.matcher(name);
-
-                        // Neu ten co chu TQ thi loc khong thi thoi
-                        if (m.find()) {
-                            String result = m.group();
-                            // Truong hop chu Trung Quoc o dau thi tra ve chuoi rong - ""
-                            // Trong truong hop do thi cu de no la ten bthg
-                            if (!result.substring(0, result.length() - 1).equals("")) {
-                                if (result.contains("(")) {
-                                    nameToCompare = result.substring(0, result.indexOf("(")).trim();
-                                } else {
-                                    nameToCompare = result.substring(0, result.length() - 1).trim();
-                                }
-                            } else {
-                                nameToCompare = name;
-                            }
-                        } else {
-                            nameToCompare = name;
-                        }
-
-                        // Neu ten de so sanh = ten tu tieu de crawl duoc
-                        // thi chi viec so sanh giong nhau
-                        // con neu la ten khac cua nhan vat thi kiem tra chua xau
-                        if (nameToCompare.equals(c.getName())) {
-                            if (entry.getKey().equalsIgnoreCase(nameToCompare)) {
-                                found = true;
-                                relatedCharList.put(entry.getKey(), c.getId());
-                                if (c.getEra().getKey().equals("Chưa rõ")) {
-                                    c.setEra(e.getName(), e.getId());
-                                }
-                                break;
-                            }
-                        } else {
-                            if (entry.getKey().length() > nameToCompare.length()) {
-                                p = Pattern.compile(Pattern.quote(nameToCompare), Pattern.CASE_INSENSITIVE);
-                                m = p.matcher(entry.getKey());
-                            } else {
-                                p = Pattern.compile(Pattern.quote(entry.getKey()), Pattern.CASE_INSENSITIVE);
-                                m = p.matcher(nameToCompare);
-                            }
-                            if (m.find()) {
-                                found = true;
-                                relatedCharList.put(entry.getKey(), c.getId());
-                                if (c.getEra().getKey().equals("Chưa rõ")) {
-                                    c.setEra(e.getName(), e.getId());
-                                }
-                                break;
-                            }
-                        }
-                    }
-                    if (found) break;
-                }
-                if (!found) relatedCharList.put(entry.getKey(), null);
-            }
-            e.setListOfKingsId(relatedCharList);
-        }
-
         // Tao lien ket trong chinh nhan vat => era, father, mother, precededBy, succeededBy
         for (HistoricalFigure hf : listOfFigures) {
-            // Lien ket voi cha, me, tien/ke nhiem
+            // Lien ket voi cha, me, tien / ke nhiem
             String fatherName = hf.getFather().getKey();
+            if (
+                    fatherName.contains("(") &&
+                            fatherName.lastIndexOf("(") > 0
+            ) {
+                fatherName = fatherName.substring(0, fatherName.lastIndexOf("(")).trim();
+            }
+
             String motherName = hf.getMother().getKey();
+            if (
+                    motherName.contains("(") &&
+                            motherName.lastIndexOf("(") > 0
+            ) {
+                motherName = motherName.substring(0, motherName.lastIndexOf("(")).trim();
+            }
+
             String precededName = hf.getPrecededBy().getKey();
+            if (
+                    precededName.contains("(") &&
+                            precededName.lastIndexOf("(") > 0
+            ) {
+                precededName = precededName.substring(0, precededName.lastIndexOf("(")).trim();
+            }
+
             String succeededName = hf.getSucceededBy().getKey();
+            if (
+                    succeededName.contains("(") &&
+                            succeededName.lastIndexOf("(") > 0
+            ) {
+                succeededName = succeededName.substring(0, succeededName.lastIndexOf("(")).trim();
+            }
             // Dung de thoat vong lap neu da co duoc tat ca id can thiet
             // 0 - father, 1 - mother, 2 - tien nhiem, 3 - ke nhiem
 //            boolean[] escapeLoop = {false, false, false, false};
@@ -312,7 +290,7 @@ public class Relation {
                         String result = m.group();
                         if (!result.substring(0, result.length() - 1).equals("")) {
                             if (result.contains("(")) {
-                                nameToCompare = result.substring(0, result.indexOf("(")).trim();
+                                nameToCompare = result.substring(0, result.lastIndexOf("(")).trim();
                             } else {
                                 nameToCompare = result.substring(0, result.length() - 1).trim();
                             }
@@ -321,6 +299,16 @@ public class Relation {
                         }
                     } else {
                         nameToCompare = name;
+                    }
+
+                    // Loc ra cac dau ngoac - trong truong hop ten k co chu Han
+                    // K tinh truong hop co ngoac o dau VD - (abc) abc...
+                    if (
+                            nameToCompare.equals(name) &&
+                                    nameToCompare.contains("(") &&
+                                    nameToCompare.lastIndexOf("(") > 0
+                    ) {
+                        nameToCompare = name.substring(0, name.lastIndexOf("(")).trim();
                     }
 
                     // Neu ten de so sanh = ten tu tieu de crawl duoc
@@ -483,7 +471,7 @@ public class Relation {
 
                         if (m.find()) {
                             String result = m.group(0);
-                            if (result.contains("-")) {
+                            if (result.contains("-") || result.contains("–")) {
                                 // Neu co dau - thi chac chan no se o cuoi xau boi gi regex no the :v
                                 // Bo qua ca chu nha
                                 result = result.substring(3, result.length() - 1);
@@ -495,15 +483,144 @@ public class Relation {
                         eraNameToSearch = e.getName();
                     }
 
-                    p = Pattern.compile(Pattern.quote(eraNameToSearch), Pattern.CASE_INSENSITIVE);
-                    m = p.matcher(hf.getOverview());
+                    // Trong truong hop ten trieu dai k chua "nha"
+                    // Va chua dau - / –
+                    if (eraNameToSearch.equals(e.getName())) {
+                        boolean endLoop = false; // Dung de thoat vong lap lon
+                        String[] splitNames = {eraNameToSearch};
+                        if (eraNameToSearch.contains("–")) {
+                            splitNames = eraNameToSearch.split("–");
+                        } else if (eraNameToSearch.contains("-")) {
+                            splitNames = eraNameToSearch.split("-");
+                        }
+                        // Dung de xu li cac truong hop Dang Trong -/– Chua Nguyen,...
+                        for (String splitName : splitNames) {
+                            p = Pattern.compile(Pattern.quote(splitName.trim()), Pattern.CASE_INSENSITIVE);
+                            m = p.matcher(hf.getOverview());
 
-                    if (m.find()) {
-                        hf.setEra(e.getName(), e.getId());
-                        break;
+                            if (m.find()) {
+                                endLoop = true;
+                                hf.setEra(e.getName(), e.getId());
+                                break;
+                            }
+                        }
+                        if (endLoop) break;
+                    } else {
+                        p = Pattern.compile(Pattern.quote(eraNameToSearch), Pattern.CASE_INSENSITIVE);
+                        m = p.matcher(hf.getOverview());
+
+                        if (m.find()) {
+                            hf.setEra(e.getName(), e.getId());
+                            break;
+                        }
                     }
                 }
             }
+        }
+
+        // Tao lien ket giua nhan vat voi trieu dai lich su
+        // Sau khi da gan trieu dai duoc cho da so nhan vat
+        for (Era e : listOfEras) {
+            Map<String, Integer> relatedCharList = new HashMap<>();
+            for (Map.Entry<String, Integer> entry : e.getListOfKingsId().entrySet()) {
+                // String kingName = entry.getKey();
+                if (entry.getKey().equals("")) continue;
+                boolean found = false;
+                for (HistoricalFigure c : listOfFigures) {
+                    // Kiem tra trieu dai => neu trieu dai cua nhan vat tim thay ten
+                    // Khac trieu dai dang xet => sai
+                    if (
+                            !c.getEra().getKey().equals("Chưa rõ") &&
+                                    !c.getEra().getKey().equals(e.getName())
+                    ) {
+                        continue;
+                    }
+
+                    // Dung de loai bo truong hop la hoang hau,...
+                    // Vi list nvat lien quan la vua
+                    boolean isQueen = false;
+
+                    Set<String> allPossibleNames = c.fetchAllPossibleNames();
+                    for (String name : allPossibleNames) {
+                        // Nhan vat dang xet la hoang hau
+                        if (name.toLowerCase().contains("hoàng hậu")) {
+                            isQueen = true;
+                            break;
+                        }
+                    }
+                    // Neu la hoang hau thi xet th khac
+                    if (isQueen) continue;
+
+                    for (String name : allPossibleNames) {
+                        // Loc het chu TQ voi dau ngoac ra
+                        String nameToCompare = ""; // Ten nay se dung de tim nhan vat
+                        Pattern p = Pattern.compile("[^\\p{IsHan}]*[\\p{IsHan}]", Pattern.CASE_INSENSITIVE);
+                        Matcher m = p.matcher(name);
+
+                        // Neu ten co chu TQ thi loc khong thi thoi
+                        if (m.find()) {
+                            String result = m.group();
+                            // Truong hop chu Trung Quoc o dau thi tra ve chuoi rong - ""
+                            // Trong truong hop do thi cu de no la ten bthg
+                            if (!result.substring(0, result.length() - 1).equals("")) {
+                                if (result.contains("(")) {
+                                    nameToCompare = result.substring(0, result.lastIndexOf("(")).trim();
+                                } else {
+                                    nameToCompare = result.substring(0, result.length() - 1).trim();
+                                }
+                            } else {
+                                nameToCompare = name;
+                            }
+                        } else {
+                            nameToCompare = name;
+                        }
+
+                        // Loc ra cac dau ngoac - trong truong hop ten k co chu Han
+                        // K tinh truong hop co ngoac o dau VD - (abc) abc...
+                        if (
+                                nameToCompare.equals(name) &&
+                                        nameToCompare.contains("(") &&
+                                        nameToCompare.lastIndexOf("(") > 0
+                        ) {
+                            nameToCompare = name.substring(0, name.lastIndexOf("(")).trim();
+                        }
+
+                        // Neu ten de so sanh = ten tu tieu de crawl duoc
+                        // thi chi viec so sanh giong nhau
+                        // con neu la ten khac cua nhan vat thi kiem tra chua xau
+                        if (nameToCompare.equals(c.getName())) {
+                            if (entry.getKey().equalsIgnoreCase(nameToCompare)) {
+                                found = true;
+                                relatedCharList.put(entry.getKey(), c.getId());
+                                if (c.getEra().getKey().equals("Chưa rõ")) {
+                                    c.setEra(e.getName(), e.getId());
+                                }
+                                break;
+                            }
+                        } else {
+                            if (entry.getKey().length() > nameToCompare.length()) {
+                                p = Pattern.compile(Pattern.quote(nameToCompare), Pattern.CASE_INSENSITIVE);
+                                m = p.matcher(entry.getKey());
+                            } else {
+                                p = Pattern.compile(Pattern.quote(entry.getKey()), Pattern.CASE_INSENSITIVE);
+                                m = p.matcher(nameToCompare);
+                            }
+                            if (m.find()) {
+                                found = true;
+                                relatedCharList.put(entry.getKey(), c.getId());
+                                if (c.getEra().getKey().equals("Chưa rõ")) {
+                                    c.setEra(e.getName(), e.getId());
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    // Neu tim thay thi thoat khoi vong lap
+                    if (found) break;
+                }
+                if (!found) relatedCharList.put(entry.getKey(), null);
+            }
+            e.setListOfKingsId(relatedCharList);
         }
 
         // Tao lien ket su kien voi nhan vat
@@ -525,7 +642,7 @@ public class Relation {
                             String result = m.group();
                             if (!result.substring(0, result.length() - 1).equals("")) {
                                 if (result.contains("(")) {
-                                    nameToCompare = result.substring(0, result.indexOf("(")).trim();
+                                    nameToCompare = result.substring(0, result.lastIndexOf("(")).trim();
                                 } else {
                                     nameToCompare = result.substring(0, result.length() - 1).trim();
                                 }
@@ -534,6 +651,16 @@ public class Relation {
                             }
                         } else {
                             nameToCompare = name;
+                        }
+
+                        // Loc ra cac dau ngoac - trong truong hop ten k co chu Han
+                        // K tinh truong hop co ngoac o dau VD - (abc) abc...
+                        if (
+                                nameToCompare.equals(name) &&
+                                        nameToCompare.contains("(") &&
+                                        nameToCompare.lastIndexOf("(") > 0
+                        ) {
+                            nameToCompare = name.substring(0, name.lastIndexOf("(")).trim();
                         }
 
                         // Neu ten de so sanh = ten tu tieu de crawl duoc
