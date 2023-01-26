@@ -3,7 +3,7 @@ package history.historicalfigure;
 import history.HistoricalEntity;
 import history.relation.Pair;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Đây là lớp cho loại thực thể Nhân vật lịch sử
@@ -13,7 +13,7 @@ import java.util.ArrayList;
  *      died: ngày mất và nơi mất
  *      overview: mô tả ngắn gọn
  *      workTime: thời gian tại chức
- *      era: sống thời thời đại
+ *      era: thời đại sống
  *      father: bố
  *      mother: mẹ
  *      precededBy: tiền nhiệm
@@ -119,18 +119,18 @@ public class HistoricalFigure extends HistoricalEntity {
     }
 
     public HistoricalFigure(
-        String name,
-        String realName,
-        ArrayList<String> alterName,
-        String birth,
-        String lost,
-        String position,
-        String workTime,
-        String era,
-        String father,
-        String mother,
-        String preceded,
-        String succeeded
+            String name,
+            String realName,
+            List<String> alterName,
+            String birth,
+            String lost,
+            String position,
+            String workTime,
+            String era,
+            String father,
+            String mother,
+            String preceded,
+            String succeeded
     ) {
         super(name, alterName);
         this.id = HistoricalFigures.collection.getSequenceId();

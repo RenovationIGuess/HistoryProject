@@ -21,6 +21,8 @@ public class HistoricalFigures {
      */
     public static void loadJSON() {
         try {
+            System.out.println("Loading all JSON files from " + JSON.PREFIX_URL + DIR_NAME + "...");
+
             Stream<Path> paths = Files.list(Paths.get(JSON.PREFIX_URL + DIR_NAME));
 
             List<HistoricalFigure> figures = paths.map(path -> {

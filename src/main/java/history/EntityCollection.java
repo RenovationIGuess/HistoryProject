@@ -4,6 +4,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class EntityCollection <T extends HistoricalEntity> {
@@ -105,5 +107,16 @@ public class EntityCollection <T extends HistoricalEntity> {
         for (T element : data){
             element.save();
         }
+    }
+
+    public void sortById(){
+        Comparator<T> comparator = new Comparator<T>() {
+            @Override
+            public int compare(T o1, T o2) {
+                return Integer.compare(o1.getId(), o2.getId());
+            }
+        };
+
+        Collections.sort(data, comparator);
     }
 }
