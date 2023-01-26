@@ -8,7 +8,7 @@ public abstract class HistoricalEntity {
 
     protected int id;
     protected String name;
-    protected List<String> aliases = new ArrayList<>();
+    protected Set<String> aliases = new HashSet<>();
 
     public int getId() {
         return id;
@@ -22,12 +22,12 @@ public abstract class HistoricalEntity {
         this.name = name;
     }
 
-    public List<String> getAliases() {
+    public Set<String> getAliases() {
         return aliases;
     }
 
     public void setAliases(String... aliases) {
-        this.aliases = List.of(aliases);
+        this.aliases = new HashSet<>(List.of(aliases));
     }
 
     /**
@@ -143,10 +143,10 @@ public abstract class HistoricalEntity {
     }
 
     public HistoricalEntity(
-        String name,
-        ArrayList<String> alterName
+            String name,
+            List<String> alterName
     ) {
         this.name = name;
-        this.aliases = alterName;
+        this.aliases.addAll(alterName);
     }
 }

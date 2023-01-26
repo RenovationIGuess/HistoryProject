@@ -40,7 +40,7 @@ public class SidebarController implements Initializable {
 
     @FXML
     void switchToHistoricalFigures(ActionEvent event) throws IOException {
-        switchByGetFxml("/application/fxml/TrangTimKiemNhanVat.fxml", event);
+        switchByGetFxml("/application/fxml/FiguresScreen.fxml", event);
     }
 
     @FXML
