@@ -67,89 +67,19 @@ public class Relation {
                 // phan le hoi thi lay id cua no
                 if (entry.getKey().equals("")) continue;
                 boolean found = false;
+
+                // Tim truoc = ten that de tranh trung lap
+                // Khi tim = ten khac
                 for (HistoricalFigure c : listOfFigures) {
-                    Set<String> allPossibleNames = c.fetchAllPossibleNames();
-                    for (String name : allPossibleNames) {
-                        // Loc het chu TQ voi dau ngoac ra
-                        String nameToCompare = ""; // Ten nay se dung de tim nhan vat
-                        Pattern p = Pattern.compile("[^\\p{IsHan}]*[\\p{IsHan}]", Pattern.CASE_INSENSITIVE);
-                        Matcher m = p.matcher(name);
-
-                        // Neu ten co chu TQ thi loc khong thi thoi
-                        // Neu gap th chu TQ o dau tien thi kiem tra xem xau
-                        // voi do dai xau trc - 1 co == "" khong => Muc dich bo ky tu TQ
-                        // Neu co thi cho no = ten cu
-                        if (m.find()) {
-                            String result = m.group();
-                            if (!result.substring(0, result.length() - 1).equals("")) {
-                                // Loc ra cac dau ngoac hoac chu Han neu co
-                                if (result.contains("(")) {
-                                    nameToCompare = result.substring(0, result.lastIndexOf("(")).trim();
-                                } else {
-                                    nameToCompare = result.substring(0, result.length() - 1).trim();
-                                }
-                            } else {
-                                nameToCompare = name;
-                            }
-                        } else {
-                            nameToCompare = name;
-                        }
-
-                        // Loc ra cac dau ngoac - trong truong hop ten k co chu Han
-                        // K tinh truong hop co ngoac o dau VD - (abc) abc...
-                        if (
-                            nameToCompare.equals(name) &&
-                            nameToCompare.contains("(") &&
-                            nameToCompare.lastIndexOf("(") > 0
-                        ) {
-                            nameToCompare = name.substring(0, name.lastIndexOf("(")).trim();
-                        }
-
-                        // Neu ten de so sanh = ten tu tieu de crawl duoc
-                        // thi chi viec so sanh giong nhau
-                        // con neu la ten khac cua nhan vat thi kiem tra chua xau
-                        if (nameToCompare.equals(c.getName())) {
-                            if (entry.getKey().equalsIgnoreCase(nameToCompare)) {
-                                found = true;
-                                relatedCharList.put(entry.getKey(), c.getId());
-                                break;
-                            }
-                        } else {
-                            if (entry.getKey().length() > nameToCompare.length()) {
-                                p = Pattern.compile(Pattern.quote(nameToCompare), Pattern.CASE_INSENSITIVE);
-                                m = p.matcher(entry.getKey());
-                            } else {
-                                p = Pattern.compile(Pattern.quote(entry.getKey()), Pattern.CASE_INSENSITIVE);
-                                m = p.matcher(nameToCompare);
-                            }
-                            if (m.find()) {
-                                found = true;
-                                relatedCharList.put(entry.getKey(), c.getId());
-                                break;
-                            }
-                        }
+                    if (c.getName().equalsIgnoreCase(entry.getKey())) {
+                        found = true;
+                        relatedCharList.put(entry.getKey(), c.getId());
+                        break;
                     }
-                    if (found) break;
                 }
-                if (!found) relatedCharList.put(entry.getKey(), null);
-            }
-            f.setRelatedFigures(relatedCharList);
-        }
 
-        // Tao lien ket giua nhan vat, le hoi voi di tich
-        for (HistoricSite s : listOfSites) {
-            // Luu nhan vat voi le hoi lien quan de dung setter
-            Map<String, Integer> relatedCharList = new HashMap<>();
-            Map<String, Integer> relatedFesList = new HashMap<>();
-
-            if (s.getRelatedFiguresId().size() > 0) {
-                for (Map.Entry<String, Integer> entry : s.getRelatedFiguresId().entrySet()) {
-                    // Duyet qua cac char
-                    // Neu char nao co ten == ten nhan vat trong relate char
-                    // phan site thi lay id cua no
-
-                    if (entry.getKey().equals("")) continue;
-                    boolean found = false;
+                // Neu ten that k co thi tim theo cac ten khac
+                if (!found) {
                     for (HistoricalFigure c : listOfFigures) {
                         Set<String> allPossibleNames = c.fetchAllPossibleNames();
                         for (String name : allPossibleNames) {
@@ -159,9 +89,13 @@ public class Relation {
                             Matcher m = p.matcher(name);
 
                             // Neu ten co chu TQ thi loc khong thi thoi
+                            // Neu gap th chu TQ o dau tien thi kiem tra xem xau
+                            // voi do dai xau trc - 1 co == "" khong => Muc dich bo ky tu TQ
+                            // Neu co thi cho no = ten cu
                             if (m.find()) {
                                 String result = m.group();
                                 if (!result.substring(0, result.length() - 1).equals("")) {
+                                    // Loc ra cac dau ngoac hoac chu Han neu co
                                     if (result.contains("(")) {
                                         nameToCompare = result.substring(0, result.lastIndexOf("(")).trim();
                                     } else {
@@ -178,8 +112,8 @@ public class Relation {
                             // K tinh truong hop co ngoac o dau VD - (abc) abc...
                             if (
                                     nameToCompare.equals(name) &&
-                                    nameToCompare.contains("(") &&
-                                    nameToCompare.lastIndexOf("(") > 0
+                                            nameToCompare.contains("(") &&
+                                            nameToCompare.lastIndexOf("(") > 0
                             ) {
                                 nameToCompare = name.substring(0, name.lastIndexOf("(")).trim();
                             }
@@ -211,6 +145,97 @@ public class Relation {
                         if (found) break;
                     }
                     if (!found) relatedCharList.put(entry.getKey(), null);
+                }
+            }
+            f.setRelatedFigures(relatedCharList);
+        }
+
+        // Tao lien ket giua nhan vat, le hoi voi di tich
+        for (HistoricSite s : listOfSites) {
+            // Luu nhan vat voi le hoi lien quan de dung setter
+            Map<String, Integer> relatedCharList = new HashMap<>();
+            Map<String, Integer> relatedFesList = new HashMap<>();
+
+            if (s.getRelatedFiguresId().size() > 0) {
+                for (Map.Entry<String, Integer> entry : s.getRelatedFiguresId().entrySet()) {
+                    // Duyet qua cac char
+                    // Neu char nao co ten == ten nhan vat trong relate char
+                    // phan site thi lay id cua no
+
+                    if (entry.getKey().equals("")) continue;
+                    boolean found = false;
+
+                    for (HistoricalFigure c : listOfFigures) {
+                        if (c.getName().equalsIgnoreCase(entry.getKey())) {
+                            found = true;
+                            relatedCharList.put(entry.getKey(), c.getId());
+                            break;
+                        }
+                    }
+
+                    if (!found) {
+                        for (HistoricalFigure c : listOfFigures) {
+                            Set<String> allPossibleNames = c.fetchAllPossibleNames();
+                            for (String name : allPossibleNames) {
+                                // Loc het chu TQ voi dau ngoac ra
+                                String nameToCompare = ""; // Ten nay se dung de tim nhan vat
+                                Pattern p = Pattern.compile("[^\\p{IsHan}]*[\\p{IsHan}]", Pattern.CASE_INSENSITIVE);
+                                Matcher m = p.matcher(name);
+
+                                // Neu ten co chu TQ thi loc khong thi thoi
+                                if (m.find()) {
+                                    String result = m.group();
+                                    if (!result.substring(0, result.length() - 1).equals("")) {
+                                        if (result.contains("(")) {
+                                            nameToCompare = result.substring(0, result.lastIndexOf("(")).trim();
+                                        } else {
+                                            nameToCompare = result.substring(0, result.length() - 1).trim();
+                                        }
+                                    } else {
+                                        nameToCompare = name;
+                                    }
+                                } else {
+                                    nameToCompare = name;
+                                }
+
+                                // Loc ra cac dau ngoac - trong truong hop ten k co chu Han
+                                // K tinh truong hop co ngoac o dau VD - (abc) abc...
+                                if (
+                                        nameToCompare.equals(name) &&
+                                                nameToCompare.contains("(") &&
+                                                nameToCompare.lastIndexOf("(") > 0
+                                ) {
+                                    nameToCompare = name.substring(0, name.lastIndexOf("(")).trim();
+                                }
+
+                                // Neu ten de so sanh = ten tu tieu de crawl duoc
+                                // thi chi viec so sanh giong nhau
+                                // con neu la ten khac cua nhan vat thi kiem tra chua xau
+                                if (nameToCompare.equals(c.getName())) {
+                                    if (entry.getKey().equalsIgnoreCase(nameToCompare)) {
+                                        found = true;
+                                        relatedCharList.put(entry.getKey(), c.getId());
+                                        break;
+                                    }
+                                } else {
+                                    if (entry.getKey().length() > nameToCompare.length()) {
+                                        p = Pattern.compile(Pattern.quote(nameToCompare), Pattern.CASE_INSENSITIVE);
+                                        m = p.matcher(entry.getKey());
+                                    } else {
+                                        p = Pattern.compile(Pattern.quote(entry.getKey()), Pattern.CASE_INSENSITIVE);
+                                        m = p.matcher(nameToCompare);
+                                    }
+                                    if (m.find()) {
+                                        found = true;
+                                        relatedCharList.put(entry.getKey(), c.getId());
+                                        break;
+                                    }
+                                }
+                            }
+                            if (found) break;
+                        }
+                        if (!found) relatedCharList.put(entry.getKey(), null);
+                    }
                 }
                 s.setRelatedFigures(relatedCharList);
             }
@@ -276,6 +301,29 @@ public class Relation {
             // Dung de thoat vong lap neu da co duoc tat ca id can thiet
             // 0 - father, 1 - mother, 2 - tien nhiem, 3 - ke nhiem
 //            boolean[] escapeLoop = {false, false, false, false};
+
+            for (HistoricalFigure c : listOfFigures) {
+                if (hf.getFather().getValue() == null) {
+                    if (c.getName().equalsIgnoreCase(fatherName)) {
+                        hf.setFather(fatherName, c.getId());
+                    }
+                }
+                if (hf.getMother().getValue() == null) {
+                    if (c.getName().equalsIgnoreCase(motherName)) {
+                        hf.setMother(motherName, c.getId());
+                    }
+                }
+                if (hf.getPrecededBy().getValue() == null) {
+                    if (c.getName().equalsIgnoreCase(precededName)) {
+                        hf.setPrecededBy(precededName, c.getId());
+                    }
+                }
+                if (hf.getSucceededBy().getValue() == null) {
+                    if (c.getName().equalsIgnoreCase(succeededName)) {
+                        hf.setSucceededBy(succeededName, c.getId());
+                    }
+                }
+            }
 
             for (HistoricalFigure c : listOfFigures) {
                 Set<String> allPossibleNames = c.fetchAllPossibleNames();
@@ -395,66 +443,83 @@ public class Relation {
             // Lien ket trieu dai
             // Chi xet nhung nhan vat co trieu dai co ten nhung chua co id
             String eraName = hf.getEra().getKey();
-            if (!eraName.equals("Chưa rõ") && hf.getEra().getValue() == null) {
-                if (eraName.toLowerCase().contains("nhà")) {
-                    // new => ten lowercase
-                    String lowerCaseEraName = eraName.toLowerCase();
-                    int startIndex = lowerCaseEraName.indexOf("nhà");
-                    String shortenEraName = eraName.substring(startIndex + 3);
-
+            if (!eraName.equals("Chưa rõ")) {
+                if (hf.getEra().getValue() == null) {
+                    // Tim qua trong tat ca trieu dai truoc xem co trieu dai
+                    // nao giong ten y het khong?
+                    // Neu co thi lay khong thi loc xau
+                    boolean isValidName = false;
                     for (Era e : listOfEras) {
-                        if (e.getName().toLowerCase().contains("nhà")) {
-                            String lowerCaseCurEraName = e.getName().toLowerCase();
-                            startIndex = lowerCaseCurEraName.indexOf("nhà");
-                            String shortenCurEraName = e.getName().substring(startIndex + 3);
-
-                            if (shortenCurEraName.length() > shortenEraName.length()) {
-                                Pattern p = Pattern.compile(Pattern.quote(shortenEraName), Pattern.CASE_INSENSITIVE);
-                                Matcher m = p.matcher(shortenCurEraName);
-
-                                // Neu tim trong trieu dai ma khong thay
-                                // Thi thu tim trong nghe nghiep - position cua may o do :v
-                                if (m.find()) {
-                                    // Neu ten 2 trieu dai k giong nhau thi cho vao alias
-                                    e.addAlias(eraName);
-                                    hf.setEra(e.getName(), e.getId());
-                                    break;
-                                }
-                            } else {
-                                Pattern p = Pattern.compile(Pattern.quote(shortenCurEraName), Pattern.CASE_INSENSITIVE);
-                                Matcher m = p.matcher(shortenEraName);
-
-                                if (m.find()) {
-                                    if (!eraName.equalsIgnoreCase(e.getName())) {
-                                        e.addAlias(eraName);
-                                    }
-                                    hf.setEra(e.getName(), e.getId());
-                                    break;
-                                }
-                            }
+                        if (e.getName().equalsIgnoreCase(eraName)) {
+                            isValidName = true;
+                            hf.setEra(eraName, e.getId());
+                            break;
                         }
                     }
-                } else {
-                    for (Era e : listOfEras) {
-                        if (eraName.length() > e.getName().length()) {
-                            Pattern p = Pattern.compile(Pattern.quote(e.getName()), Pattern.CASE_INSENSITIVE);
-                            Matcher m = p.matcher(eraName);
 
-                            if (m.find()) {
-                                e.addAlias(eraName);
-                                hf.setEra(e.getName(), e.getId());
-                                break;
+                    // Neu tu mang tren ma khong tim thay ten trung nhau
+                    if (!isValidName) {
+                        if (eraName.toLowerCase().contains("nhà")) {
+                            // new => ten lowercase
+                            String lowerCaseEraName = eraName.toLowerCase();
+                            int startIndex = lowerCaseEraName.indexOf("nhà");
+                            String shortenEraName = eraName.substring(startIndex + 3);
+
+                            for (Era e : listOfEras) {
+                                if (e.getName().toLowerCase().contains("nhà")) {
+                                    String lowerCaseCurEraName = e.getName().toLowerCase();
+                                    startIndex = lowerCaseCurEraName.indexOf("nhà");
+                                    String shortenCurEraName = e.getName().substring(startIndex + 3);
+
+                                    if (shortenCurEraName.length() > shortenEraName.length()) {
+                                        Pattern p = Pattern.compile(Pattern.quote(shortenEraName), Pattern.CASE_INSENSITIVE);
+                                        Matcher m = p.matcher(shortenCurEraName);
+
+                                        // Neu tim trong trieu dai ma khong thay
+                                        // Thi thu tim trong nghe nghiep - position cua may o do :v
+                                        if (m.find()) {
+                                            // Neu ten 2 trieu dai k giong nhau thi cho vao alias
+                                            e.addAlias(eraName);
+                                            hf.setEra(e.getName(), e.getId());
+                                            break;
+                                        }
+                                    } else {
+                                        Pattern p = Pattern.compile(Pattern.quote(shortenCurEraName), Pattern.CASE_INSENSITIVE);
+                                        Matcher m = p.matcher(shortenEraName);
+
+                                        if (m.find()) {
+                                            if (!eraName.equalsIgnoreCase(e.getName())) {
+                                                e.addAlias(eraName);
+                                            }
+                                            hf.setEra(e.getName(), e.getId());
+                                            break;
+                                        }
+                                    }
+                                }
                             }
                         } else {
-                            Pattern p = Pattern.compile(Pattern.quote(eraName), Pattern.CASE_INSENSITIVE);
-                            Matcher m = p.matcher(e.getName());
+                            for (Era e : listOfEras) {
+                                if (eraName.length() > e.getName().length()) {
+                                    Pattern p = Pattern.compile(Pattern.quote(e.getName()), Pattern.CASE_INSENSITIVE);
+                                    Matcher m = p.matcher(eraName);
 
-                            if (m.find()) {
-                                if (!eraName.equalsIgnoreCase(e.getName())) {
-                                    e.addAlias(eraName);
+                                    if (m.find()) {
+                                        e.addAlias(eraName);
+                                        hf.setEra(e.getName(), e.getId());
+                                        break;
+                                    }
+                                } else {
+                                    Pattern p = Pattern.compile(Pattern.quote(eraName), Pattern.CASE_INSENSITIVE);
+                                    Matcher m = p.matcher(e.getName());
+
+                                    if (m.find()) {
+                                        if (!eraName.equalsIgnoreCase(e.getName())) {
+                                            e.addAlias(eraName);
+                                        }
+                                        hf.setEra(e.getName(), e.getId());
+                                        break;
+                                    }
                                 }
-                                hf.setEra(e.getName(), e.getId());
-                                break;
                             }
                         }
                     }
@@ -465,6 +530,7 @@ public class Relation {
                     String eraNameToSearch = "";
                     Pattern p;
                     Matcher m;
+
                     if (e.getName().contains("nhà")) {
                         p = Pattern.compile("(nhà)[^-–]*([-–]|$)", Pattern.CASE_INSENSITIVE);
                         m = p.matcher(e.getName());
@@ -529,11 +595,31 @@ public class Relation {
                 for (HistoricalFigure c : listOfFigures) {
                     // Kiem tra trieu dai => neu trieu dai cua nhan vat tim thay ten
                     // Khac trieu dai dang xet => sai
-                    if (
-                            !c.getEra().getKey().equals("Chưa rõ") &&
-                                    !c.getEra().getKey().equals(e.getName())
-                    ) {
-                        continue;
+                    if (!c.getEra().getKey().equals("Chưa rõ")) {
+                        // Neu ten trieu dai khong giong voi ten trieu dai dang xet
+                        // Thu kiem tra xem ten cua no co chu in hoa la gi
+                        if (!c.getEra().getKey().equalsIgnoreCase(e.getName())) {
+                            boolean foundEra = false;
+                            String[] splitNames = c.getEra().getKey().split(" ");
+                            // Chi can tim thay chu (in hoa ky tu dau tien) lien quan la tinh tien :v
+                            // K tinh truong hop chu nha,...
+                            for (String splitName : splitNames) {
+                                if (
+                                    Character.isUpperCase(splitName.charAt(0)) &&
+                                            !splitName.equalsIgnoreCase("nhà")
+                                ) {
+                                    Pattern p = Pattern.compile(Pattern.quote(splitName), Pattern.CASE_INSENSITIVE);
+                                    Matcher m = p.matcher(e.getName());
+
+                                    if (m.find()) {
+                                        foundEra = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            // Khong dung trieu dai
+                            if (!foundEra) continue;
+                        }
                     }
 
                     // Dung de loai bo truong hop la hoang hau,...
@@ -629,67 +715,78 @@ public class Relation {
             for (Map.Entry<String, Integer> entry : e.getRelatedFiguresId().entrySet()) {
                 if (entry.getKey().equals("")) continue;
                 boolean found = false;
-                for (HistoricalFigure c : listOfFigures) {
-                    Set<String> allPossibleNames = c.fetchAllPossibleNames();
-                    for (String name : allPossibleNames) {
-                        // Loc het chu TQ voi dau ngoac ra
-                        String nameToCompare = ""; // Ten nay se dung de tim nhan vat
-                        Pattern p = Pattern.compile("[^\\p{IsHan}]*[\\p{IsHan}]", Pattern.CASE_INSENSITIVE);
-                        Matcher m = p.matcher(name);
 
-                        // Neu ten co chu TQ thi loc khong thi thoi
-                        if (m.find()) {
-                            String result = m.group();
-                            if (!result.substring(0, result.length() - 1).equals("")) {
-                                if (result.contains("(")) {
-                                    nameToCompare = result.substring(0, result.lastIndexOf("(")).trim();
+                for (HistoricalFigure c : listOfFigures) {
+                    if (c.getName().equalsIgnoreCase(entry.getKey())) {
+                        found = true;
+                        relatedCharList.put(entry.getKey(), c.getId());
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    for (HistoricalFigure c : listOfFigures) {
+                        Set<String> allPossibleNames = c.fetchAllPossibleNames();
+                        for (String name : allPossibleNames) {
+                            // Loc het chu TQ voi dau ngoac ra
+                            String nameToCompare = ""; // Ten nay se dung de tim nhan vat
+                            Pattern p = Pattern.compile("[^\\p{IsHan}]*[\\p{IsHan}]", Pattern.CASE_INSENSITIVE);
+                            Matcher m = p.matcher(name);
+
+                            // Neu ten co chu TQ thi loc khong thi thoi
+                            if (m.find()) {
+                                String result = m.group();
+                                if (!result.substring(0, result.length() - 1).equals("")) {
+                                    if (result.contains("(")) {
+                                        nameToCompare = result.substring(0, result.lastIndexOf("(")).trim();
+                                    } else {
+                                        nameToCompare = result.substring(0, result.length() - 1).trim();
+                                    }
                                 } else {
-                                    nameToCompare = result.substring(0, result.length() - 1).trim();
+                                    nameToCompare = name;
                                 }
                             } else {
                                 nameToCompare = name;
                             }
-                        } else {
-                            nameToCompare = name;
-                        }
 
-                        // Loc ra cac dau ngoac - trong truong hop ten k co chu Han
-                        // K tinh truong hop co ngoac o dau VD - (abc) abc...
-                        if (
-                                nameToCompare.equals(name) &&
-                                        nameToCompare.contains("(") &&
-                                        nameToCompare.lastIndexOf("(") > 0
-                        ) {
-                            nameToCompare = name.substring(0, name.lastIndexOf("(")).trim();
-                        }
-
-                        // Neu ten de so sanh = ten tu tieu de crawl duoc
-                        // thi chi viec so sanh giong nhau
-                        // con neu la ten khac cua nhan vat thi kiem tra chua xau
-                        if (nameToCompare.equals(c.getName())) {
-                            if (entry.getKey().equalsIgnoreCase(nameToCompare)) {
-                                found = true;
-                                relatedCharList.put(entry.getKey(), c.getId());
-                                break;
+                            // Loc ra cac dau ngoac - trong truong hop ten k co chu Han
+                            // K tinh truong hop co ngoac o dau VD - (abc) abc...
+                            if (
+                                    nameToCompare.equals(name) &&
+                                            nameToCompare.contains("(") &&
+                                            nameToCompare.lastIndexOf("(") > 0
+                            ) {
+                                nameToCompare = name.substring(0, name.lastIndexOf("(")).trim();
                             }
-                        } else {
-                            if (entry.getKey().length() > nameToCompare.length()) {
-                                p = Pattern.compile(Pattern.quote(nameToCompare), Pattern.CASE_INSENSITIVE);
-                                m = p.matcher(entry.getKey());
+
+                            // Neu ten de so sanh = ten tu tieu de crawl duoc
+                            // thi chi viec so sanh giong nhau
+                            // con neu la ten khac cua nhan vat thi kiem tra chua xau
+                            if (nameToCompare.equals(c.getName())) {
+                                if (entry.getKey().equalsIgnoreCase(nameToCompare)) {
+                                    found = true;
+                                    relatedCharList.put(entry.getKey(), c.getId());
+                                    break;
+                                }
                             } else {
-                                p = Pattern.compile(Pattern.quote(entry.getKey()), Pattern.CASE_INSENSITIVE);
-                                m = p.matcher(nameToCompare);
-                            }
-                            if (m.find()) {
-                                found = true;
-                                relatedCharList.put(entry.getKey(), c.getId());
-                                break;
+                                if (entry.getKey().length() > nameToCompare.length()) {
+                                    p = Pattern.compile(Pattern.quote(nameToCompare), Pattern.CASE_INSENSITIVE);
+                                    m = p.matcher(entry.getKey());
+                                } else {
+                                    p = Pattern.compile(Pattern.quote(entry.getKey()), Pattern.CASE_INSENSITIVE);
+                                    m = p.matcher(nameToCompare);
+                                }
+                                if (m.find()) {
+                                    found = true;
+                                    relatedCharList.put(entry.getKey(), c.getId());
+                                    break;
+                                }
                             }
                         }
+                        if (found) break;
                     }
-                    if (found) break;
+                    if (!found) relatedCharList.put(entry.getKey(), null);
                 }
-                if (!found) relatedCharList.put(entry.getKey(), null);
             }
             e.setRelatedFigures(relatedCharList);
         }
