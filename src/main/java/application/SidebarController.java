@@ -25,7 +25,7 @@ public class SidebarController implements Initializable {
      * @param event sự kiện kích hoạt
      */
     public void switchByGetFxml(String path, ActionEvent event) throws IOException {
-        root = FXMLLoader.load(getClass().getResource(path));
+        root = FXMLLoader.load(App.convertToURL(path));
 
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);

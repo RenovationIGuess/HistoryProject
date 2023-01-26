@@ -40,6 +40,14 @@ public class EntityCollection <T extends HistoricalEntity> {
     }
 
     /**
+     * Trả về true nếu tập hợp rỗng
+     * @return boolean
+     */
+    public boolean isEmpty(){
+        return data.isEmpty();
+    }
+
+    /**
      * Kiểm tra đối tượng đã có trong tập hợp hay chưa
      * @param entity Đối tượng lịch sử cần kiểm tra
      * @return true nếu tập hợp đã chứa đối tượng
@@ -109,6 +117,9 @@ public class EntityCollection <T extends HistoricalEntity> {
         }
     }
 
+    /**
+     * Sắp xếp lại tập hợp theo thứ tự tăng dần id
+     */
     public void sortById(){
         Comparator<T> comparator = new Comparator<T>() {
             @Override
@@ -118,5 +129,13 @@ public class EntityCollection <T extends HistoricalEntity> {
         };
 
         Collections.sort(data, comparator);
+    }
+
+    public ObservableList<HistoricalEntity> parseCollection(){
+        ObservableList<HistoricalEntity> result = FXCollections.observableArrayList();
+        data.forEach(entity -> {
+            result.add(entity);
+        });
+        return result;
     }
 }
