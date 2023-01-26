@@ -435,9 +435,10 @@ public class crawlCharacter {
                         // The b dau tien la ten cua nhan vat?
                         Element firstBTag = firstParagraph.selectFirst("b");
                         if (firstBTag != null) {
-                            // if (charName.equals("Chưa rõ"))
-                            // Uu tien lay ten tu paragraph
-                            charName = firstBTag.text();
+                            if (charName.equals("Chưa rõ")) charName = firstBTag.text();
+                            // Neu ten lay dc tu tieu de roi thi thoi cho vao alter
+                            // cho do thieu truong hop ten
+                            else alterName.add(firstBTag.text());
                         }
 
                         // Tim ngay sinh / hoac thoi gian lam viec
