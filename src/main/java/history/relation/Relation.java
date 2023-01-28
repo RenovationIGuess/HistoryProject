@@ -27,36 +27,50 @@ public class Relation {
         createRelation();
     }
 
-    public void crawlData() {
-        new crawlFestival();
-        new crawlHistorySite();
-        new crawlEvent();
-        new crawlTimeStamp();
-        new crawlCharacter();
+    public static void crawlData() {
+        crawlFestival.crawlData();
+        crawlHistorySite.crawlData();
+        crawlEvent.crawlData();
+        crawlTimeStamp.crawlData();
+        crawlCharacter.crawlData();
+    }
+
+    // Dùng dể kiểm tra xem có phải hoàng đế?
+    public static boolean checkKing(String s) {
+        String lowerCase = s.toLowerCase();
+        return lowerCase.contains("đế") ||
+                lowerCase.contains("vương") ||
+                lowerCase.contains("vua");
+//                lowerCase.contains("chúa");
+    }
+
+    // Kiem tra hoang hau
+    public static boolean checkQueen(String s) {
+        String lowerCase = s.toLowerCase();
+        return lowerCase.contains("hoàng hậu");
+    }
+
+    // Loai bo nhung tu khoa lien quan den gia toc, trieu dai
+    public static boolean eraFilter(String s) {
+        return s.equalsIgnoreCase("vương") ||
+                s.equalsIgnoreCase("nhà") ||
+                s.equalsIgnoreCase("gia") ||
+                s.equalsIgnoreCase("tộc");
     }
 
     // Dung de luu tat ca cung luc
-    public void createRelation() {
+    public static void createRelation() {
         // Lay cac gia tri crawl duoc
         // Lay nhan vat
-        HistoricalFigures crawledFigures = new HistoricalFigures();
-        ObservableList<HistoricalFigure> listOfFigures = crawledFigures.collection.getData();
-
+        ObservableList<HistoricalFigure> listOfFigures = HistoricalFigures.collection.getData();
         // Lay di tich
-        HistoricSites crawledSites = new HistoricSites();
-        ObservableList<HistoricSite> listOfSites = crawledSites.collection.getData();
-
+        ObservableList<HistoricSite> listOfSites = HistoricSites.collection.getData();
         // Lay su kien
-        Events crawledEvents = new Events();
-        ObservableList<Event> listOfEvents = crawledEvents.collection.getData();
-
+        ObservableList<Event> listOfEvents = Events.collection.getData();
         // Lay era
-        Eras crawledEras = new Eras();
-        ObservableList<Era> listOfEras = crawledEras.collection.getData();
-
+        ObservableList<Era> listOfEras = Eras.collection.getData();
         // Lay le hoi
-        Festivals crawledFes = new Festivals();
-        ObservableList<Festival> listOfFestivals = crawledFes.collection.getData();
+        ObservableList<Festival> listOfFestivals = Festivals.collection.getData();
 
         // Tao lien ket giua nhan vat voi le hoi
         for (Festival f : listOfFestivals) {
@@ -84,7 +98,7 @@ public class Relation {
                         Set<String> allPossibleNames = c.fetchAllPossibleNames();
                         for (String name : allPossibleNames) {
                             // Loc het chu TQ voi dau ngoac ra
-                            String nameToCompare = ""; // Ten nay se dung de tim nhan vat
+                            String nameToCompare = name; // Ten nay se dung de tim nhan vat
                             Pattern p = Pattern.compile("[^\\p{IsHan}]*[\\p{IsHan}]", Pattern.CASE_INSENSITIVE);
                             Matcher m = p.matcher(name);
 
@@ -101,11 +115,7 @@ public class Relation {
                                     } else {
                                         nameToCompare = result.substring(0, result.length() - 1).trim();
                                     }
-                                } else {
-                                    nameToCompare = name;
                                 }
-                            } else {
-                                nameToCompare = name;
                             }
 
                             // Loc ra cac dau ngoac - trong truong hop ten k co chu Han
@@ -178,7 +188,7 @@ public class Relation {
                             Set<String> allPossibleNames = c.fetchAllPossibleNames();
                             for (String name : allPossibleNames) {
                                 // Loc het chu TQ voi dau ngoac ra
-                                String nameToCompare = ""; // Ten nay se dung de tim nhan vat
+                                String nameToCompare = name; // Ten nay se dung de tim nhan vat
                                 Pattern p = Pattern.compile("[^\\p{IsHan}]*[\\p{IsHan}]", Pattern.CASE_INSENSITIVE);
                                 Matcher m = p.matcher(name);
 
@@ -191,11 +201,7 @@ public class Relation {
                                         } else {
                                             nameToCompare = result.substring(0, result.length() - 1).trim();
                                         }
-                                    } else {
-                                        nameToCompare = name;
                                     }
-                                } else {
-                                    nameToCompare = name;
                                 }
 
                                 // Loc ra cac dau ngoac - trong truong hop ten k co chu Han
@@ -298,11 +304,38 @@ public class Relation {
             ) {
                 succeededName = succeededName.substring(0, succeededName.lastIndexOf("(")).trim();
             }
-            // Dung de thoat vong lap neu da co duoc tat ca id can thiet
-            // 0 - father, 1 - mother, 2 - tien nhiem, 3 - ke nhiem
-//            boolean[] escapeLoop = {false, false, false, false};
 
+            // Kiểm tra xem chức vụ của nhân vật hiện tại là hoàng đế hay hoàng hậu?
+            // Để có liên kết phần preceded với succeeded đúng hơn
+            // Vẫn có thể sót trường hợp
+            boolean isHFKing = checkKing(hf.getOverview());
+            boolean isHFQueen = checkQueen(hf.getOverview());
+            if (!isHFKing || !isHFQueen) {
+                for (String alterName : hf.fetchAllPossibleNames()) {
+                    if (checkKing(alterName)) {
+                        if (!isHFKing) isHFKing = true;
+                    }
+                    if (checkQueen(alterName)) {
+                        if (!isHFQueen) isHFQueen = true;
+                    }
+                }
+            }
+
+            // Lặp 2 lần để cho ra đúng nhân vật
             for (HistoricalFigure c : listOfFigures) {
+                boolean isQueen = checkQueen(c.getOverview());
+                boolean isKing = checkKing(c.getOverview());
+                if (!isQueen || !isKing) {
+                    for (String alterName : c.fetchAllPossibleNames()) {
+                        if (checkQueen(alterName)) {
+                            if (!isQueen) isQueen = true;
+                        }
+                        if (checkKing(alterName)) {
+                            if (!isKing) isKing = true;
+                        }
+                    }
+                }
+
                 if (hf.getFather().getValue() == null) {
                     if (c.getName().equalsIgnoreCase(fatherName)) {
                         hf.setFather(fatherName, c.getId());
@@ -314,22 +347,68 @@ public class Relation {
                     }
                 }
                 if (hf.getPrecededBy().getValue() == null) {
-                    if (c.getName().equalsIgnoreCase(precededName)) {
-                        hf.setPrecededBy(precededName, c.getId());
+                    if (isHFKing) {
+                        if (isKing) {
+                            if (c.getName().equalsIgnoreCase(precededName)) {
+                                hf.setPrecededBy(precededName, c.getId());
+                            }
+                        }
+                    } else {
+                        if (isHFQueen) {
+                            if (isQueen) {
+                                if (c.getName().equalsIgnoreCase(precededName)) {
+                                    hf.setPrecededBy(precededName, c.getId());
+                                }
+                            }
+                        } else {
+                            if (c.getName().equalsIgnoreCase(precededName)) {
+                                hf.setPrecededBy(precededName, c.getId());
+                            }
+                        }
                     }
                 }
                 if (hf.getSucceededBy().getValue() == null) {
-                    if (c.getName().equalsIgnoreCase(succeededName)) {
-                        hf.setSucceededBy(succeededName, c.getId());
+                    if (isHFKing) {
+                        if (isKing) {
+                            if (c.getName().equalsIgnoreCase(succeededName)) {
+                                hf.setSucceededBy(succeededName, c.getId());
+                            }
+                        }
+                    } else {
+                        if (isHFQueen) {
+                            if (isQueen) {
+                                if (c.getName().equalsIgnoreCase(succeededName)) {
+                                    hf.setSucceededBy(succeededName, c.getId());
+                                }
+                            }
+                        } else {
+                            if (c.getName().equalsIgnoreCase(succeededName)) {
+                                hf.setSucceededBy(succeededName, c.getId());
+                            }
+                        }
                     }
                 }
             }
 
             for (HistoricalFigure c : listOfFigures) {
                 Set<String> allPossibleNames = c.fetchAllPossibleNames();
+
+                boolean isQueen = checkQueen(c.getOverview());
+                boolean isKing = checkKing(c.getOverview());
+                if (!isQueen || !isKing) {
+                    for (String alterName : allPossibleNames) {
+                        if (checkQueen(alterName)) {
+                            if (!isQueen) isQueen = true;
+                        }
+                        if (checkKing(alterName)) {
+                            if (!isKing) isKing = true;
+                        }
+                    }
+                }
+
                 for (String name : allPossibleNames) {
                     // Loc het chu TQ voi dau ngoac ra
-                    String nameToCompare = ""; // Ten nay se dung de tim nhan vat
+                    String nameToCompare = name; // Ten nay se dung de tim nhan vat
                     Pattern p = Pattern.compile("[^\\p{IsHan}]*[\\p{IsHan}]", Pattern.CASE_INSENSITIVE);
                     Matcher m = p.matcher(name);
 
@@ -342,11 +421,7 @@ public class Relation {
                             } else {
                                 nameToCompare = result.substring(0, result.length() - 1).trim();
                             }
-                        } else {
-                            nameToCompare = name;
                         }
-                    } else {
-                        nameToCompare = name;
                     }
 
                     // Loc ra cac dau ngoac - trong truong hop ten k co chu Han
@@ -374,13 +449,47 @@ public class Relation {
                             }
                         }
                         if (hf.getPrecededBy().getValue() == null) {
-                            if (precededName.equalsIgnoreCase(nameToCompare)) {
-                                hf.setPrecededBy(precededName, c.getId());
+                            // Kiểm tra tên đang xét có chữ hoàng hậu không
+                            // Trường hợp cụ thể -> Quang Trung
+                            if (isHFKing) {
+                                if (isKing) {
+                                    if (precededName.equalsIgnoreCase(nameToCompare)) {
+                                        hf.setPrecededBy(precededName, c.getId());
+                                    }
+                                }
+                            } else {
+                                if (isHFQueen) {
+                                    if (isQueen) {
+                                        if (precededName.equalsIgnoreCase(nameToCompare)) {
+                                            hf.setPrecededBy(precededName, c.getId());
+                                        }
+                                    }
+                                } else {
+                                    if (precededName.equalsIgnoreCase(nameToCompare)) {
+                                        hf.setPrecededBy(precededName, c.getId());
+                                    }
+                                }
                             }
                         }
                         if (hf.getSucceededBy().getValue() == null) {
-                            if (succeededName.equalsIgnoreCase(nameToCompare)) {
-                                hf.setSucceededBy(succeededName, c.getId());
+                            if (isHFKing) {
+                                if (isKing) {
+                                    if (succeededName.equalsIgnoreCase(nameToCompare)) {
+                                        hf.setSucceededBy(succeededName, c.getId());
+                                    }
+                                }
+                            } else {
+                                if (isHFQueen) {
+                                    if (isQueen) {
+                                        if (succeededName.equalsIgnoreCase(nameToCompare)) {
+                                            hf.setSucceededBy(succeededName, c.getId());
+                                        }
+                                    }
+                                } else {
+                                    if (succeededName.equalsIgnoreCase(nameToCompare)) {
+                                        hf.setSucceededBy(succeededName, c.getId());
+                                    }
+                                }
                             }
                         }
                     } else {
@@ -420,7 +529,13 @@ public class Relation {
                             }
 
                             if (m.find()) {
-                                hf.setPrecededBy(precededName, c.getId());
+                                if (isHFKing) {
+                                    if (isKing) hf.setPrecededBy(precededName, c.getId());
+                                } else {
+                                    if (isHFQueen) {
+                                        if (isQueen) hf.setPrecededBy(precededName, c.getId());
+                                    } else hf.setPrecededBy(precededName, c.getId());
+                                }
                             }
                         }
                         if (hf.getSucceededBy().getValue() == null) {
@@ -433,7 +548,13 @@ public class Relation {
                             }
 
                             if (m.find()) {
-                                hf.setSucceededBy(succeededName, c.getId());
+                                if (isHFKing) {
+                                    if (isKing) hf.setSucceededBy(succeededName, c.getId());
+                                } else {
+                                    if (isHFQueen) {
+                                        if (isQueen) hf.setSucceededBy(succeededName, c.getId());
+                                    } else hf.setSucceededBy(succeededName, c.getId());
+                                }
                             }
                         }
                     }
@@ -527,7 +648,7 @@ public class Relation {
             } else {
                 // Neu chua co trieu dai => thu tim trong position
                 for (Era e : listOfEras) {
-                    String eraNameToSearch = "";
+                    String eraNameToSearch = e.getName();
                     Pattern p;
                     Matcher m;
 
@@ -545,8 +666,6 @@ public class Relation {
                             result.trim();
                             eraNameToSearch = result;
                         }
-                    } else {
-                        eraNameToSearch = e.getName();
                     }
 
                     // Trong truong hop ten trieu dai k chua "nha"
@@ -589,7 +708,6 @@ public class Relation {
         for (Era e : listOfEras) {
             Map<String, Integer> relatedCharList = new HashMap<>();
             for (Map.Entry<String, Integer> entry : e.getListOfKingsId().entrySet()) {
-                // String kingName = entry.getKey();
                 if (entry.getKey().equals("")) continue;
                 boolean found = false;
                 for (HistoricalFigure c : listOfFigures) {
@@ -601,18 +719,22 @@ public class Relation {
                         if (!c.getEra().getKey().equalsIgnoreCase(e.getName())) {
                             boolean foundEra = false;
                             String[] splitNames = c.getEra().getKey().split(" ");
-                            // Chi can tim thay chu (in hoa ky tu dau tien) lien quan la tinh tien :v
+                            // Chi can tim thay chu (in hoa ky tu dau tien) lien quan la tinh
                             // K tinh truong hop chu nha,...
                             for (String splitName : splitNames) {
                                 if (
                                     Character.isUpperCase(splitName.charAt(0)) &&
-                                            !splitName.equalsIgnoreCase("nhà")
+                                            !eraFilter(splitName)
                                 ) {
                                     Pattern p = Pattern.compile(Pattern.quote(splitName), Pattern.CASE_INSENSITIVE);
                                     Matcher m = p.matcher(e.getName());
 
                                     if (m.find()) {
                                         foundEra = true;
+                                        // relatedCharList.put(entry.getKey(), c.getId());
+//                                        if (c.getEra().getValue() == null) {
+//                                            c.setEra(e.getName(), e.getId());
+//                                        }
                                         break;
                                     }
                                 }
@@ -639,7 +761,7 @@ public class Relation {
 
                     for (String name : allPossibleNames) {
                         // Loc het chu TQ voi dau ngoac ra
-                        String nameToCompare = ""; // Ten nay se dung de tim nhan vat
+                        String nameToCompare = name; // Ten nay se dung de tim nhan vat
                         Pattern p = Pattern.compile("[^\\p{IsHan}]*[\\p{IsHan}]", Pattern.CASE_INSENSITIVE);
                         Matcher m = p.matcher(name);
 
@@ -654,11 +776,7 @@ public class Relation {
                                 } else {
                                     nameToCompare = result.substring(0, result.length() - 1).trim();
                                 }
-                            } else {
-                                nameToCompare = name;
                             }
-                        } else {
-                            nameToCompare = name;
                         }
 
                         // Loc ra cac dau ngoac - trong truong hop ten k co chu Han
@@ -680,6 +798,11 @@ public class Relation {
                                 relatedCharList.put(entry.getKey(), c.getId());
                                 if (c.getEra().getKey().equals("Chưa rõ")) {
                                     c.setEra(e.getName(), e.getId());
+                                } else if (c.getEra().getValue() == null) {
+                                    if (!e.getAliases().contains(c.getEra().getKey())) {
+                                        e.addAlias(c.getEra().getKey());
+                                    }
+                                    c.setEra(e.getName(), e.getId());
                                 }
                                 break;
                             }
@@ -695,6 +818,11 @@ public class Relation {
                                 found = true;
                                 relatedCharList.put(entry.getKey(), c.getId());
                                 if (c.getEra().getKey().equals("Chưa rõ")) {
+                                    c.setEra(e.getName(), e.getId());
+                                } else if (c.getEra().getValue() == null) {
+                                    if (!e.getAliases().contains(c.getEra().getKey())) {
+                                        e.addAlias(c.getEra().getKey());
+                                    }
                                     c.setEra(e.getName(), e.getId());
                                 }
                                 break;
@@ -729,7 +857,7 @@ public class Relation {
                         Set<String> allPossibleNames = c.fetchAllPossibleNames();
                         for (String name : allPossibleNames) {
                             // Loc het chu TQ voi dau ngoac ra
-                            String nameToCompare = ""; // Ten nay se dung de tim nhan vat
+                            String nameToCompare = name; // Ten nay se dung de tim nhan vat
                             Pattern p = Pattern.compile("[^\\p{IsHan}]*[\\p{IsHan}]", Pattern.CASE_INSENSITIVE);
                             Matcher m = p.matcher(name);
 
@@ -742,11 +870,7 @@ public class Relation {
                                     } else {
                                         nameToCompare = result.substring(0, result.length() - 1).trim();
                                     }
-                                } else {
-                                    nameToCompare = name;
                                 }
-                            } else {
-                                nameToCompare = name;
                             }
 
                             // Loc ra cac dau ngoac - trong truong hop ten k co chu Han
@@ -792,10 +916,10 @@ public class Relation {
         }
 
         // Luu vao file JSON
-        crawledFigures.collection.save();
-        crawledEvents.collection.save();
-        crawledFes.collection.save();
-        crawledEras.collection.save();
-        crawledSites.collection.save();
+        HistoricalFigures.collection.save();
+        Events.collection.save();
+        Festivals.collection.save();
+        Eras.collection.save();
+        HistoricSites.collection.save();
     }
 }

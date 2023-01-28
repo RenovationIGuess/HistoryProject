@@ -7,178 +7,17 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class crawlTimeStamp {
-    // Link dong lich su
-    private static ArrayList<String> timeStampLinks;
-
-    // Link con trong trang dong lich su
-    private static ArrayList<String> timeStampChildLinks;
-
-    public static ArrayList<String> getTimeStampLinks() {
-        return timeStampLinks;
-    }
-
-    public static ArrayList<String> getTimeStampChildLinks() {
-        return timeStampChildLinks;
-    }
 
     public crawlTimeStamp() {
-        this.timeStampLinks = new ArrayList<>();
-        this.timeStampChildLinks = new ArrayList<>();
         crawlData();
     }
 
-    public void getAllTimeStampLinks() {
-        System.out.println("Crawl link dong lich su: ");
-        try {
-            Document doc = Jsoup.connect("https://nguoikesu.com").get();
-
-            // Lay cac the li gom cac dong lich su
-            Elements timeStampList = doc
-                    .selectFirst("ul[class=mod-articlescategories categories-module mod-list]")
-                    .children()
-                    .select("li");
-
-            // Duyet qua va lay link
-            for (Element item : timeStampList) {
-                String link = "https://nguoikesu.com" + item.selectFirst("a").attr("href");
-                System.out.println(link);
-                timeStampLinks.add(link);
-            }
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void getAllChildLinkFromTimeStamp() {
-        for (String item : timeStampLinks) {
-            System.out.println("\nCrawl link tu dong lich su: " + item);
-            try {
-                // Dong lich su
-                Document doc = Jsoup.connect(item).get();
-
-                // Lay cac the dau muc - VD: Ky Bang Hong Thi
-                Elements pageHeaders = doc.select("div[class=page-header]");
-
-                System.out.println("Cac link con crawl duoc tu link hien tai: ");
-                for (Element header : pageHeaders) {
-                    Element headerATag = header.selectFirst("a");
-                    if (headerATag != null) {
-                        String link = "https://nguoikesu.com" + headerATag.attr("href");
-                        System.out.println(link);
-                        timeStampChildLinks.add(link);
-                    }
-                }
-
-                // Kiem tra xem co pagination khong?
-                Element paginationUl = doc.selectFirst("ul[class=pagination ms-0 mb-4]");
-                if (paginationUl != null) {
-                    Elements paginationItems = paginationUl.select("li");
-                    for (int i = 3; i <= paginationItems.size() - 3; ++i) {
-                        String link = "https://nguoikesu.com" + paginationItems.get(i).selectFirst("a").attr("href");
-                        System.out.println(link);
-                        try {
-                            Document pagiDoc = Jsoup.connect(link).get();
-
-                            // Lay cac the dau muc - VD: Ky Bang Hong Thi
-                            Elements pagiPageHeaders = pagiDoc.select("div[class=page-header]");
-
-                            for (Element header : pagiPageHeaders) {
-                                Element headerATag = header.selectFirst("a");
-                                if (headerATag != null) {
-                                    String pagiLink = "https://nguoikesu.com" + headerATag.attr("href");
-                                    System.out.println(pagiLink);
-                                    timeStampChildLinks.add(pagiLink);
-                                }
-                            }
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                }
-
-                // Crawl du lieu cua dong lich su dang xet
-                String name = "Chưa rõ";
-                String time = "Chưa rõ";
-                String location = "Chưa rõ";
-                ArrayList<String> relatedChar = new ArrayList<>();
-
-                // Lay ra ten cua trieu dai
-//                Element
-
-                // Lay ra doan chua thong tin cua trieu dai dang xet
-                Element infoDiv = doc.selectFirst("div[class=category-desc clearfix]");
-                for (Element e : infoDiv.children()) {
-                    if (e.tagName().equals("p")) {
-
-                    }
-                }
-
-                System.out.println("Thong tin trieu dai: ");
-                System.out.println("Name: " + name);
-                System.out.println("Time: " + time);
-                System.out.println("Location: " + location);
-
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-
-//    public void getAllCharInfoLinks() {
-//        System.out.println("\nCrawl link nhan vat tu cac link crawl duoc tu dong lich su: ");
-//        for (String item : timeStampChildLinks) {
-//            try {
-//                // Truy cap cac link nhat dc tu dong lich su
-//                Document doc = Jsoup.connect(item).get();
-//
-//                // Lay cac the dau muc - h3
-//                Elements h3Tags = doc.select("h3");
-//                if (h3Tags != null) {
-//                    for (Element h3 : h3Tags) {
-//                        // Neu the h3 co con la the a => co link
-//                        Element h3ATag = h3.selectFirst("a");
-//                        if (h3ATag != null) {
-//                            String link = "https://nguoikesu.com" + h3ATag.attr("href");
-//                            // Neu la link cua nhan vat lich su
-//                            if (link.contains("nhan-vat")) {
-//                                // Co the co truong hop lap lai trong qua trinh crawl
-//                                if (!charInfoLinks.contains(link)) {
-//                                    System.out.println(link);
-//                                    charInfoLinks.add(link);
-//                                }
-//                            }
-//                        }
-//                    }
-//                } else {
-//                    // Neu k co the h3 => tim xem co info box ko?
-//                    // Neu k co infoBox thi out trang day coi nhu bo =))
-//                    Element infoBox = doc.selectFirst("div[class=caption]");
-//                    if (infoBox != null) {
-//                        String link = "https://nguoikesu.com" + infoBox.selectFirst("h3")
-//                                .selectFirst("a")
-//                                .attr("href");
-//                        if (link.contains("nhan-vat")) {
-//                            if (!charInfoLinks.contains(link)) {
-//                                System.out.println(link);
-//                                charInfoLinks.add(link);
-//                            }
-//                        }
-//                    }
-//                }
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
-//    }
-
-    public void crawlFromWiki() {
+    public static void crawlFromWiki() {
         try {
             Document doc = Jsoup.connect("https://vi.wikipedia.org/wiki/Vua_Việt_Nam").timeout(120000).get();
 
@@ -300,8 +139,6 @@ public class crawlTimeStamp {
                                             }
                                         }
                                     } else {
-                                        // #mw-content-text > div.mw-parser-output > table:nth-child(17) > tbody > tr:nth-child(2) > td:nth-child(2)
-                                        // #mw-content-text > div.mw-parser-output > table:nth-child(17) > tbody > tr:nth-child(3) > td:nth-child(2)
                                         // Cac vi vua cua trieu dai dang xet
                                         Elements tableDatas = currentElement.select("tbody > tr > td:nth-child(2)");
                                         if (tableDatas != null) {
@@ -384,10 +221,7 @@ public class crawlTimeStamp {
         }
     }
 
-    public void crawlData() {
-//        getAllTimeStampLinks();
-//        getAllChildLinkFromTimeStamp();
-//        getAllCharInfoLinks();
+    public static void crawlData() {
         crawlFromWiki();
     }
 }

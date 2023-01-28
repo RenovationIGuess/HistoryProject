@@ -12,15 +12,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class crawlEvent {
-    // Lay link cua cac event
-    private ArrayList<String> eventLinks;
+    // Array chứa link của các event
+    private static ArrayList<String> eventLinks = new ArrayList<>();
 
-    public ArrayList<String> getEventLinks() {
-        return eventLinks;
-    }
-
-    // Lay tat ca cac link event de crawl
-    public void getAllEventLinks() {
+    /**
+     * Lấy link của các sự kiện từ phần pagination
+     */
+    public static void getAllEventLinks() {
         System.out.println("Lay cac link cua phan pagination: ");
 
         try {
@@ -83,29 +81,11 @@ public class crawlEvent {
         }
     }
 
-    // Lay tat ca cac link event de crawl
-//    public void getAllEventLinks() {
-//        for (int i = 0; i < paginateLinks.size(); ++i) {
-//            try {
-//                Document doc = Jsoup.connect(paginateLinks.get(i)).get();
-//
-//                Elements pageHeader = doc.select("div[class=page-header]");
-//
-//                for (Element e : pageHeader) {
-//                    String link = "https://nguoikesu.com" + e.selectFirst("a").attr("href");
-//                    System.out.println(link);
-//                    eventLinks.add(link);
-//                }
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
-//    }
-
-
-
-    // Truy cap cac link event de lay du lieu
-    public void crawlEventData(String link) {
+    /**
+     * Crawl dữ liệu
+     * @param link link của sự kiện tương ứng
+     */
+    public static void crawlEventData(String link) {
         System.out.println("\nDang crawl su kien o link: " + link);
 
         try {
@@ -127,6 +107,7 @@ public class crawlEvent {
                 if (name.equals("Chưa rõ")) name = firstPageHeader.text();
             }
 
+            // Tên từ thẻ đầu tiên trong info box
             Element eventNameTag = doc
                     .selectFirst("#content > div.com-content-article.item-page > div.com-content-article__body > div.infobox > table > tbody > tr > td > table > tbody > tr:nth-child(1) > td > table > tbody > tr:nth-child(1) > td > span");
             if (eventNameTag != null) {
@@ -134,7 +115,8 @@ public class crawlEvent {
                 if (name.equals("Chưa rõ")) name = eventNameTag.text();
             }
 
-            // Lay ra div cua info Box :)) -> lay nhan vat lien quan
+            // Lay ra div cua info Box -> lay nhan vat lien quan
+            // Lấy ra các thẻ a có trong infobox, nếu link là /nhan-vat và không chứa nha-
             Element infoBoxDiv = doc.selectFirst("div[class^=infobox]");
             if (infoBoxDiv != null) {
                 Elements aTagsInInfoBox = infoBoxDiv.select("a");
@@ -188,7 +170,7 @@ public class crawlEvent {
             Element contentBody = doc.selectFirst("div[class=com-content-article__body]");
             Elements contentBodyELements = contentBody.children();
             boolean firstPFound = false;
-            // Loc tu doan p dau tien, hen xui
+            // Loc tu doan p dau tien, co the thieu thong tin
             for (Element item : contentBodyELements) {
                 if (item.tagName().equals("p")) {
                     if (!firstPFound) {
@@ -255,7 +237,7 @@ public class crawlEvent {
                         }
                     }
 
-                    // Lay ra cac the a tim duoc trong p
+                    // Lay ra cac thẻ a tim duoc trong p
                     Elements pATags = item.select("a");
                     for (Element a : pATags) {
                         String hrefValue = a.attr("href");
@@ -303,21 +285,19 @@ public class crawlEvent {
     }
 
     // Crawling
-    public void getDataFromLink() {
+    public static void getDataFromLink() {
         for (String link : eventLinks) {
             crawlEventData(link);
         }
     }
 
     // Tong hop
-    public void crawlData() {
+    public static void crawlData() {
         getAllEventLinks();
         getDataFromLink();
-//        crawlEventData("https://nguoikesu.com/tu-lieu/quan-su/chien-tranh-bien-gioi-viet-trung-1979");
     }
 
     public crawlEvent() {
-        this.eventLinks = new ArrayList<>();
         crawlData();
     }
 }
