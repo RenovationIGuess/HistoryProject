@@ -8,7 +8,7 @@ import crawl.festival.crawlFestival;
 
 public class Test {
     public static void main(String[] args) {
-
+        crawlCharacter.crawlCharInfo("https://nguoikesu.com/nhan-vat/ham-nghi");
     }
 }
 

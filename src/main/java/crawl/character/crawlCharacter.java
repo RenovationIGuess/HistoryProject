@@ -97,17 +97,17 @@ public class crawlCharacter {
      * @return true nếu đúng đang nói về chức vụ / còn lại là false
      */
     public static boolean positionCheck(String position) {
-        return position.contains("Hoàng đế") ||
-                position.contains("Hoàng hậu") ||
-                position.contains("Vua") ||
-                position.contains("Vương") ||
-                position.equals("Công việc") ||
+        return position.equals("Công việc") ||
                 position.equals("Nghề nghiệp") ||
                 position.equals("Cấp bậc") ||
                 position.equals("Đơn vị") ||
                 position.equals("Chức quan cao nhất") ||
                 position.equals("Chức vụ") ||
                 position.equals("Vị trí");
+//        position.contains("Hoàng đế") ||
+//                position.contains("Hoàng hậu") ||
+//                position.contains("Vua") ||
+//                position.contains("Vương") ||
     }
 
     /**
@@ -602,6 +602,10 @@ public class crawlCharacter {
                                 if (position.equals("Chưa rõ") || positionCheck(position) || position.equals("Thuộc")) {
                                     position = result.substring(0, result.length() - 1);
                                     break;
+                                } else {
+                                    // Neu da co chuc vu hop li r thi doan thong tin tim dc coi nhu thong tin
+                                    // bo sung
+                                    position = position + " (" + result.substring(0, result.length() - 1) + ")";
                                 }
                             }
                         }
@@ -610,7 +614,7 @@ public class crawlCharacter {
                     // Trong truong hop khong co ket qua nao khac ngoai: la con cua, la nguoi lang abc,...
                     // Thi ta lay tam
                     if (position.equals("Chưa rõ") || positionCheck(position) || position.equals("Thuộc")) {
-                        position = backupInfo;
+                        if (!backupInfo.equals("")) position = backupInfo;
                     }
 
                     // Reset lai para cho loc cai khac
