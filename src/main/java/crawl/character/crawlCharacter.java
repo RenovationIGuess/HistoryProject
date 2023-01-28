@@ -602,11 +602,12 @@ public class crawlCharacter {
                                 if (position.equals("Chưa rõ") || positionCheck(position) || position.equals("Thuộc")) {
                                     position = result.substring(0, result.length() - 1);
                                     break;
-                                } else {
-                                    // Neu da co chuc vu hop li r thi doan thong tin tim dc coi nhu thong tin
-                                    // bo sung
-                                    position = position + " (" + result.substring(0, result.length() - 1) + ")";
                                 }
+//                                else {
+//                                    // Neu da co chuc vu hop li r thi doan thong tin tim dc coi nhu thong tin
+//                                    // bo sung
+//                                    position = position + " (" + result.substring(0, result.length() - 1) + ")";
+//                                }
                             }
                         }
                     }
