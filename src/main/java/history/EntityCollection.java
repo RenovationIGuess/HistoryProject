@@ -4,9 +4,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 public class EntityCollection <T extends HistoricalEntity> {
     private ObservableList<T> data = FXCollections.observableArrayList();
@@ -22,12 +22,12 @@ public class EntityCollection <T extends HistoricalEntity> {
     }
 
     /**
-     * Chuyển đổi danh sách tập hợp dạng List
-     * sang dạng ObservableList để lưu tập hợp
+     * Chuyển đổi danh sách tập hợp
+     * sang dạng ObservableArrayList để lưu tập hợp
      * @param data danh sách tập hợp đối tượng dạng list
      */
-    public void setData(List<T> data){
-        this.data = FXCollections.observableList(data);
+    public void setData(Collection<T> data){
+        this.data = FXCollections.observableArrayList(data);
         this.numberOfRecords = data.size();
     }
 
@@ -35,8 +35,8 @@ public class EntityCollection <T extends HistoricalEntity> {
      * Trả về danh sách các đối tượng lưu trữ trong tập hợp
      * @return Danh sách đối tượng được lưu trữ
      */
-    public ObservableList<T> getData(){
-        return data;
+    public <V extends HistoricalEntity> ObservableList<V> getData(){
+        return (ObservableList<V>) data;
     }
 
     /**
@@ -121,21 +121,8 @@ public class EntityCollection <T extends HistoricalEntity> {
      * Sắp xếp lại tập hợp theo thứ tự tăng dần id
      */
     public void sortById(){
-        Comparator<T> comparator = new Comparator<T>() {
-            @Override
-            public int compare(T o1, T o2) {
-                return Integer.compare(o1.getId(), o2.getId());
-            }
-        };
+        Comparator<T> comparator = (o1, o2) -> Integer.compare(o1.getId(), o2.getId());
 
         Collections.sort(data, comparator);
-    }
-
-    public ObservableList<HistoricalEntity> parseCollection(){
-        ObservableList<HistoricalEntity> result = FXCollections.observableArrayList();
-        data.forEach(entity -> {
-            result.add(entity);
-        });
-        return result;
     }
 }

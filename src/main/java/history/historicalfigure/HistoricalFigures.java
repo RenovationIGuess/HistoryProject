@@ -36,6 +36,7 @@ public class HistoricalFigures {
             }).collect(Collectors.toList());
 
             collection.setData(figures);
+            collection.sortById();
         } catch (IOException e){
             e.printStackTrace();
         }

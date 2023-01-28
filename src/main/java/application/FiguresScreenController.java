@@ -11,6 +11,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 
 import java.io.IOException;
 import java.net.URL;
@@ -31,7 +32,7 @@ public class FiguresScreenController implements Initializable {
     private ObservableList<HistoricalEntity> listOfFigures;
 
     void getData(){
-        List<HistoricalEntity> list = HistoricalFigures.collection.parseCollection().subList(0, 20);
+        List<HistoricalEntity> list = HistoricalFigures.collection.getData();
         listOfFigures = FXCollections.observableList(list);
     }
 
@@ -56,7 +57,15 @@ public class FiguresScreenController implements Initializable {
                 }
 
                 grid.add(hbox, column++, row);
-                GridPane.setMargin(hbox, new Insets(10));
+                grid.setMinWidth(Region.USE_COMPUTED_SIZE);
+                grid.setPrefWidth(Region.USE_COMPUTED_SIZE);
+                grid.setMaxWidth(Region.USE_PREF_SIZE);
+
+                grid.setMinHeight(Region.USE_COMPUTED_SIZE);
+                grid.setPrefHeight(Region.USE_COMPUTED_SIZE);
+                grid.setMaxHeight(Region.USE_PREF_SIZE);
+
+                GridPane.setMargin(hbox, new Insets(5));
             }
         } catch (IOException e) {
             e.printStackTrace();
