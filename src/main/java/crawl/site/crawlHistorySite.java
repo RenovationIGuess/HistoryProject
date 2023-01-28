@@ -12,14 +12,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class crawlHistorySite {
-    private final ArrayList<String> siteLinks;
-
-    public ArrayList<String> getSiteLinks() {
-        return siteLinks;
-    }
+    private static ArrayList<String> siteLinks = new ArrayList<>();
 
     // Lay tat ca cac link di tich de crawl
-    public void getAllSiteLinks() {
+    public static void getAllSiteLinks() {
         System.out.println("Lay cac link cua phan pagination: ");
 
         try {
@@ -90,7 +86,7 @@ public class crawlHistorySite {
     }
 
     // Cac truong hop cua dia diem
-    public boolean locationCheck(String location) {
+    public static boolean locationCheck(String location) {
         return location.equals("Khu vực") ||
                 location.equals("Địa chỉ") ||
                 location.equals("Địa điểm") ||
@@ -98,14 +94,14 @@ public class crawlHistorySite {
     }
 
     // Cac truong hop cua thoi gian xay dung, hoan thanh
-    public boolean timeCheck(String time) {
+    public static boolean timeCheck(String time) {
         return time.equals("Khởi công") ||
                 time.equals("Hoàn thành") ||
                 time.equals("Thành lập") ||
                 time.equals("Khởi lập");
     }
 
-    public void crawlSiteData(String link) {
+    public static void crawlSiteData(String link) {
         System.out.println("\nDang crawl di tich o link: " + link);
 
         try {
@@ -119,7 +115,6 @@ public class crawlHistorySite {
             String founder = "Chưa rõ"; // Nguoi sang lap?
             String festival = "Chưa rõ"; // Le hoi (neu co)
             ArrayList<String> relatedChar = new ArrayList<>(); // Nhan vat lien quan
-            ArrayList<String> relatedEvent = new ArrayList<>(); // Su kien / le hoi lien quan?
 
             // Lay bang thong tin (neu co)
             Element infoTable = doc.selectFirst("table[class=infobox]");
@@ -338,19 +333,18 @@ public class crawlHistorySite {
         }
     }
 
-    public void getDataFromLink() {
+    public static void getDataFromLink() {
         for (String link : siteLinks) {
             crawlSiteData(link);
         }
     }
 
-    public void crawlData() {
+    public static void crawlData() {
         getAllSiteLinks();
         getDataFromLink();
     }
 
     public crawlHistorySite() {
-        this.siteLinks = new ArrayList<>();
         crawlData();
     }
 }

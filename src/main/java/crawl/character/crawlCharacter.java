@@ -7,34 +7,29 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.lang.annotation.ElementType;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.regex.*;
 
 public class crawlCharacter {
-    // Link luu trang cua nhan vat lich su
-    private static ArrayList<String> charInfoLinks;
-
-    public static ArrayList<String> getCharInfoLinks() {
-        return charInfoLinks;
-    }
+    // ArrayList lưu các url để truy cập và crawl dữ liệu nhân vật
+    private static ArrayList<String> charInfoLinks = new ArrayList<>();
 
     public crawlCharacter() {
-        this.charInfoLinks = new ArrayList<>();
         crawlData();
     }
 
-    // Lay link info cua cac nhan vat tu /nhan-vat
-    public void getCharInfoPageLink() {
-//        ArrayList<String> paginateLinks = new ArrayList<>();
-//        paginateLinks.add("https://nguoikesu.com/nhan-vat");
+    /*
+        1. Bắt đầu từ trang đầu tiên của nhân vật
+        2. Lấy số trang cuối cùng của phần pagination để biết số lần lặp
+        3. Truy cập từng trang để lấy nhân vật
+     */
+    public static void getCharInfoPageLink() {
         System.out.println("\nLay link nhan vat tu /nhan-vat: ");
 
         try {
             Document doc = Jsoup.connect("https://nguoikesu.com/nhan-vat").timeout(120000).get();
 
-            // p tag nay cho biet co tong bnh trang trong pagination
+            // Thẻ p tag lấy dưới đây cho biết tổng số trang của phần pagination
             Element pTag = doc
                     .selectFirst("p[class=com-content-category-blog__counter counter float-end pt-3 pe-2]");
             String[] pTagContentArray = pTag.text().split(" ");
@@ -42,18 +37,17 @@ public class crawlCharacter {
             int numberOfPagination = Integer.parseInt(pTagContentArray[pTagContentArrSize - 1]);
             System.out.println("Total number of paginate page: " + numberOfPagination);
 
-            // Lay cac link tu trang dau tien truoc => sau do lay tu trang thu 2 den het
+            // Lấy link từ trang 1 trước, sau đó thực hiện tương tự với các trang còn lại
             Elements pageHeaders = doc.select("div[class=page-header]");
-//            System.out.println(pageHeaders.size());
 
             for (Element pageHeader : pageHeaders) {
                 Element pageHeaderATag = pageHeader.selectFirst("a");
                 if (pageHeaderATag != null) {
                     String link = "https://nguoikesu.com" + pageHeaderATag.attr("href");
 
-                    // 1 so truong hop co cac trieu dai nen khong tinh vao nhan vat
+                    // 1 số trường hợp là triều đại/địa danh thì không tính vào nhân vật
                     if (!link.contains("nha-")) {
-                        // Neu link nay chua co trong mang => tranh TH lap
+                        // Chỉ thêm link khi link chưa có
                         if (!charInfoLinks.contains(link)) {
                             System.out.println(pageHeader.text() + " - " + link);
                             charInfoLinks.add(link);
@@ -62,16 +56,15 @@ public class crawlCharacter {
                 }
             }
 
-            // 1 trang co <= 5 nhan vat
+            // 1 trang có <= 5 nhân vật
             // Format link: "https://nguoikesu.com/nhan-vat?start=..." => query
+            // Trong đó ... là chỉ mục bắt đầu VD: 5 - 10 - 15...
             for (int i = 2; i <= numberOfPagination; ++i) {
                 System.out.println("\nCurrent page: " + i);
                 String link = "https://nguoikesu.com/nhan-vat?start=" + String.valueOf((i - 1) * 5);
 
                 try {
                     Document pagiDoc = Jsoup.connect(link).timeout(120000).get();
-
-                    // Lay tu trang thu 2 den het
                     Elements pagiPageHeaders = pagiDoc.select("div[class=page-header]");
 
                     for (Element pagiPageHeader : pagiPageHeaders) {
@@ -80,9 +73,7 @@ public class crawlCharacter {
                         if (pagiPHATag != null) {
                             String pagiLink = "https://nguoikesu.com" + pagiPHATag.attr("href");
 
-                            // 1 so truong hop co cac trieu dai nen khong tinh vao nhan vat
                             if (!pagiLink.contains("nha-")) {
-                                // Neu link nay chua co trong mang => tranh TH lap
                                 if (!charInfoLinks.contains(pagiLink)) {
                                     System.out.println(pagiPageHeader.text() + " - " + pagiLink);
                                     charInfoLinks.add(pagiLink);
@@ -99,8 +90,13 @@ public class crawlCharacter {
         }
     }
 
-    // Kiem tra chuc vu cua nhan vat
-    public boolean positionCheck(String position) {
+    /**
+     * Kiểm tra xem phần text đang lấy có đúng là
+     * liên quan đến chức vụ không?
+     * @param position xâu muốn kiểm tra
+     * @return true nếu đúng đang nói về chức vụ / còn lại là false
+     */
+    public static boolean positionCheck(String position) {
         return position.contains("Hoàng đế") ||
                 position.contains("Hoàng hậu") ||
                 position.contains("Vua") ||
@@ -114,12 +110,26 @@ public class crawlCharacter {
                 position.equals("Vị trí");
     }
 
-    public boolean checkNotPosition(String text) {
+    /**
+     * Dùng để kiểm tra xem đoạn xâu dùng Regex để lọc
+     * có phải đoạn xâu mô tả chức vụ của nhân vật ls không?
+     * Nếu chứa những xâu ở dưới thì tức là mô tả thân thế,...
+     * => không đúng
+     * @param text đoạn xâu muốn kiểm tra
+     * @return true nếu là mô tả thân thế / false nếu ngược lại
+     */
+    public static boolean checkNotPosition(String text) {
         return text.contains("làng") ||
                 text.contains("con của");
     }
 
-    public boolean workTimeCheck(String workTime) {
+    /**
+     * Dùng để kiểm tra xem có phải phần đang xét
+     * là thời gian làm việc với chức vụ A của nvat ls B không?
+     * @param workTime xâu cần check
+     * @return true nếu đúng những trường hợp ở dưới
+     */
+    public static boolean workTimeCheck(String workTime) {
         return workTime.equals("Trị vì") ||
                 workTime.equals("trị vì") ||
                 workTime.equals("Tại vị") ||
@@ -128,31 +138,57 @@ public class crawlCharacter {
                 workTime.equals("Hoạt động");
     }
 
-    public boolean fatherCheck(String father) {
+    /**
+     * Kiểm tra xem phần đang xét có phải nói về
+     * Bố của nvat lsu không?
+     * @param father
+     * @return true nếu đúng các cases
+     */
+    public static boolean fatherCheck(String father) {
         return father.equals("Thân phụ") ||
                 father.equals("Cha") ||
                 father.equals("Bố mẹ");
     }
 
-    public boolean motherCheck(String mother) {
+    /**
+     * Tương tự ở trên nhưng là kiểm tra mẹ
+     * @param mother
+     * @return true nếu đúng các cases
+     */
+    public static boolean motherCheck(String mother) {
         return mother.equals("Thân mẫu") ||
                 mother.equals("Mẹ") ||
                 mother.equals("Bố mẹ");
     }
 
-    public boolean eraCheck(String era) {
+    /**
+     * Kiểm tra triều đại
+     * @param era
+     * @return
+     */
+    public static boolean eraCheck(String era) {
         return era.equals("Hoàng tộc") ||
                 era.equals("Triều đại") ||
                 era.equals("Gia tộc") ||
                 era.equals("Kỷ nguyên");
     }
 
-    public boolean birthCheck(String birth) {
+    /**
+     * Kiểm tra ngày, nơi sinh
+     * @param birth
+     * @return
+     */
+    public static boolean birthCheck(String birth) {
         return birth.equals("Ngày sinh") ||
                 birth.equals("Sinh");
     }
 
-    public boolean realNameCheck(String realName) {
+    /**
+     * Kiểm tra tên thật => realName
+     * @param realName
+     * @return
+     */
+    public static boolean realNameCheck(String realName) {
         return realName.equals("Húy") ||
                 realName.equals("Tên thật") ||
                 realName.equals("tên thật") ||
@@ -160,7 +196,12 @@ public class crawlCharacter {
                 realName.equals("Tên húy");
     }
 
-    public boolean alterNameCheck(String alterName) {
+    /**
+     * Kiểm tra tên khác => alterName
+     * @param alterName
+     * @return
+     */
+    public static boolean alterNameCheck(String alterName) {
         return alterName.equals("Thụy hiệu") ||
                 alterName.equals("Niên hiệu") ||
                 alterName.equals("Tên khác") ||
@@ -171,29 +212,45 @@ public class crawlCharacter {
                 alterName.equals("Miếu hiệu");
     }
 
-    // Truy cap vao link nhan vat va crawl
-    public void crawlCharInfo(String link) {
+    /**
+     * Truy cập vào link tương ứng để crawl data
+     * @param link link nvat tương ứng
+     */
+    public static void crawlCharInfo(String link) {
         System.out.println("\nDang crawl nhan vat o link: " + link);
+
         try {
             Document doc = Jsoup.connect(link).timeout(120000).get();
 
-            String charName = "Chưa rõ"; // ten
-            String realName = "Chưa rõ"; // Ten that - neu k crawl dc j thi ten that la ten luc dau
-            ArrayList<String> alterName = new ArrayList<>();
-            String charMother = "Chưa rõ"; // me
-            String charFather = "Chưa rõ"; // cha
-            String dateOfBirth = "Chưa rõ"; // ngay sinh
-            String lostDate = "Chưa rõ"; // ngay mat
-            String preceeded = "Chưa rõ"; // tien nhiem
-            String succeeded = "Chưa rõ"; // ke nhiem
-            String era = "Chưa rõ"; // trieu dai ?
-            String workTime = "Chưa rõ"; // thoi gian tai chuc
-            String position = "Chưa rõ"; // chuc vu
+            String charName = "Chưa rõ"; // Tên nhân vật - tên hay được gọi, tiêu đề trang
+            String realName = "Chưa rõ"; // Tên thật - nếu sau khi check không thấy gì (Chưa rõ) thì gán = charName
+            ArrayList<String> alterName = new ArrayList<>(); // Lưu các tên khác của nhân vật
+            String charMother = "Chưa rõ"; // Mẹ
+            String charFather = "Chưa rõ"; // Bố
+            String dateOfBirth = "Chưa rõ"; // Ngày sinh
+            String lostDate = "Chưa rõ"; // Ngày mất
+            String preceeded = "Chưa rõ"; // Tiền nhiệm
+            String succeeded = "Chưa rõ"; // kế nhiệm
+            String era = "Chưa rõ"; // Triều đại ?
+            String workTime = "Chưa rõ"; // Thời gian tại chức
+            String position = "Chưa rõ"; // Chức vụ
 
-            // Lay ra bang thong tin (neu co) => neu k co thi loc text
+            /*
+                Có các trường hợp sau:
+                1. Không có bảng thông tin, không rõ thông tin
+                2. Không có bảng thông tin, có thông tin (ý là các đoạn p)
+                3. Có bảng thông tin, có thông tin
+
+                Ưu tiên như sau:
+                -> Nếu có bảng thông tin -> ưu tiên 1
+                -> Nếu không có bảng thông tin -> tìm ở các đoạn p
+                Đối với tên nhân vật thì ưu tiên page header -> đoạn p -> bảng thông tin
+            */
+
+            // Lấy ra bảng thông tin (nếu có)
             Element infoTable = doc.selectFirst("table[class^=infobox]");
 
-            // Lay ra ten nhan vat dau tien tim duoc
+            // Lấy tên nhân vật từ tiêu đề - page header
             Element firstFoundCharName = doc
                     .selectFirst("div[class=page-header] > h2");
             if (firstFoundCharName != null) charName = firstFoundCharName.text();
@@ -202,14 +259,12 @@ public class crawlCharacter {
                 Elements infoTableRows = infoTable.select("tr");
                 int numberOfTr = infoTableRows.size();
                 for (int i = 0; i < numberOfTr; ++i) {
-                    // Chi muc dau tien la ten => cho vao cac ten phu
+                    // Thẻ đầu tiên là tên (hầu như) => cho vào tên phụ vì nó không hay chính xác
                     if (i == 0) {
                         Element tableHead = infoTableRows.get(i).selectFirst("th");
 
-                        // Chua co cach tach xau
                         if (tableHead != null) {
                             tableHead.select("sup").remove();
-//                            charName = tableHead.text();
                             alterName.add(tableHead.text());
                         }
                     } else {
@@ -238,13 +293,14 @@ public class crawlCharacter {
                                 }
                             }
 
-                            if (positionCheck(tableHeadContent) && (position.equals("Chưa rõ") || position.equals("Thuộc"))) { // Neu trong xau co hoang de,... => chuc vu
+                            if (positionCheck(tableHeadContent) && (position.equals("Chưa rõ") || position.equals("Thuộc"))) {
+                                // Neu trong xau co hoang de,... => chuc vu
                                 Element tableData = infoTableRows.get(i).selectFirst("td");
                                 if (tableData != null) {
                                     tableData.select("sup").remove();
                                     position = tableData.text();
                                 } else position = tableHeadContent;
-                            } else if (workTimeCheck(tableHeadContent) && workTime.equals("Chưa rõ")) { // thoi gian tai chuc
+                            } else if (workTimeCheck(tableHeadContent) && workTime.equals("Chưa rõ")) { // Thoi gian tai chuc
                                 Element tableData = infoTableRows.get(i).selectFirst("td");
                                 if (tableData != null) {
                                     tableData.select("sup").remove();
@@ -252,11 +308,6 @@ public class crawlCharacter {
                                 }
                             } else if (tableHeadContent.equals("Tiền nhiệm") && preceeded.equals("Chưa rõ")) { // Preceeded
                                 Element tableData = infoTableRows.get(i).selectFirst("td");
-                                // Co cac truong hop
-                                // Dau tien la co font
-                                // 2 la co the a
-                                // 3 chac la k co j?
-                                // ...
                                 if (tableData != null) {
                                     tableData.select("sup").remove();
                                     preceeded = tableData.text();
@@ -315,7 +366,7 @@ public class crawlCharacter {
                         } else {
                             Elements numberOfTd = infoTableRows.get(i).select("td");
 
-                            // Neu la the img
+                            // Loại bỏ những trường hợp chứa thẻ img,...
                             if (numberOfTd.size() < 2) {
                                 continue;
                             }
@@ -355,11 +406,6 @@ public class crawlCharacter {
                                     }
                                 } else if (tableDataAlterContent.equals("Tiền nhiệm") && preceeded.equals("Chưa rõ")) { // Preceeded
                                     Element tableData = infoTableRows.get(i).select("td").get(1);
-                                    // Co cac truong hop
-                                    // Dau tien la co font
-                                    // 2 la co the a
-                                    // 3 chac la k co j?
-                                    // ...
                                     if (tableData != null) {
                                         tableData.select("sup").remove();
                                         preceeded = tableData.text();
@@ -421,178 +467,197 @@ public class crawlCharacter {
                 }
             }
 
-                Element contentBody = doc.selectFirst("div[class=com-content-article__body]");
+            Element contentBody = doc.selectFirst("div[class=com-content-article__body]");
 
-                // Thuong thong tin se nam o the p dau tien
-                Elements contentBodyElements = contentBody.children();
-//                Element firstParagraph = contentBody.selectFirst("p");
+            // Chỉ lấy ở thẻ p đầu tiên vì hầu như thông tin tập hợp ở đó
+            // Có thể thiếu trường hợp
+            Elements contentBodyElements = contentBody.children();
 
-                for (Element item : contentBodyElements) {
-                    if (item.tagName().equals("p")) {
-                        Element firstParagraph = item;
-                        // Loc ra cac the chu thich
-                        // [class~=(annotation).*]
-                        firstParagraph.select("sup").remove();
-                        // Lay cac the a la con the p
-                        Elements pATags = firstParagraph.select("a");
+            for (Element item : contentBodyElements) {
+                if (item.tagName().equals("p")) {
+                    Element firstParagraph = item;
+                    // Loc ra cac the chu thich
+                    // [class~=(annotation).*]
+                    firstParagraph.select("sup").remove();
+                    // Lấy các thẻ a là thẻ con của p
+                    Elements pATags = firstParagraph.select("a");
+                    // Noi dung doan van ban sau khi loc
+                    String firstPContent = firstParagraph.text();
 
-                        // The b dau tien la ten cua nhan vat?
-                        Element firstBTag = firstParagraph.selectFirst("b");
+                    Element firstBTag = firstParagraph.selectFirst("b");
+
+                    // Tu dau van ban cho den truoc dau ( se la ten nhan vat
+                    Pattern p = Pattern.compile("^[^(]*[(]", Pattern.CASE_INSENSITIVE);
+                    Matcher m = p.matcher(firstPContent);
+
+                    if (m.find()) {
+                        String result = m.group();
+                        // Loai bo dau ngoac don
+                        result = result.substring(0, result.length() - 1).trim();
                         if (firstBTag != null) {
-                            if (charName.equals("Chưa rõ")) charName = firstBTag.text();
+                            String name = firstBTag.text();
+                            int startIndex = result.indexOf(name);
+                            result = result.substring(0, startIndex + name.length());
+                        }
+                        if (charName.equals("Chưa rõ")) charName = result;
+                        else alterName.add(result);
+                    } else {
+                        // Neu khong tim thay thi su dung the b dau tien - the b dau tien la ten cua nhan vat
+                        if (firstBTag != null) {
                             // Neu ten lay dc tu tieu de roi thi thoi cho vao alter
                             // cho do thieu truong hop ten
+                            if (charName.equals("Chưa rõ")) charName = firstBTag.text();
                             else alterName.add(firstBTag.text());
                         }
+                    }
 
-                        // Tim ngay sinh / hoac thoi gian lam viec
-                        String firstPContent = firstParagraph.text();
-                        Pattern birthRegex = Pattern.compile("\\(([^)]*)\\)", Pattern.UNICODE_CASE);
-                        Matcher birthMatch = birthRegex.matcher(firstPContent);
+                    // Tim ngay sinh / hoac thoi gian lam viec
+                    Pattern birthRegex = Pattern.compile("\\(([^)]*)\\)", Pattern.UNICODE_CASE);
+                    Matcher birthMatch = birthRegex.matcher(firstPContent);
 
-                        while (birthMatch.find()) {
-                            String firstResult = birthMatch.group(0);
+                    while (birthMatch.find()) {
+                        String firstResult = birthMatch.group(0);
 
-                            // Lay ra doan xau co format (...) => lay ...
-                            // Truong hop doan trong ngoac khong phai ngay sinh
-                            Pattern checkValid = Pattern.compile("sinh|tháng|năm|-|–");
-                            Matcher matchValid = checkValid.matcher(firstResult);
+                        // Lay ra doan xau co format (...) => lay ... - đoạn text trong ngoặc
+                        // Truong hop doan trong ngoac khong phai ngay sinh
+                        Pattern checkValid = Pattern.compile("sinh|tháng|năm|-|–");
+                        Matcher matchValid = checkValid.matcher(firstResult);
 
-                            if (matchValid.find()) {
-                                // Loai bo phan chu Han: ...,/; ... => lay phan ... sau
-                                int startIndex = firstResult.lastIndexOf(',');
+                        if (matchValid.find()) {
+                            // Loai bo phan chu Han: ...,/; ... => lay phan ... sau
+                            int startIndex = firstResult.lastIndexOf(',');
+                            if (startIndex == -1) {
+                                startIndex = firstResult.lastIndexOf(';');
                                 if (startIndex == -1) {
-                                    startIndex = firstResult.lastIndexOf(';');
+                                    startIndex = firstResult.lastIndexOf('；');
                                     if (startIndex == -1) {
-                                        startIndex = firstResult.lastIndexOf('；');
-                                        if (startIndex == -1) {
-                                            startIndex = 1;
-                                        } else startIndex++;
+                                        startIndex = 1;
                                     } else startIndex++;
                                 } else startIndex++;
+                            } else startIndex++;
 
-                                String contentInParen = firstResult.substring(startIndex, firstResult.length() - 1);
-                                if (contentInParen.contains("trị vì")) {
-                                    if (workTime.equals("Chưa rõ")) {
-                                        workTime = contentInParen;
-                                    }
-                                } else {
-                                    // Chia ra nam sinh voi nam mat
-                                    String[] splitString = {};
-                                    if (contentInParen.contains("-")) {
-                                        splitString = contentInParen.split("-");
-                                    } else {
-                                        splitString = contentInParen.split("–");
-                                    }
-
-                                    if (splitString.length == 1) {
-                                        if (dateOfBirth.equals("Chưa rõ")) dateOfBirth = splitString[0].trim();
-                                    } else {
-                                        if (dateOfBirth.equals("Chưa rõ")) dateOfBirth = splitString[0].trim();
-                                        if (lostDate.equals("Chưa rõ")) lostDate = splitString[1].trim();
-                                    }
+                            String contentInParen = firstResult.substring(startIndex, firstResult.length() - 1);
+                            if (contentInParen.contains("trị vì")) {
+                                if (workTime.equals("Chưa rõ")) {
+                                    workTime = contentInParen;
                                 }
-                                break;
                             } else {
-                                int start = firstPContent.indexOf(')');
-                                firstPContent = firstPContent.substring(start + 1);
-                                birthMatch = birthRegex.matcher(firstPContent);
-                            }
-                        }
-
-                        // Lay chuc vu - nghe nghiep cua nhan vat
-                        firstPContent = firstParagraph.text();
-                        boolean outLoop = true;
-                        while (outLoop) {
-                            // kiem tra sau chu "la" la gi?
-                            int start = firstPContent.indexOf("là"); // tra ve vi tri chu l cua "la" dau tien tim thay
-                            if (start != -1 && start < firstPContent.length() - 3) {
-                                // Neu la chu in hoa || hoac la con, lang? ... => bo TH chu la nay di :v
-                                if (
-                                        Character.isUpperCase(firstPContent.charAt(start + 3)) ||
-                                                firstPContent.charAt(start + 2) != ' '
-                                ) {
-                                    // Con truong hop la mot
-                                    // Truong hop chu lam
-                                    if (firstPContent.charAt(start + 2) == 'm' && firstPContent.charAt(start + 3) == ' ') {
-                                        outLoop = false;
-                                    } else firstPContent = firstPContent.substring(start + 3);
-                                } else outLoop = false;
-                            } else outLoop = false;
-                        }
-
-                        String backupInfo = "";
-                        Pattern posiRegex = Pattern.compile("(là|làm)[^.]*[.]");
-                        Matcher posiMatcher = posiRegex.matcher(firstPContent);
-
-                        while (posiMatcher.find()) {
-                            String result = posiMatcher.group(0);
-                            if (!result.contains(":")) {
-                                // Ham check not position de kiem tra truong hop
-                                // la nguoi lang nao, la con cua ai,... => khong phai vi tri
-                                if (checkNotPosition(result)) {
-                                    // Chi lay ket qua dau tien tim duoc
-                                    if (backupInfo.equals("")) backupInfo = result;
+                                // Chia ra nam sinh voi nam mat
+                                String[] splitString = {};
+                                if (contentInParen.contains("-")) {
+                                    splitString = contentInParen.split("-");
                                 } else {
-                                    if (position.equals("Chưa rõ") || positionCheck(position) || position.equals("Thuộc")) {
-                                        position = result.substring(0, result.length() - 1);
-                                        break;
-                                    }
+                                    splitString = contentInParen.split("–");
+                                }
+
+                                if (splitString.length == 1) {
+                                    if (dateOfBirth.equals("Chưa rõ")) dateOfBirth = splitString[0].trim();
+                                } else {
+                                    if (dateOfBirth.equals("Chưa rõ")) dateOfBirth = splitString[0].trim();
+                                    if (lostDate.equals("Chưa rõ")) lostDate = splitString[1].trim();
                                 }
                             }
+                            break;
+                        } else {
+                            int start = firstPContent.indexOf(')');
+                            firstPContent = firstPContent.substring(start + 1);
+                            birthMatch = birthRegex.matcher(firstPContent);
                         }
+                    }
 
-                        // Trong truong hop khong co ket qua nao khac ngoai: la con cua, la nguoi lang abc,...
-                        // Thi ta lay tam
-                        if (position.equals("Chưa rõ") || positionCheck(position) || position.equals("Thuộc")) {
-                            position = backupInfo;
-                        }
+                    // Lay chuc vu - nghe nghiep cua nhan vat
+                    firstPContent = firstParagraph.text();
+                    boolean outLoop = true;
+                    while (outLoop) {
+                        // kiem tra sau chu "la" la gi?
+                        int start = firstPContent.indexOf("là"); // tra ve vi tri chu l cua "la" dau tien tim thay
+                        if (start != -1 && start < firstPContent.length() - 3) {
+                            // Neu la chu in hoa || hoac la con, lang? ... => bo TH chu la nay di :v
+                            if (
+                                    Character.isUpperCase(firstPContent.charAt(start + 3)) ||
+                                            firstPContent.charAt(start + 2) != ' '
+                            ) {
+                                // Con truong hop la mot
+                                // Truong hop chu lam
+                                if (firstPContent.charAt(start + 2) == 'm' && firstPContent.charAt(start + 3) == ' ') {
+                                    outLoop = false;
+                                } else firstPContent = firstPContent.substring(start + 3);
+                            } else outLoop = false;
+                        } else outLoop = false;
+                    }
 
-                        // Reset lai para cho loc cai khac
-                        firstPContent = firstParagraph.text();
+                    String backupInfo = "";
+                    Pattern posiRegex = Pattern.compile("(là|làm)[^.]*[.]");
+                    Matcher posiMatcher = posiRegex.matcher(firstPContent);
 
-                        // Lay trieu dai, nha???
-                        for (Element a : pATags) {
-                            String hrefValue = a.attr("href");
-                            if (hrefValue.contains("nha-")) {
-                                if (era.equals("Chưa rõ")) {
-                                    era = a.text();
+                    while (posiMatcher.find()) {
+                        String result = posiMatcher.group(0);
+                        if (!result.contains(":")) {
+                            // Ham check not position de kiem tra truong hop
+                            // la nguoi lang nao, la con cua ai,... => khong phai vi tri
+                            if (checkNotPosition(result)) {
+                                // Chi lay ket qua dau tien tim duoc
+                                if (backupInfo.equals("")) backupInfo = result;
+                            } else {
+                                if (position.equals("Chưa rõ") || positionCheck(position) || position.equals("Thuộc")) {
+                                    position = result.substring(0, result.length() - 1);
                                     break;
                                 }
                             }
                         }
+                    }
 
-                        // Lay ra ten that
-                        // Cac truong hop: ten that la, ten khai sinh la, ten huy => ,.;
-                        if (realName.equals("Chưa rõ")) {
-                            posiRegex = Pattern.compile("(nguyên danh|tên thật|tên khai sinh|tên húy)[^,.;)]*[,.;)]", Pattern.CASE_INSENSITIVE);
-                            posiMatcher = posiRegex.matcher(firstPContent);
+                    // Trong truong hop khong co ket qua nao khac ngoai: la con cua, la nguoi lang abc,...
+                    // Thi ta lay tam
+                    if (position.equals("Chưa rõ") || positionCheck(position) || position.equals("Thuộc")) {
+                        position = backupInfo;
+                    }
 
-                            if (posiMatcher.find()) {
-                                String result = posiMatcher.group(0);
-                                if (result.charAt(result.length() - 1) == ')' && result.indexOf("(") != -1) {
-                                    realName = result;
-                                } else realName = result.substring(0, result.length() - 1);
-                            } else realName = charName;
-                        }
+                    // Reset lai para cho loc cai khac
+                    firstPContent = firstParagraph.text();
 
-
-                        // Lay ra cac ten khac
-                        // Cac truong hop: con goi la, tu, tên tự, nien hieu, duoi ten goi, thông gọi, biet hieu => ,.;
-                        if (alterName.size() == 0) {
-                            posiRegex = Pattern.compile("(còn gọi|tên tự|niên hiệu|dưới tên gọi|thông gọi|biệt hiệu)[^,.;)]*[,.;)]", Pattern.CASE_INSENSITIVE);
-                            posiMatcher = posiRegex.matcher(firstPContent);
-
-                            if (posiMatcher.find()) {
-                                String result = posiMatcher.group(0);
-                                if (result.charAt(result.length() - 1) == ')' && result.indexOf("(") != -1) {
-                                    alterName.add(result);
-                                } else alterName.add(result.substring(0, result.length() - 1));
+                    // Lay trieu dai, nha???
+                    for (Element a : pATags) {
+                        String hrefValue = a.attr("href");
+                        if (hrefValue.contains("nha-")) {
+                            if (era.equals("Chưa rõ")) {
+                                era = a.text();
+                                break;
                             }
                         }
-                        break;
                     }
+
+                    // Lay ra ten that
+                    // Cac truong hop: ten that la, ten khai sinh la, ten huy => ,.;
+                    if (realName.equals("Chưa rõ")) {
+                        posiRegex = Pattern.compile("(nguyên danh|tên thật|tên khai sinh|tên húy)[^,.;)]*[,.;)]", Pattern.CASE_INSENSITIVE);
+                        posiMatcher = posiRegex.matcher(firstPContent);
+
+                        if (posiMatcher.find()) {
+                            String result = posiMatcher.group(0);
+                            if (result.charAt(result.length() - 1) == ')' && result.indexOf("(") != -1) {
+                                realName = result;
+                            } else realName = result.substring(0, result.length() - 1);
+                        } else realName = charName;
+                    }
+
+
+                    // Lay ra cac ten khac
+                    // Cac truong hop: con goi la, tu, tên tự, nien hieu, duoi ten goi, thông gọi, biet hieu => ,.;
+                    if (alterName.size() == 0) {
+                        posiRegex = Pattern.compile("(còn gọi|tên tự|niên hiệu|dưới tên gọi|thông gọi|biệt hiệu)[^,.;)]*[,.;)]", Pattern.CASE_INSENSITIVE);
+                        posiMatcher = posiRegex.matcher(firstPContent);
+
+                        if (posiMatcher.find()) {
+                            String result = posiMatcher.group(0);
+                            if (result.charAt(result.length() - 1) == ')' && result.indexOf("(") != -1) {
+                                alterName.add(result);
+                            } else alterName.add(result.substring(0, result.length() - 1));
+                        }
+                    }
+                    break;
                 }
+            }
 
             System.out.println("Name: " + charName);
             System.out.println("Real name: " + realName);
@@ -638,16 +703,13 @@ public class crawlCharacter {
     }
 
     // Crawl nhan vat
-    public void getCharInfo() {
+    public static void getCharInfo() {
         for (String link : charInfoLinks) {
             crawlCharInfo(link);
         }
     }
 
-    public void crawlData() {
-//        getAllTimeStampLinks();
-//        getAllChildLinkFromTimeStamp();
-//        getAllCharInfoLinks();
+    public static void crawlData() {
         getCharInfoPageLink();
         getCharInfo();
     }

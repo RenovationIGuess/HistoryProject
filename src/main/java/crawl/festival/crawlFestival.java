@@ -1,34 +1,23 @@
 package crawl.festival;
 
 import history.festival.Festival;
-import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 
 public class crawlFestival {
     private static Integer nbFestival;
-//    private static HashMap<Integer,String> Name ;//= new ArrayList<String>();
-//    private static HashMap<Integer,String> Location ;//= new ArrayList<String>();
-//    private static HashMap<Integer,String> Day;
-//    //private static HashMap<Integer,String> RelatedSite;
-//    //private static HashMap<Integer,String> RelatedEvent;
-//    private static HashMap<Integer,String> RelatedFigure;
-//    private static HashMap<Integer,String> FirstTime;
-//    private static HashMap<Integer,String> Note;
 
     public crawlFestival(){
-        crawl();
+        crawlData();
     }
 
-    public static void crawl() {
+    public static void crawlData() {
         String url_lehoi = "https://vi.wikipedia.org/wiki/L%E1%BB%85_h%E1%BB%99i_Vi%E1%BB%87t_Nam#Danh_s%C3%A1ch_m%E1%BB%99t_s%E1%BB%91_l%E1%BB%85_h%E1%BB%99i";
         // call scraping
         HashMap<Integer, String> Name  = new HashMap<Integer,String>();
