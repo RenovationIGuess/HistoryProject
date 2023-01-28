@@ -19,9 +19,26 @@ public class SearchBarController implements Initializable {
     @FXML
     private RadioButton byNameRadioBtn;
 
+    private SearchBoxListener searchBoxListener;
+
+    public void setSearchBoxListener(SearchBoxListener searchBoxListener){
+        this.searchBoxListener = searchBoxListener;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        searchBox.textProperty().addListener((
+                (observableValue, oldValue, newValue) -> {
+                    if (newValue.isBlank()){
+                        searchBoxListener.onBlankHandler();
+                    } else {
+                        if (byNameRadioBtn.isSelected()){
+                            searchBoxListener.onSearchNameHandler(newValue);
+                        } else if (byIdRadioBtn.isSelected()){
+                            searchBoxListener.onSearchIdHandler(newValue);
+                        }
+                    }
+                }
+        ));
     }
 }

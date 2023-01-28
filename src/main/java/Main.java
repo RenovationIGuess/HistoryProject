@@ -4,7 +4,6 @@ public class Main {
     public static void main(String[] args) {
         HistoricalFigures.loadJSON();
         HistoricalFigures.collection
-                .searchByName("dương")
-                .forEach(figure -> System.out.println(figure.toJSON()));
+                .get(1206).printObject();
     }
 }
