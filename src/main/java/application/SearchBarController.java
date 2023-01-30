@@ -1,8 +1,9 @@
 package application;
 
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.RadioButton;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
@@ -11,13 +12,9 @@ import java.util.ResourceBundle;
 public class SearchBarController implements Initializable {
 
     @FXML
+    public ComboBox filterComboBox;
+    @FXML
     private TextField searchBox;
-
-    @FXML
-    private RadioButton byIdRadioBtn;
-
-    @FXML
-    private RadioButton byNameRadioBtn;
 
     private SearchBoxListener searchBoxListener;
 
@@ -27,16 +24,21 @@ public class SearchBarController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        filterComboBox.setItems(FXCollections.observableArrayList("By Name", "By ID"));
+
+        filterComboBox.getSelectionModel().selectFirst();
+
+        filterComboBox.setOnAction((e) -> {
+            System.out.println(filterComboBox.getSelectionModel().getSelectedItem());
+        });
+
         searchBox.textProperty().addListener((
                 (observableValue, oldValue, newValue) -> {
                     if (newValue.isBlank()){
                         searchBoxListener.onBlankHandler();
                     } else {
-                        if (byNameRadioBtn.isSelected()){
-                            searchBoxListener.onSearchNameHandler(newValue);
-                        } else if (byIdRadioBtn.isSelected()){
-                            searchBoxListener.onSearchIdHandler(newValue);
-                        }
+                        //
                     }
                 }
         ));

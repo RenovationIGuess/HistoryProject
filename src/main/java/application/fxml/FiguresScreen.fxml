@@ -3,11 +3,10 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.FiguresScreenController">
@@ -36,20 +35,19 @@
         <fx:include fx:id="sideBar" source="Sidebar.fxml" />
     </left>
     <center>
-        <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+        <VBox BorderPane.alignment="CENTER">
             <children>
                 <fx:include fx:id="searchBar" source="SearchBar.fxml" />
                 <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
                     <children>
-                        <ScrollPane fx:id="scroll" style="-fx-background-color: rgba(0,0,0,0);" HBox.hgrow="ALWAYS">
-                            <content>
-                                <GridPane fx:id="grid">
-                                    <rowConstraints>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" />
-                                    </rowConstraints>
-                                </GridPane>
-                            </content>
-                        </ScrollPane>
+                        <TableView fx:id="tblFigure">
+                            <columns>
+                                <TableColumn fx:id="colFigureId" prefWidth="75.0" text="ID" />
+                                <TableColumn fx:id="colFigureName" prefWidth="200.0" text="Tên" />
+                                <TableColumn fx:id="colFigureEra" prefWidth="100.0" text="Triều đại" />
+                                <TableColumn fx:id="colFigureOverview" prefWidth="200.0" text="Tổng quan" />
+                            </columns>
+                        </TableView>
                     </children>
                 </HBox>
             </children>
