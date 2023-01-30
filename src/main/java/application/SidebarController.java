@@ -42,22 +42,22 @@ public class SidebarController {
 
     @FXML
     void switchToHistoricSite(ActionEvent event) throws IOException {
-        switchByGetFxml("/application/fxml/TrangTimKiemDiTich.fxml", event);
+        switchByGetFxml("/application/fxml/HistoricSiteScreen.fxml", event);
     }
 
     @FXML
     void switchToEras(ActionEvent event) throws IOException {
-        switchByGetFxml("/application/fxml/TrangTimKiemTrieuDai.fxml", event);
+        switchByGetFxml("/application/fxml/EraScreen.fxml", event);
     }
 
     @FXML
     void switchToEvents(ActionEvent event) throws IOException {
-        switchByGetFxml("/application/fxml/TrangTimKiemSuKien.fxml", event);
+        switchByGetFxml("/application/fxml/EventScreen.fxml", event);
     }
 
     @FXML
     void switchToFestivals(ActionEvent event) throws IOException {
-        switchByGetFxml("/application/fxml/TrangTimKiemLeHoi.fxml", event);
+        switchByGetFxml("/application/fxml/FestivalScreen.fxml", event);
     }
 
 }
