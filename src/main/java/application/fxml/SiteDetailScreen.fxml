@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.EraDetailScreenController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.SiteDetailScreenController">
     <top>
         <MenuBar BorderPane.alignment="CENTER">
             <menus>
@@ -74,12 +74,12 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label text="Thời kỳ">
+                        <Label text="Địa điểm">
                            <font>
                               <Font name="System Bold" size="13.0" />
                            </font>
                         </Label>
-                        <Label text="Quê hương" GridPane.rowIndex="1">
+                        <Label text="Ngày khởi công" GridPane.rowIndex="1">
                            <font>
                               <Font name="System Bold" size="13.0" />
                            </font>
@@ -89,12 +89,12 @@
                               <Font name="System Bold" size="13.0" />
                            </font>
                         </Label>
-                        <Label text="Kinh đô" GridPane.rowIndex="3">
+                        <Label text="Mô tả" GridPane.rowIndex="3">
                            <font>
                               <Font name="System Bold" size="13.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="19.0" prefWidth="142.0" text="Thời gian" GridPane.rowIndex="4">
+                        <Label prefHeight="19.0" prefWidth="142.0" text="Lễ hội liên quan" GridPane.rowIndex="4">
                            <font>
                               <Font name="System Bold" size="13.0" />
                            </font>
@@ -104,11 +104,11 @@
                               <Font name="System Bold" size="13.0" />
                            </font>
                         </Label>
-                        <Label fx:id="timeStampLabel" text="belongsTimeStamp" GridPane.columnIndex="1" />
-                        <Label fx:id="homelandLabel" text="homeland" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label fx:id="locationLabel" text="location" GridPane.columnIndex="1" />
+                        <Label fx:id="constructDateLabel" text="constructionDate" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Label fx:id="founderLabel" text="founder" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Text fx:id="capLocateLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="capitalLocation" wrappingWidth="314.0280570983887" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <Label fx:id="timeLabel" text="time" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <Text fx:id="overviewLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="overview" wrappingWidth="314.0280570983887" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label fx:id="relateFesLabel" text="relateFes" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                         <Label fx:id="relateCharsLabel" text="relateChars" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                      </children>
                   </GridPane>

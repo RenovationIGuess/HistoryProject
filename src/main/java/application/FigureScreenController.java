@@ -1,5 +1,6 @@
 package application;
 
+import application.controller.FigureDetailScreenController;
 import history.historicalfigure.HistoricalFigure;
 import history.historicalfigure.HistoricalFigures;
 import history.relation.Pair;
@@ -88,6 +89,8 @@ public class FigureScreenController {
                     try {
                         FXMLLoader loader = new FXMLLoader(App.convertToURL("/application/fxml/FigureDetailScreen.fxml"));
                         Parent root = loader.load();
+                        FigureDetailScreenController controller = loader.getController();
+                        controller.setFigure(figure);
                         Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
                         Scene scene = new Scene(root);
                         stage.setScene(scene);

@@ -45,7 +45,7 @@
                   <Font size="36.0" />
                </font>
                <VBox.margin>
-                  <Insets bottom="-8.0" left="24.0" />
+                  <Insets bottom="-8.0" left="24.0" top="8.0" />
                </VBox.margin>
             </Label>
                 <fx:include fx:id="searchBar" source="SearchBar.fxml" />
