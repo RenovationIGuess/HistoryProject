@@ -30,6 +30,7 @@ public class Eras {
                 }
             }).collect(Collectors.toList());
             collection.setData(eras);
+            collection.sortById();
         } catch (IOException e){
             e.printStackTrace();
         }

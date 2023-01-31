@@ -37,7 +37,7 @@ public class SidebarController {
 
     @FXML
     void switchToHistoricalFigures(ActionEvent event) throws IOException {
-        switchByGetFxml("/application/fxml/FiguresScreen.fxml", event);
+        switchByGetFxml("/application/fxml/HistoricalFiguresScreen.fxml", event);
     }
 
     @FXML

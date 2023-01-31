@@ -12,7 +12,7 @@ import java.util.ResourceBundle;
 public class SearchBarController implements Initializable {
 
     @FXML
-    public ComboBox filterComboBox;
+    public ComboBox<String> filterComboBox;
     @FXML
     private TextField searchBox;
 
@@ -30,7 +30,17 @@ public class SearchBarController implements Initializable {
         filterComboBox.getSelectionModel().selectFirst();
 
         filterComboBox.setOnAction((e) -> {
-            System.out.println(filterComboBox.getSelectionModel().getSelectedItem());
+            if (searchBox.getText().isBlank()){
+                searchBoxListener.onBlankHandler();
+            } else {
+                if (filterComboBox.getSelectionModel().getSelectedItem().equals("By ID")) {
+                    /* Thực thi khi chuyển comboBox sang By ID */
+                    searchBoxListener.onSearchIdHandler(searchBox.getText());
+                } else if (filterComboBox.getSelectionModel().getSelectedItem().equals("By Name")) {
+                    /* Thực thi khi chuyển comboBox sang By Name */
+                    searchBoxListener.onSearchNameHandler(searchBox.getText());
+                }
+            }
         });
 
         searchBox.textProperty().addListener((
@@ -38,7 +48,12 @@ public class SearchBarController implements Initializable {
                     if (newValue.isBlank()){
                         searchBoxListener.onBlankHandler();
                     } else {
-                        //
+                        if (filterComboBox.getValue().equals("By ID")){
+                            searchBoxListener.onSearchIdHandler(newValue);
+                        }
+                        else if (filterComboBox.getValue().equals("By Name")){
+                            searchBoxListener.onSearchNameHandler(newValue);
+                        }
                     }
                 }
         ));

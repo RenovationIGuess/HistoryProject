@@ -27,7 +27,7 @@ public class Pair<K, V> {
 
     @Override
     public String toString() {
-        return this.key + " - " + this.value;
+        return this.key + "";
     }
 
     public Pair(){}
