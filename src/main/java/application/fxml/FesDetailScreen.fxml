@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.EraDetailScreenController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.FesDetailScreenController">
     <top>
         <MenuBar BorderPane.alignment="CENTER">
             <menus>
@@ -60,7 +60,7 @@
             </HBox>
             <ScrollPane prefWidth="500.0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
                <content>
-                  <GridPane alignment="CENTER" prefHeight="232.0" prefWidth="466.0">
+                  <GridPane alignment="CENTER" prefHeight="210.0" prefWidth="466.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="151.20001983642578" minWidth="10.0" prefWidth="123.20001220703125" />
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="76.79998779296875" />
@@ -71,45 +71,38 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label text="Thời kỳ">
+                        <Label text="Thời gian">
                            <font>
                               <Font name="System Bold" size="13.0" />
                            </font>
                         </Label>
-                        <Label text="Quê hương" GridPane.rowIndex="1">
+                        <Label text="Địa điểm" GridPane.rowIndex="1">
                            <font>
                               <Font name="System Bold" size="13.0" />
                            </font>
                         </Label>
-                        <Label text="Người sáng lập" GridPane.rowIndex="2">
+                        <Label text="Lần đầu tổ chức" GridPane.rowIndex="2">
                            <font>
                               <Font name="System Bold" size="13.0" />
                            </font>
                         </Label>
-                        <Label text="Kinh đô" GridPane.rowIndex="3">
+                        <Label text="Ghi chú" GridPane.rowIndex="3">
                            <font>
                               <Font name="System Bold" size="13.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="19.0" prefWidth="142.0" text="Thời gian" GridPane.rowIndex="4">
+                        <Label text="Nhân vật liên quan" GridPane.rowIndex="4">
                            <font>
                               <Font name="System Bold" size="13.0" />
                            </font>
                         </Label>
-                        <Label text="Nhân vật liên quan" GridPane.rowIndex="5">
-                           <font>
-                              <Font name="System Bold" size="13.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="timeStampLabel" text="belongsTimeStamp" GridPane.columnIndex="1" />
-                        <Label fx:id="homelandLabel" text="homeland" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label fx:id="founderLabel" text="founder" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Text fx:id="capLocateLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="capitalLocation" wrappingWidth="314.0280570983887" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <Label fx:id="timeLabel" text="time" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <Label fx:id="relateCharsLabel" text="relateChars" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <Label fx:id="timeLabel" text="time" GridPane.columnIndex="1" />
+                        <Label fx:id="locationLabel" text="location" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label fx:id="firstTimeLabel" text="firstHeld" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Text fx:id="noteLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Note" wrappingWidth="314.0280570983887" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label fx:id="relateCharsLabel" text="relateChars" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                      </children>
                   </GridPane>
                </content>

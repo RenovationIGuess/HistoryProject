@@ -62,6 +62,10 @@ public class FigureDetailScreenController {
         diedLabel.setText(figure.getDied());
         overviewText.setText(figure.getOverview());
         workTimeLabel.setText(figure.getWorkTime());
+        eraLabel.setText(figure.getEra().getKey());
+        fatherLabel.setText(figure.getFather().getKey());
+        motherLabel.setText(figure.getMother().getKey());
+        precededByLabel.setText(figure.getPrecededBy().getKey());
+        succeededByLabel.setText(figure.getSucceededBy().getKey());
     }
-
 }

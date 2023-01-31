@@ -1,14 +1,22 @@
 package application;
 
+import application.controller.EraDetailScreenController;
 import history.era.Era;
 import history.era.Eras;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -74,5 +82,28 @@ public class EraScreenController implements Initializable {
                     }
                 }
         );
+
+        // Tao listener khi click vao trieu dai trong table
+        eraTable.setRowFactory(tableView -> {
+            TableRow<Era> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    Era era = row.getItem();
+                    try {
+                        FXMLLoader loader = new FXMLLoader(App.convertToURL("/application/fxml/EraDetailScreen.fxml"));
+                        Parent root = loader.load();
+                        EraDetailScreenController controller = loader.getController();
+                        controller.setEra(era);
+                        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                        Scene scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            return row;
+        });
     }
 }
