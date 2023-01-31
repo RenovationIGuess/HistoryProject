@@ -1,10 +1,8 @@
 package application;
 
-import history.HistoricalEntity;
-import history.era.Era;
-import history.era.Eras;
+import history.historicsite.HistoricSite;
 import history.historicsite.HistoricSites;
-import javafx.collections.ObservableList;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
@@ -16,35 +14,64 @@ import java.util.ResourceBundle;
 
 public class SiteScreenController implements Initializable {
     @FXML
-    private TableView siteTable;
+    private TableView<HistoricSite> siteTable;
 
     @FXML
-    private TableColumn colSiteId;
+    private TableColumn<HistoricSite, Integer> colSiteId;
 
     @FXML
-    private TableColumn colSiteName;
+    private TableColumn<HistoricSite, String> colSiteName;
 
     @FXML
-    private TableColumn colSiteDate;
+    private TableColumn<HistoricSite, String> colSiteDate;
 
     @FXML
-    private TableColumn colSiteLocate;
+    private TableColumn<HistoricSite, String> colSiteLocate;
+
+    @FXML
+    private SearchBarController searchBarController;
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         HistoricSites.loadJSON();
 
         colSiteId.setCellValueFactory(
-                new PropertyValueFactory<Era, Integer>("id")
+                new PropertyValueFactory<HistoricSite, Integer>("id")
         );
         colSiteName.setCellValueFactory(
-                new PropertyValueFactory<Era, String>("name")
+                new PropertyValueFactory<HistoricSite, String>("name")
         );
         colSiteDate.setCellValueFactory(
-                new PropertyValueFactory<Era, String>("constructionDate")
+                new PropertyValueFactory<HistoricSite, String>("constructionDate")
         );
         colSiteLocate.setCellValueFactory(
-                new PropertyValueFactory<Era, String>("location")
+                new PropertyValueFactory<HistoricSite, String>("location")
         );
         siteTable.setItems(HistoricSites.collection.getData());
+
+        searchBarController.setSearchBoxListener(
+                new SearchBoxListener() {
+                    @Override
+                    public void onSearchNameHandler(String name) {
+                        siteTable.setItems(HistoricSites.collection.searchByName(name));
+                    }
+
+                    @Override
+                    public void onSearchIdHandler(String id) {
+                        try {
+                            int intId = Integer.parseInt(id);
+                            siteTable.setItems(
+                                    FXCollections.singletonObservableList(HistoricSites.collection.get(intId))
+                            );
+                        } catch (Exception e){
+                            System.err.println("Cannot find the entity with the id " + id);
+                        }
+                    }
+
+                    @Override
+                    public void onBlankHandler() {
+                        siteTable.setItems(HistoricSites.collection.getData());
+                    }
+                }
+        );
     }
 }

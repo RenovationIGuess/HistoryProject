@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -8,8 +10,9 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.FiguresScreenController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.FigureScreenController">
     <top>
         <MenuBar BorderPane.alignment="CENTER">
             <menus>
@@ -37,15 +40,23 @@
     <center>
         <VBox BorderPane.alignment="CENTER">
             <children>
+            <Label text="Nhân vật lịch sử">
+               <font>
+                  <Font size="36.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="-8.0" left="24.0" />
+               </VBox.margin>
+            </Label>
                 <fx:include fx:id="searchBar" source="SearchBar.fxml" />
                 <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
                     <children>
                         <TableView fx:id="tblFigure">
                             <columns>
                                 <TableColumn fx:id="colFigureId" prefWidth="75.0" text="ID" />
-                                <TableColumn fx:id="colFigureName" prefWidth="200.0" text="Tên" />
+                                <TableColumn fx:id="colFigureName" prefWidth="175.0" text="Tên" />
                                 <TableColumn fx:id="colFigureEra" prefWidth="100.0" text="Triều đại" />
-                                <TableColumn fx:id="colFigureOverview" prefWidth="200.0" text="Tổng quan" />
+                                <TableColumn fx:id="colFigureOverview" prefWidth="300.0" text="Tổng quan" />
                             </columns>
                         </TableView>
                     </children>

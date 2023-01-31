@@ -34,6 +34,8 @@ public class Festivals {
             }).collect(Collectors.toList());
 
             collection.setData(festivals);
+
+            collection.sortById();
         } catch (IOException e){
             e.printStackTrace();
         }

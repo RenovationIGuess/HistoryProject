@@ -68,13 +68,14 @@ public abstract class HistoricalEntity {
      * @return true nếu tên đối tượng khớp 1 phần với tên tìm kiếm
      */
     public boolean isMatch(String name){
-        if (this.getName().toLowerCase().contains(name.toLowerCase()))
-            return true;
-        for (String alias : aliases){
-            if (alias.toLowerCase().contains(name.toLowerCase()))
-                return true;
-        }
-        return false;
+//        if (this.getName().toLowerCase().contains(name.toLowerCase()))
+//            return true;
+//        for (String alias : aliases){
+//            if (alias.toLowerCase().contains(name.toLowerCase()))
+//                return true;
+//        }
+//        return false;
+        return this.name.toLowerCase().contains(name.toLowerCase());
     }
 
     /**

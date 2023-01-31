@@ -6,3 +6,7 @@
 .search-box {
     -fx-background-radius: 100;
 }
+
+.back-btn {
+    -fx-background-color: #f3f3f3;
+}

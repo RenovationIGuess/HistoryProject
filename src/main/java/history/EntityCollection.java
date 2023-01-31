@@ -5,7 +5,6 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 
 public class EntityCollection <T extends HistoricalEntity> {
@@ -70,9 +69,7 @@ public class EntityCollection <T extends HistoricalEntity> {
      * @param id id của đối tượng cần xóa
      */
     public void remove (int id){
-        for (T entity : data){
-            if (entity.isMatch(id)) data.remove(entity);
-        }
+        data.removeIf(entity -> entity.isMatch(id));
     }
 
     /**
@@ -123,6 +120,6 @@ public class EntityCollection <T extends HistoricalEntity> {
     public void sortById(){
         Comparator<T> comparator = (o1, o2) -> Integer.compare(o1.getId(), o2.getId());
 
-        Collections.sort(data, comparator);
+        data.sort(comparator);
     }
 }

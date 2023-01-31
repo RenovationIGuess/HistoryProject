@@ -2,7 +2,6 @@ package history.historicsite;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import history.EntityCollection;
-import history.event.Event;
 import json.JSON;
 
 import java.io.IOException;
@@ -35,6 +34,8 @@ public class HistoricSites {
             }).collect(Collectors.toList());
 
             collection.setData(sites);
+
+            collection.sortById();
         } catch (IOException e){
             e.printStackTrace();
         }
