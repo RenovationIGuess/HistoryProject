@@ -4,47 +4,55 @@ import application.SidebarController;
 import history.event.Event;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
+import java.util.Map;
 
 public class EventDetailScreenController {
     @FXML
-    private Label nameLabel;
+    private Text nameText;
 
     @FXML
-    private Label timeLabel;
+    private Text timeText;
 
     @FXML
-    private Label locationLabel;
+    private Text locationText;
 
     @FXML
-    private Label overviewLabel;
+    private Text overviewText;
 
     @FXML
-    private Text reasonLabel;
+    private Text causeText;
 
     @FXML
-    private Label resultLabel;
+    private Text resultText;
+
+    @FXML
+    private FlowPane relatedCharsFlowPane;
 
     @FXML
     private SidebarController sideBarController;
 
-    private Event eve;
+    private Event event;
 
     @FXML
     public void onClickBack(ActionEvent event) throws IOException {
         sideBarController.switchByGetFxml("/application/fxml/EventScreen.fxml", event);
     }
 
-    public void setEvent(Event eve) {
-        this.eve = eve;
-        nameLabel.setText(eve.getName());
-        timeLabel.setText(eve.getDate());
-        locationLabel.setText(eve.getLocation());
-        overviewLabel.setText(eve.getOverview());
-        reasonLabel.setText(eve.getCause());
-        resultLabel.setText(eve.getResult());
+    public void setEvent(Event event) {
+        this.event = event;
+        nameText.setText(event.getName());
+        timeText.setText(event.getDate());
+        locationText.setText(event.getLocation());
+        overviewText.setText(event.getOverview());
+        causeText.setText(event.getCause());
+        resultText.setText(event.getResult());
+        for(Map.Entry<String, Integer> entry : event.getRelatedFiguresId().entrySet()){
+            Text figureText = new Text(entry.getKey());
+            relatedCharsFlowPane.getChildren().add(figureText);
+        }
     }
 }

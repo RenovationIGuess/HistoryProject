@@ -4,29 +4,28 @@ import application.SidebarController;
 import history.era.Era;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
 
 public class EraDetailScreenController {
     @FXML
-    private Label nameLabel;
+    private Text nameText;
 
     @FXML
-    private Label timeStampLabel;
+    private Text timeStampText;
 
     @FXML
-    private Label homelandLabel;
+    private Text homelandText;
 
     @FXML
-    private Label founderLabel;
+    private Text founderText;
 
     @FXML
-    private Text capLocateLabel;
+    private Text capLocateText;
 
     @FXML
-    private Label timeLabel;
+    private Text timeText;
 
     @FXML
     private SidebarController sideBarController;
@@ -40,11 +39,11 @@ public class EraDetailScreenController {
 
     public void setEra(Era era) {
         this.era = era;
-        nameLabel.setText(era.getName());
-        timeStampLabel.setText(era.getBelongsToTimestamp());
-        homelandLabel.setText(era.getHomeland());
-        founderLabel.setText(era.getFounder());
-        capLocateLabel.setText(era.getLocationOfCapital());
-        timeLabel.setText(era.getTime());
+        nameText.setText(era.getName());
+        timeStampText.setText(era.getBelongsToTimestamp());
+        homelandText.setText(era.getHomeland());
+        founderText.setText(era.getFounder());
+        capLocateText.setText(era.getLocationOfCapital());
+        timeText.setText(era.getTime());
     }
 }

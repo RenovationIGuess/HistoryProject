@@ -6,7 +6,6 @@ import history.event.Events;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -17,10 +16,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
-public class EventScreenController implements Initializable {
+public class EventScreenController {
     @FXML
     private TableView<Event> eventTable;
 
@@ -39,8 +36,8 @@ public class EventScreenController implements Initializable {
     @FXML
     private SearchBarController searchBarController;
 
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        Events.loadJSON();
+    @FXML
+    public void initialize() {
 
         colEventId.setCellValueFactory(
                 new PropertyValueFactory<Event, Integer>("id")
@@ -59,12 +56,12 @@ public class EventScreenController implements Initializable {
         searchBarController.setSearchBoxListener(
                 new SearchBoxListener() {
                     @Override
-                    public void onSearchNameHandler(String name) {
+                    public void handleSearchName(String name) {
                         eventTable.setItems(Events.collection.searchByName(name));
                     }
 
                     @Override
-                    public void onSearchIdHandler(String id) {
+                    public void handleSearchId(String id) {
                         try {
                             int intId = Integer.parseInt(id);
                             eventTable.setItems(
@@ -76,7 +73,7 @@ public class EventScreenController implements Initializable {
                     }
 
                     @Override
-                    public void onBlankHandler() {
+                    public void handleBlank() {
                         eventTable.setItems(Events.collection.getData());
                     }
                 }

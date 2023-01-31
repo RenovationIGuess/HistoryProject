@@ -4,7 +4,7 @@ import application.SidebarController;
 import history.historicalfigure.HistoricalFigure;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
@@ -12,37 +12,37 @@ import java.io.IOException;
 public class FigureDetailScreenController {
 
     @FXML
-    private Label nameLabel;
+    private Text nameText;
 
     @FXML
-    private Label realNameLabel;
+    private Text realNameText;
 
     @FXML
-    private Label bornLabel;
+    private Text bornText;
 
     @FXML
-    private Label diedLabel;
+    private Text diedText;
 
     @FXML
     private Text overviewText;
 
     @FXML
-    private Label workTimeLabel;
+    private Text workTimeText;
 
     @FXML
-    private Label eraLabel;
+    private Text eraText;
 
     @FXML
-    private Label fatherLabel;
+    private Text fatherText;
 
     @FXML
-    private Label motherLabel;
+    private Text motherText;
 
     @FXML
-    private Label precededByLabel;
+    private Text precededByText;
 
     @FXML
-    private Label succeededByLabel;
+    private Text succeededByText;
 
     @FXML
     private SidebarController sideBarController;
@@ -56,16 +56,37 @@ public class FigureDetailScreenController {
 
     public void setFigure(HistoricalFigure figure) {
         this.figure = figure;
-        nameLabel.setText(figure.getName());
-        realNameLabel.setText(figure.getRealName());
-        bornLabel.setText(figure.getBorn());
-        diedLabel.setText(figure.getDied());
+        nameText.setText(figure.getName());
+        realNameText.setText(figure.getRealName());
+        bornText.setText(figure.getBorn());
+        diedText.setText(figure.getDied());
         overviewText.setText(figure.getOverview());
-        workTimeLabel.setText(figure.getWorkTime());
-        eraLabel.setText(figure.getEra().getKey());
-        fatherLabel.setText(figure.getFather().getKey());
-        motherLabel.setText(figure.getMother().getKey());
-        precededByLabel.setText(figure.getPrecededBy().getKey());
-        succeededByLabel.setText(figure.getSucceededBy().getKey());
+        workTimeText.setText(figure.getWorkTime());
+        eraText.setText(figure.getEra().getKey());
+        fatherText.setText(figure.getFather().getKey());
+        motherText.setText(figure.getMother().getKey());
+        precededByText.setText(figure.getPrecededBy().getKey());
+        succeededByText.setText(figure.getSucceededBy().getKey());
+
+        if(figure.fetchEra() != null) {
+            eraText.setFill(Color.web("#3498db"));
+            eraText.setOnMouseClicked(mouseEvent -> System.out.println("clicked"));
+        }
+        if(figure.fetchFather() != null) {
+            fatherText.setFill(Color.web("#3498db"));
+            fatherText.setOnMouseClicked(mouseEvent -> System.out.println("clicked"));
+        }
+        if(figure.fetchMother() != null) {
+            motherText.setFill(Color.web("#3498db"));
+            motherText.setOnMouseClicked(mouseEvent -> System.out.println("clicked"));
+        }
+        if(figure.fetchPrecededBy() != null) {
+            precededByText.setFill(Color.web("#3498db"));
+            precededByText.setOnMouseClicked(mouseEvent -> System.out.println("clicked"));
+        }
+        if(figure.fetchSucceededBy() != null) {
+            succeededByText.setFill(Color.web("#3498db"));
+            succeededByText.setOnMouseClicked(mouseEvent -> System.out.println("clicked"));
+        }
     }
 }

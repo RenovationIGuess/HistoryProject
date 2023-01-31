@@ -6,7 +6,6 @@ import history.era.Eras;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -17,10 +16,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
-public class EraScreenController implements Initializable {
+public class EraScreenController {
 
     @FXML
     private TableView<Era> eraTable;
@@ -40,8 +37,8 @@ public class EraScreenController implements Initializable {
     @FXML
     private SearchBarController searchBarController;
 
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        Eras.loadJSON();
+    @FXML
+    public void initialize() {
 
         colEraId.setCellValueFactory(
                 new PropertyValueFactory<Era, Integer>("id")
@@ -60,12 +57,12 @@ public class EraScreenController implements Initializable {
         searchBarController.setSearchBoxListener(
                 new SearchBoxListener() {
                     @Override
-                    public void onSearchNameHandler(String name) {
+                    public void handleSearchName(String name) {
                         eraTable.setItems(Eras.collection.searchByName(name));
                     }
 
                     @Override
-                    public void onSearchIdHandler(String id) {
+                    public void handleSearchId(String id) {
                         try {
                             int intId = Integer.parseInt(id);
                             eraTable.setItems(
@@ -77,7 +74,7 @@ public class EraScreenController implements Initializable {
                     }
 
                     @Override
-                    public void onBlankHandler() {
+                    public void handleBlank() {
                         eraTable.setItems(Eras.collection.getData());
                     }
                 }

@@ -6,7 +6,6 @@ import history.historicsite.HistoricSites;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -17,10 +16,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
-public class SiteScreenController implements Initializable {
+public class SiteScreenController {
     @FXML
     private TableView<HistoricSite> siteTable;
 
@@ -39,8 +36,8 @@ public class SiteScreenController implements Initializable {
     @FXML
     private SearchBarController searchBarController;
 
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        HistoricSites.loadJSON();
+    @FXML
+    public void initialize() {
 
         colSiteId.setCellValueFactory(
                 new PropertyValueFactory<HistoricSite, Integer>("id")
@@ -59,12 +56,12 @@ public class SiteScreenController implements Initializable {
         searchBarController.setSearchBoxListener(
                 new SearchBoxListener() {
                     @Override
-                    public void onSearchNameHandler(String name) {
+                    public void handleSearchName(String name) {
                         siteTable.setItems(HistoricSites.collection.searchByName(name));
                     }
 
                     @Override
-                    public void onSearchIdHandler(String id) {
+                    public void handleSearchId(String id) {
                         try {
                             int intId = Integer.parseInt(id);
                             siteTable.setItems(
@@ -76,7 +73,7 @@ public class SiteScreenController implements Initializable {
                     }
 
                     @Override
-                    public void onBlankHandler() {
+                    public void handleBlank() {
                         siteTable.setItems(HistoricSites.collection.getData());
                     }
                 }
