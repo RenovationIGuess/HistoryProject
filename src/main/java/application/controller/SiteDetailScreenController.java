@@ -2,6 +2,8 @@ package application.controller;
 
 import application.App;
 import application.SidebarController;
+import history.festival.Festival;
+import history.festival.Festivals;
 import history.historicalfigure.HistoricalFigure;
 import history.historicalfigure.HistoricalFigures;
 import history.historicsite.HistoricSite;
@@ -36,7 +38,7 @@ public class SiteDetailScreenController {
     private Text overviewText;
 
     @FXML
-    private Text festivalsText;
+    private FlowPane relateFesFlowPane;
 
     @FXML
     private FlowPane relatedCharsFlowPane;
@@ -58,6 +60,28 @@ public class SiteDetailScreenController {
         constructionDateText.setText(site.getConstructionDate());
         founderText.setText(site.getFounder());
         overviewText.setText(site.getOverview());
+        for (Map.Entry<String, Integer> entry : site.getRelatedFestivalId().entrySet()) {
+            Text fesText = new Text(entry.getKey());
+            if (entry.getValue() != null) {
+                fesText.setFill(Color.web("3498db"));
+                fesText.setOnMouseClicked(mouseEvent -> {
+                    Festival festival = Festivals.collection.get(entry.getValue());
+                    try {
+                        FXMLLoader loader = new FXMLLoader(App.convertToURL("/application/fxml/FesDetailScreen.fxml"));
+                        Parent root = loader.load();
+                        FesDetailScreenController controller = loader.getController();
+                        controller.setFestival(festival);
+                        Scene scene = new Scene(root);
+                        Stage stage = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
+                        stage.setScene(scene);
+                        stage.show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+            relateFesFlowPane.getChildren().add(fesText);
+        }
         for (Map.Entry<String, Integer> entry : site.getRelatedFiguresId().entrySet()){
             Text figureText = new Text(entry.getKey());
             if(entry.getValue() != null) {

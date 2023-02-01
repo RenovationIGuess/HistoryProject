@@ -145,7 +145,7 @@
                         </VBox>
                         <VBox HBox.hgrow="ALWAYS">
                            <children>
-                              <Text fx:id="festivalsText" strokeType="OUTSIDE" strokeWidth="0.0" text="festivalsText" wrappingWidth="301.3366394042969" />
+                              <FlowPane fx:id="relateFesFlowPane" prefWidth="200.0" />
                            </children>
                         </VBox>
                      </children>
