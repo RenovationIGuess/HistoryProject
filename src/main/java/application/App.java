@@ -1,5 +1,10 @@
 package application;
 
+import history.era.Eras;
+import history.event.Events;
+import history.festival.Festivals;
+import history.historicalfigure.HistoricalFigures;
+import history.historicsite.HistoricSites;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -42,6 +47,13 @@ public class App extends Application {
         stage.setTitle("History APP");
         stage.setScene(scene);
         stage.show();
+
+        /* Loading all resources */
+        Eras.loadJSON();
+        Events.loadJSON();
+        Festivals.loadJSON();
+        HistoricalFigures.loadJSON();
+        HistoricSites.loadJSON();
     }
 
     /*  WARNING */

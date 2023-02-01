@@ -6,7 +6,6 @@ import history.festival.Festivals;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -17,10 +16,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
-public class FestivalScreenController implements Initializable {
+public class FestivalScreenController {
     @FXML
     private TableView<Festival> fesTable;
 
@@ -39,8 +36,8 @@ public class FestivalScreenController implements Initializable {
     @FXML
     private SearchBarController searchBarController;
 
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        Festivals.loadJSON();
+    @FXML
+    public void initialize() {
 
         colFesId.setCellValueFactory(
                 new PropertyValueFactory<Festival, Integer>("id")
@@ -59,12 +56,12 @@ public class FestivalScreenController implements Initializable {
         searchBarController.setSearchBoxListener(
                 new SearchBoxListener() {
                     @Override
-                    public void onSearchNameHandler(String name) {
+                    public void handleSearchName(String name) {
                         fesTable.setItems(Festivals.collection.searchByName(name));
                     }
 
                     @Override
-                    public void onSearchIdHandler(String id) {
+                    public void handleSearchId(String id) {
                         try {
                             int intId = Integer.parseInt(id);
                             fesTable.setItems(
@@ -76,7 +73,7 @@ public class FestivalScreenController implements Initializable {
                     }
 
                     @Override
-                    public void onBlankHandler() {
+                    public void handleBlank() {
                         fesTable.setItems(Festivals.collection.getData());
                     }
                 }

@@ -6,12 +6,9 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -42,74 +39,115 @@
         <fx:include fx:id="sideBar" source="Sidebar.fxml" />
     </left>
     <center>
-        <VBox BorderPane.alignment="CENTER">
+        <VBox alignment="CENTER" styleClass="background" stylesheets="@../stylesheet/background.css" BorderPane.alignment="CENTER">
          <children>
             <HBox>
                <children>
                   <Button mnemonicParsing="false" onAction="#onClickBack" text="Quay lại" />
                </children>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="62.0" prefWidth="500.0">
+            <HBox alignment="CENTER" prefWidth="550.0">
                <children>
-                  <Label fx:id="nameLabel" text="Name">
+                  <Text fx:id="nameText" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" textAlignment="CENTER" wrappingWidth="592.0101318359375">
                      <font>
                         <Font size="36.0" />
                      </font>
-                  </Label>
+                  </Text>
                </children>
             </HBox>
-            <ScrollPane prefWidth="500.0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
-               <content>
-                  <GridPane alignment="CENTER" prefHeight="210.0" prefWidth="466.0">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="151.20001983642578" minWidth="10.0" prefWidth="123.20001220703125" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="76.79998779296875" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
+            <VBox alignment="CENTER" spacing="15.0" VBox.vgrow="ALWAYS">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+               <children>
+                  <HBox>
                      <children>
-                        <Label text="Thời gian">
-                           <font>
-                              <Font name="System Bold" size="13.0" />
-                           </font>
-                        </Label>
-                        <Label text="Địa điểm" GridPane.rowIndex="1">
-                           <font>
-                              <Font name="System Bold" size="13.0" />
-                           </font>
-                        </Label>
-                        <Label text="Lần đầu tổ chức" GridPane.rowIndex="2">
-                           <font>
-                              <Font name="System Bold" size="13.0" />
-                           </font>
-                        </Label>
-                        <Label text="Ghi chú" GridPane.rowIndex="3">
-                           <font>
-                              <Font name="System Bold" size="13.0" />
-                           </font>
-                        </Label>
-                        <Label text="Nhân vật liên quan" GridPane.rowIndex="4">
-                           <font>
-                              <Font name="System Bold" size="13.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="timeLabel" text="time" GridPane.columnIndex="1" />
-                        <Label fx:id="locationLabel" text="location" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label fx:id="firstTimeLabel" text="firstHeld" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Text fx:id="noteLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Note" wrappingWidth="314.0280570983887" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <Label fx:id="relateCharsLabel" text="relateChars" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <VBox prefWidth="176.0">
+                           <children>
+                              <Label text="Thời gian">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox HBox.hgrow="ALWAYS">
+                           <children>
+                              <Text fx:id="dateText" strokeType="OUTSIDE" strokeWidth="0.0" text="timeText" wrappingWidth="301.33673095703125" />
+                           </children>
+                        </VBox>
                      </children>
-                  </GridPane>
-               </content>
-               <padding>
-                  <Insets left="10.0" right="10.0" />
-               </padding>
-            </ScrollPane>
+                  </HBox>
+                  <HBox layoutX="10.0" layoutY="10.0">
+                     <children>
+                        <VBox prefWidth="176.0">
+                           <children>
+                              <Label text="Địa điểm">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox HBox.hgrow="ALWAYS">
+                           <children>
+                              <Text fx:id="locationText" strokeType="OUTSIDE" strokeWidth="0.0" text="locationText" wrappingWidth="301.33673095703125" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox layoutX="10.0" layoutY="43.0">
+                     <children>
+                        <VBox prefWidth="176.0">
+                           <children>
+                              <Label text="Lần đầu tổ chức">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox HBox.hgrow="ALWAYS">
+                           <children>
+                              <Text fx:id="firstTimeText" strokeType="OUTSIDE" strokeWidth="0.0" text="firstTimeText" wrappingWidth="301.33673095703125" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox layoutX="10.0" layoutY="76.0">
+                     <children>
+                        <VBox prefWidth="176.0">
+                           <children>
+                              <Label text="Ghi chú">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox HBox.hgrow="ALWAYS">
+                           <children>
+                              <Text fx:id="noteText" strokeType="OUTSIDE" strokeWidth="0.0" text="noteText" wrappingWidth="301.33673095703125" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox layoutX="10.0" layoutY="108.0">
+                     <children>
+                        <VBox prefWidth="176.0">
+                           <children>
+                              <Label text="Nhân vật liên quan">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <FlowPane fx:id="relatedCharsFlowPane" hgap="15.0" vgap="5.0" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
          </children>
          <BorderPane.margin>
             <Insets />

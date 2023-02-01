@@ -75,7 +75,10 @@ public abstract class HistoricalEntity {
 //                return true;
 //        }
 //        return false;
-        return this.name.toLowerCase().contains(name.toLowerCase());
+        if (this.name != null){
+            return this.name.toLowerCase().contains(name.toLowerCase());
+        }
+        return false;
     }
 
     /**

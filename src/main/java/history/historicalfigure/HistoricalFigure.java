@@ -1,6 +1,8 @@
 package history.historicalfigure;
 
 import history.HistoricalEntity;
+import history.era.Era;
+import history.era.Eras;
 import history.relation.Pair;
 
 import java.util.List;
@@ -103,6 +105,42 @@ public class HistoricalFigure extends HistoricalEntity {
 
     public void setSucceededBy(String name, Integer id) {
         this.succeededBy.setEntry(name, id);
+    }
+
+    /* Relation Helper */
+    public Era fetchEra(){
+        if (this.era.getValue() != null){
+            return Eras.collection.get(this.era.getValue());
+        }
+        return null;
+    }
+
+    public HistoricalFigure fetchFather(){
+        if (this.father.getValue() != null){
+            return HistoricalFigures.collection.get(this.father.getValue());
+        }
+        return null;
+    }
+
+    public HistoricalFigure fetchMother(){
+        if (this.mother.getValue() != null){
+            return HistoricalFigures.collection.get(this.mother.getValue());
+        }
+        return null;
+    }
+
+    public HistoricalFigure fetchPrecededBy(){
+        if (this.precededBy.getValue() != null){
+            return HistoricalFigures.collection.get(this.precededBy.getValue());
+        }
+        return null;
+    }
+
+    public HistoricalFigure fetchSucceededBy(){
+        if (this.succeededBy.getValue() != null){
+            return HistoricalFigures.collection.get(this.succeededBy.getValue());
+        }
+        return null;
     }
 
     /* Constructors */
