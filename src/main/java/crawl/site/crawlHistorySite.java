@@ -325,6 +325,9 @@ public class crawlHistorySite {
                 founder,
                 festival,
                 description,
+                "",
+                "",
+                "",
                 relatedChar
             );
 

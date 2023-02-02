@@ -1,6 +1,7 @@
-package application;
+package application.controller;
 
-import application.controller.FigureDetailScreenController;
+import application.App;
+import application.SearchBoxListener;
 import history.historicalfigure.HistoricalFigure;
 import history.historicalfigure.HistoricalFigures;
 import history.relation.Pair;

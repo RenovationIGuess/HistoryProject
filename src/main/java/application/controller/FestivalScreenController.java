@@ -1,8 +1,9 @@
-package application;
+package application.controller;
 
-import application.controller.SiteDetailScreenController;
-import history.historicsite.HistoricSite;
-import history.historicsite.HistoricSites;
+import application.App;
+import application.SearchBoxListener;
+import history.festival.Festival;
+import history.festival.Festivals;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,21 +18,21 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class SiteScreenController {
+public class FestivalScreenController {
     @FXML
-    private TableView<HistoricSite> siteTable;
+    private TableView<Festival> fesTable;
 
     @FXML
-    private TableColumn<HistoricSite, Integer> colSiteId;
+    private TableColumn<Festival, Integer> colFesId;
 
     @FXML
-    private TableColumn<HistoricSite, String> colSiteName;
+    private TableColumn<Festival, String> colFesName;
 
     @FXML
-    private TableColumn<HistoricSite, String> colSiteDate;
+    private TableColumn<Festival, String> colFesDate;
 
     @FXML
-    private TableColumn<HistoricSite, String> colSiteLocate;
+    private TableColumn<Festival, String> colFesLocate;
 
     @FXML
     private SearchBarController searchBarController;
@@ -39,33 +40,33 @@ public class SiteScreenController {
     @FXML
     public void initialize() {
 
-        colSiteId.setCellValueFactory(
-                new PropertyValueFactory<HistoricSite, Integer>("id")
+        colFesId.setCellValueFactory(
+                new PropertyValueFactory<Festival, Integer>("id")
         );
-        colSiteName.setCellValueFactory(
-                new PropertyValueFactory<HistoricSite, String>("name")
+        colFesName.setCellValueFactory(
+                new PropertyValueFactory<Festival, String>("name")
         );
-        colSiteDate.setCellValueFactory(
-                new PropertyValueFactory<HistoricSite, String>("constructionDate")
+        colFesDate.setCellValueFactory(
+                new PropertyValueFactory<Festival, String>("date")
         );
-        colSiteLocate.setCellValueFactory(
-                new PropertyValueFactory<HistoricSite, String>("location")
+        colFesLocate.setCellValueFactory(
+                new PropertyValueFactory<Festival, String>("location")
         );
-        siteTable.setItems(HistoricSites.collection.getData());
+        fesTable.setItems(Festivals.collection.getData());
 
         searchBarController.setSearchBoxListener(
                 new SearchBoxListener() {
                     @Override
                     public void handleSearchName(String name) {
-                        siteTable.setItems(HistoricSites.collection.searchByName(name));
+                        fesTable.setItems(Festivals.collection.searchByName(name));
                     }
 
                     @Override
                     public void handleSearchId(String id) {
                         try {
                             int intId = Integer.parseInt(id);
-                            siteTable.setItems(
-                                    FXCollections.singletonObservableList(HistoricSites.collection.get(intId))
+                            fesTable.setItems(
+                                    FXCollections.singletonObservableList(Festivals.collection.get(intId))
                             );
                         } catch (Exception e){
                             System.err.println("Cannot find the entity with the id " + id);
@@ -74,21 +75,21 @@ public class SiteScreenController {
 
                     @Override
                     public void handleBlank() {
-                        siteTable.setItems(HistoricSites.collection.getData());
+                        fesTable.setItems(Festivals.collection.getData());
                     }
                 }
         );
 
-        siteTable.setRowFactory(tableView -> {
-            TableRow<HistoricSite> row = new TableRow<>();
+        fesTable.setRowFactory(tableView -> {
+            TableRow<Festival> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if(event.getClickCount() == 2 && (!row.isEmpty())){
-                    HistoricSite site = row.getItem();
+                    Festival fes = row.getItem();
                     try {
-                        FXMLLoader loader = new FXMLLoader(App.convertToURL("/application/fxml/SiteDetailScreen.fxml"));
+                        FXMLLoader loader = new FXMLLoader(App.convertToURL("/application/fxml/FesDetailScreen.fxml"));
                         Parent root = loader.load();
-                        SiteDetailScreenController controller = loader.getController();
-                        controller.setHistoricSite(site);
+                        FesDetailScreenController controller = loader.getController();
+                        controller.setFestival(fes);
                         Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
                         Scene scene = new Scene(root);
                         stage.setScene(scene);

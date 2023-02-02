@@ -1,7 +1,6 @@
 package application.controller;
 
 import application.App;
-import application.SidebarController;
 import history.festival.Festival;
 import history.historicalfigure.HistoricalFigure;
 import history.historicalfigure.HistoricalFigures;

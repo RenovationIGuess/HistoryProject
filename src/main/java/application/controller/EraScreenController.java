@@ -1,8 +1,9 @@
-package application;
+package application.controller;
 
-import application.controller.FesDetailScreenController;
-import history.festival.Festival;
-import history.festival.Festivals;
+import application.App;
+import application.SearchBoxListener;
+import history.era.Era;
+import history.era.Eras;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,21 +18,22 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class FestivalScreenController {
-    @FXML
-    private TableView<Festival> fesTable;
+public class EraScreenController {
 
     @FXML
-    private TableColumn<Festival, Integer> colFesId;
+    private TableView<Era> eraTable;
 
     @FXML
-    private TableColumn<Festival, String> colFesName;
+    private TableColumn<Era, Integer> colEraId;
 
     @FXML
-    private TableColumn<Festival, String> colFesDate;
+    private TableColumn<Era, String> colEraName;
 
     @FXML
-    private TableColumn<Festival, String> colFesLocate;
+    private TableColumn<Era, String> colEraDate;
+
+    @FXML
+    private TableColumn<Era, String> colEraTimeStamp;
 
     @FXML
     private SearchBarController searchBarController;
@@ -39,33 +41,33 @@ public class FestivalScreenController {
     @FXML
     public void initialize() {
 
-        colFesId.setCellValueFactory(
-                new PropertyValueFactory<Festival, Integer>("id")
+        colEraId.setCellValueFactory(
+                new PropertyValueFactory<Era, Integer>("id")
         );
-        colFesName.setCellValueFactory(
-                new PropertyValueFactory<Festival, String>("name")
+        colEraName.setCellValueFactory(
+                new PropertyValueFactory<Era, String>("name")
         );
-        colFesDate.setCellValueFactory(
-                new PropertyValueFactory<Festival, String>("date")
+        colEraDate.setCellValueFactory(
+                new PropertyValueFactory<Era, String>("time")
         );
-        colFesLocate.setCellValueFactory(
-                new PropertyValueFactory<Festival, String>("location")
+        colEraTimeStamp.setCellValueFactory(
+                new PropertyValueFactory<Era, String>("belongsToTimestamp")
         );
-        fesTable.setItems(Festivals.collection.getData());
+        eraTable.setItems(Eras.collection.getData());
 
         searchBarController.setSearchBoxListener(
                 new SearchBoxListener() {
                     @Override
                     public void handleSearchName(String name) {
-                        fesTable.setItems(Festivals.collection.searchByName(name));
+                        eraTable.setItems(Eras.collection.searchByName(name));
                     }
 
                     @Override
                     public void handleSearchId(String id) {
                         try {
                             int intId = Integer.parseInt(id);
-                            fesTable.setItems(
-                                    FXCollections.singletonObservableList(Festivals.collection.get(intId))
+                            eraTable.setItems(
+                                    FXCollections.singletonObservableList(Eras.collection.get(intId))
                             );
                         } catch (Exception e){
                             System.err.println("Cannot find the entity with the id " + id);
@@ -74,26 +76,27 @@ public class FestivalScreenController {
 
                     @Override
                     public void handleBlank() {
-                        fesTable.setItems(Festivals.collection.getData());
+                        eraTable.setItems(Eras.collection.getData());
                     }
                 }
         );
 
-        fesTable.setRowFactory(tableView -> {
-            TableRow<Festival> row = new TableRow<>();
+        // Tao listener khi click vao trieu dai trong table
+        eraTable.setRowFactory(tableView -> {
+            TableRow<Era> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
-                if(event.getClickCount() == 2 && (!row.isEmpty())){
-                    Festival fes = row.getItem();
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    Era era = row.getItem();
                     try {
-                        FXMLLoader loader = new FXMLLoader(App.convertToURL("/application/fxml/FesDetailScreen.fxml"));
+                        FXMLLoader loader = new FXMLLoader(App.convertToURL("/application/fxml/EraDetailScreen.fxml"));
                         Parent root = loader.load();
-                        FesDetailScreenController controller = loader.getController();
-                        controller.setFestival(fes);
+                        EraDetailScreenController controller = loader.getController();
+                        controller.setEra(era);
                         Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
                         Scene scene = new Scene(root);
                         stage.setScene(scene);
                         stage.show();
-                    } catch (IOException e){
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }

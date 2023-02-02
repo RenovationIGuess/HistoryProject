@@ -1,7 +1,6 @@
 package application.controller;
 
 import application.App;
-import application.SidebarController;
 import history.historicalfigure.HistoricalFigure;
 import history.historicalfigure.HistoricalFigures;
 import history.historicsite.HistoricSite;
@@ -36,6 +35,15 @@ public class SiteDetailScreenController {
     private Text overviewText;
 
     @FXML
+    private Text noteText;
+
+    @FXML
+    private Text categoryText;
+
+    @FXML
+    private Text approvedYearText;
+
+    @FXML
     private Text festivalsText;
 
     @FXML
@@ -58,6 +66,9 @@ public class SiteDetailScreenController {
         constructionDateText.setText(site.getConstructionDate());
         founderText.setText(site.getFounder());
         overviewText.setText(site.getOverview());
+        noteText.setText(site.getNote());
+        categoryText.setText(site.getCategory());
+        approvedYearText.setText(site.getApprovedYear());
         for (Map.Entry<String, Integer> entry : site.getRelatedFiguresId().entrySet()){
             Text figureText = new Text(entry.getKey());
             if(entry.getValue() != null) {

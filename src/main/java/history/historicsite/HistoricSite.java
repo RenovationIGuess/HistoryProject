@@ -4,9 +4,20 @@ import history.HistoricalEntity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+/**
+ * Đây là lớp thể hiện loại thực thể di tích lịch sử
+ * bao gồm các thuộc tính
+ *      location: vị trí
+ *      constructionDate: ngày khởi công
+ *      founder: người sáng lập
+ *      relatedFestivalId: lễ hội liên quan
+ *      overview: mô tả ngắn gọn
+ *      note: ghi chú
+ *      category: hạng mục
+ *      relatedFiguresId: nhân vật liên quan
+ */
 public class HistoricSite extends HistoricalEntity {
 
     private String location;
@@ -14,6 +25,13 @@ public class HistoricSite extends HistoricalEntity {
     private String founder;
     private Map<String, Integer> relatedFestivalId = new HashMap<>();;
     private String overview;
+
+    private String note;
+
+    private String category;
+
+    private String approvedYear;
+
     private Map<String, Integer> relatedFiguresId = new HashMap<>();;
 
     /* Getters */
@@ -40,6 +58,18 @@ public class HistoricSite extends HistoricalEntity {
 
     public Map<String, Integer> getRelatedFiguresId() {
         return relatedFiguresId;
+    }
+
+    public String getNote(){
+        return note;
+    }
+
+    public String getCategory(){
+        return category;
+    }
+
+    public String getApprovedYear(){
+        return approvedYear;
     }
 
     /* Setters */
@@ -72,6 +102,18 @@ public class HistoricSite extends HistoricalEntity {
         this.relatedFiguresId = newRelateFigs;
     }
 
+    public void setNote(String note){
+        this.note = note;
+    }
+
+    public void setCategory(String category){
+        this.category = category;
+    }
+
+    public void setApprovedYear(String approvedYear){
+        this.approvedYear = approvedYear;
+    }
+
     /* Helpers */
     //Add sau
 
@@ -96,6 +138,9 @@ public class HistoricSite extends HistoricalEntity {
             String founder,
             String relatedFes,
             String desc,
+            String note,
+            String category,
+            String approvedYear,
             ArrayList<String> relatedChars
     ) {
         super(name);
@@ -105,6 +150,9 @@ public class HistoricSite extends HistoricalEntity {
         this.founder = founder;
         this.relatedFestivalId.put(relatedFes, null);
         this.overview = desc;
+        this.note = note;
+        this.category = category;
+        this.approvedYear = approvedYear;
         for (String relatedChar : relatedChars) {
             this.relatedFiguresId.put(relatedChar, null);
         }

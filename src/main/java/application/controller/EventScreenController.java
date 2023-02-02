@@ -1,6 +1,7 @@
-package application;
+package application.controller;
 
-import application.controller.EventDetailScreenController;
+import application.App;
+import application.SearchBoxListener;
 import history.event.Event;
 import history.event.Events;
 import javafx.collections.FXCollections;
