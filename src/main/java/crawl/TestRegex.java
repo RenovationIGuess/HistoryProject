@@ -14,20 +14,22 @@ public class TestRegex {
 
         // Bùi Quốc Khái (chữ Hán: 裴國愾, 1141-1234) là người đỗ đầu khoa thi Tiến sĩ năm Trinh Phù thứ 10 (Ất Tỵ, 1185) dưới thời vua Lý Cao Tông (ở ngôi: 1176-1210), nước Đại Việt (nay là Việt Nam).
 
-        String paragraph = "Điện Đô vương Trịnh Cán abc (chữ Hán: 鄭檊, 1777 – 1782) là vị chúa Trịnh thứ 9 thời Lê Trung Hưng trong lịch sử Việt Nam, ở ngôi từ tháng 9 đến tháng 11 năm 1782, là con trai của chúa Trịnh Sâm và Tuyên phi Đặng Thị Huệ. Trịnh Cán sinh và mất tại thành Thăng Long khi mới 6 tuổi.";
-        String name = "Trịnh Cán";
+        String paragraph = "Chiến trường Điện Biên Phủ";
+        String name = "chiến trường Ðiện Biên Phủ";
 
         // Test nhat ten real and alter
         // Tùy Văn Đế (chữ Hán: 隋文帝; 21 tháng 7, 541 - 13 tháng 8, 604), tên thật là Dương Kiên (楊堅), là vị Hoàng đế sáng lập triều đại nhà Tùy trong lịch sử Trung Quốc. Ông ở ngôi từ năm 581 đến năm 604, tổng cộng 23 năm.
         // Cao Lỗ (? - 179 trước Công nguyên) (còn gọi là Cao Nỗ, Cao Thông, Đô Lỗ1 , Thạch Thần, hay Đại Than Đô Lỗ Thạch Thần) là một tướng tài của Thục Phán An Dương Vương, quê quán tại xã Cao Đức, huyện Gia Bình, tỉnh Bắc Ninh ngày nay.
-        Pattern p = Pattern.compile("^[^(]*[(]", Pattern.CASE_INSENSITIVE);
+        Pattern p = Pattern.compile(Pattern.quote(name), Pattern.CASE_INSENSITIVE);
         Matcher m = p.matcher(paragraph);
+
+        System.out.println(name.equalsIgnoreCase(paragraph));
 
         if (m.find()) {
             String result = m.group();
-            result = result.substring(0, result.length() - 1).trim();
-            int startIndex = result.indexOf(name);
-            result = result.substring(0, startIndex + name.length());
+//            result = result.substring(0, result.length() - 1).trim();
+//            int startIndex = result.indexOf(name);
+//            result = result.substring(0, startIndex + name.length());
             System.out.println("\"" + result + "\"");
 //            System.out.println(result.substring(0, result.length() - 1).length());
 //            System.out.println(result.substring(0, result.length() - 1).equals(""));
