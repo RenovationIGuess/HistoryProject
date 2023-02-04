@@ -240,7 +240,7 @@ public class Relation {
                             }
                             if (found) break;
                         }
-                        if (!found) relatedCharList.put(entry.getKey(), null);
+                        // if (!found) relatedCharList.put(entry.getKey(), null);
                     }
                 }
                 s.setRelatedFigures(relatedCharList);
