@@ -663,8 +663,8 @@ public class Relation {
                                 // Bo qua ca chu nha
                                 result = result.substring(3, result.length() - 1);
                             }
-                            result.trim();
-                            eraNameToSearch = result;
+
+                            eraNameToSearch = result.trim();
                         }
                     }
 
@@ -916,10 +916,10 @@ public class Relation {
         }
 
         // Luu vao file JSON
-        HistoricalFigures.collection.save();
-        Events.collection.save();
-        Festivals.collection.save();
-        Eras.collection.save();
-        HistoricSites.collection.save();
+        HistoricalFigures.save();
+        Events.save();
+        Festivals.save();
+        Eras.save();
+        HistoricSites.save();
     }
 }

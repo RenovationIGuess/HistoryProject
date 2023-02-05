@@ -2,7 +2,9 @@ package application.controller;
 
 import application.App;
 import history.era.Era;
+import history.era.Eras;
 import history.historicalfigure.HistoricalFigure;
+import history.historicalfigure.HistoricalFigures;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -57,7 +59,7 @@ public class FigureDetailScreenController {
 
     @FXML
     public void onClickBack(ActionEvent event) throws IOException {
-        sideBarController.switchByGetFxml("/application/fxml/HistoricalFiguresScreen.fxml", event);
+        sideBarController.switchByGetFxml("/application/view/HistoricalFiguresScreen.fxml", event);
     }
 
     public void setFigure(HistoricalFigure figure) {
@@ -74,12 +76,18 @@ public class FigureDetailScreenController {
         precededByText.setText(figure.getPrecededBy().getKey());
         succeededByText.setText(figure.getSucceededBy().getKey());
 
-        if(figure.fetchEra() != null) {
+        Era era = Eras.collection.get(figure.getEra().getValue());
+        HistoricalFigure father = HistoricalFigures.collection.get(figure.getFather().getValue());
+        HistoricalFigure mother = HistoricalFigures.collection.get(figure.getMother().getValue());
+        HistoricalFigure precededFigure = HistoricalFigures.collection.get(figure.getPrecededBy().getValue());
+        HistoricalFigure succeededFigure = HistoricalFigures.collection.get(figure.getSucceededBy().getValue());
+
+
+        if(era != null) {
             eraText.setFill(Color.web("#3498db"));
             eraText.setOnMouseClicked(mouseEvent -> {
-                Era era = figure.fetchEra();
                 try {
-                    FXMLLoader loader = new FXMLLoader(App.convertToURL("/application/fxml/EraDetailScreen.fxml"));
+                    FXMLLoader loader = new FXMLLoader(App.convertToURL("/application/view/EraDetailScreen.fxml"));
                     Parent root = loader.load();
                     EraDetailScreenController controller = loader.getController();
                     controller.setEra(era);
@@ -94,27 +102,27 @@ public class FigureDetailScreenController {
         } else {
             eraText.setFill(Color.web("#000000"));
         }
-        if(figure.fetchFather() != null) {
+        if(father != null) {
             fatherText.setFill(Color.web("#3498db"));
-            fatherText.setOnMouseClicked(mouseEvent -> setFigure(figure.fetchFather()));
+            fatherText.setOnMouseClicked(mouseEvent -> setFigure(father));
         } else {
             fatherText.setFill(Color.web("#000000"));
         }
-        if(figure.fetchMother() != null) {
+        if(mother != null) {
             motherText.setFill(Color.web("#3498db"));
-            motherText.setOnMouseClicked(mouseEvent -> setFigure(figure.fetchMother()));
+            motherText.setOnMouseClicked(mouseEvent -> setFigure(mother));
         } else {
             motherText.setFill(Color.web("#000000"));
         }
-        if(figure.fetchPrecededBy() != null) {
+        if(precededFigure != null) {
             precededByText.setFill(Color.web("#3498db"));
-            precededByText.setOnMouseClicked(mouseEvent -> setFigure(figure.fetchPrecededBy()));
+            precededByText.setOnMouseClicked(mouseEvent -> setFigure(precededFigure));
         } else {
             precededByText.setFill(Color.web("#000000"));
         }
-        if(figure.fetchSucceededBy() != null) {
+        if(succeededFigure != null) {
             succeededByText.setFill(Color.web("#3498db"));
-            succeededByText.setOnMouseClicked(mouseEvent -> setFigure(figure.fetchSucceededBy()));
+            succeededByText.setOnMouseClicked(mouseEvent -> setFigure(succeededFigure));
         } else {
             succeededByText.setFill(Color.web("#000000"));
         }

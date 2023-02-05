@@ -17,7 +17,7 @@ import java.nio.file.FileSystems;
 
 public class App extends Application {
 
-    public static final String TOPSCREEN_PATH = "/application/fxml/MainScreen.fxml";
+    public static final String TOPSCREEN_PATH = "/application/view/MainScreen.fxml";
 
     /**
      * Chuyển path sang dạng URL để cho vào FXMLLoader
@@ -43,7 +43,6 @@ public class App extends Application {
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(convertToURL(TOPSCREEN_PATH));
         Scene scene = new Scene(root);
-        stage.setTitle("Test");
         stage.setTitle("History APP");
         stage.setScene(scene);
         stage.show();

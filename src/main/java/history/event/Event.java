@@ -15,9 +15,8 @@ import java.util.Map;
  *      location: địa điểm diễn ra
  *      cause: nguyên nhân
  *      result: kết quả
- *      relatedFiguresId: các nhân vật lịch sử liên quan
+ *      relatedFiguresId: các nhân vật lịch sử liên quan (liên kết ID)
  */
-
 public class Event extends HistoricalEntity {
     private String date;
     private String location;

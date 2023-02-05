@@ -1,4 +1,4 @@
-package json;
+package helper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import history.HistoricalEntity;
@@ -7,7 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 
-public class JSON {
+public class JsonHelper {
     /* Object để thực hiện các thao tác đọc viết JSON */
     public static final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -19,12 +19,12 @@ public class JSON {
     /**
      * Viết đối tượng ra lưu trữ dưới dạng JSON
      * @param filename Tên file để lưu trữ JSON (extension: .json)
-     * @param entity Đối tượng cần lưu trữ
+     * @param object Đối tượng cần chuyển sang file JSON lưu trữ
      */
-    public static void writeJSON(String filename, HistoricalEntity entity) {
+    public static void writeJSON(String filename, Object object) {
         try {
             System.out.println("Saved successfully into " + PREFIX_URL + filename);
-            MAPPER.writeValue(new File(PREFIX_URL + filename), entity);
+            MAPPER.writeValue(new File(PREFIX_URL + filename), object);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -35,10 +35,9 @@ public class JSON {
      * @param entity Đối tượng cần chuyển sang JSON
      * @return String JSON đã biến đổi từ đối tượng
      */
-    public static String toJSON(HistoricalEntity entity){
+    public static String stringify(HistoricalEntity entity){
         try {
-            String result = MAPPER.writeValueAsString(entity);
-            return result;
+            return MAPPER.writeValueAsString(entity);
         } catch (IOException exception){
             exception.printStackTrace();
             return null;

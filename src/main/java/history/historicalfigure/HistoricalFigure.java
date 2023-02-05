@@ -1,8 +1,6 @@
 package history.historicalfigure;
 
 import history.HistoricalEntity;
-import history.era.Era;
-import history.era.Eras;
 import history.relation.Pair;
 
 import java.util.List;
@@ -16,17 +14,17 @@ import java.util.List;
  *      overview: mô tả ngắn gọn
  *      workTime: thời gian tại chức
  *      era: thời đại sống
- *      father: bố
- *      mother: mẹ
- *      precededBy: tiền nhiệm
- *      succeededBy: kế nhiệm
+ *      father: bố (liên kết ID)
+ *      mother: mẹ (liên kết ID)
+ *      precededBy: tiền nhiệm (liên kết ID)
+ *      succeededBy: kế nhiệm (liên kết ID)
  */
 public class HistoricalFigure extends HistoricalEntity {
-    private String realName; // Ten that
-    private String born; // Ngay sinh voi noi sinh
-    private String died; // Ngay mat va noi mat
-    private String overview; // Mo ta ngan gon
-    private String workTime; // Thoi gian tai chuc
+    private String realName;
+    private String born;
+    private String died;
+    private String overview;
+    private String workTime;
     private Pair<String, Integer> era = new Pair<>();
     private Pair<String, Integer> father = new Pair<>();
     private Pair<String, Integer> mother = new Pair<>();
@@ -87,6 +85,14 @@ public class HistoricalFigure extends HistoricalEntity {
         this.overview = overview;
     }
 
+    public void setWorkTime(String workTime) {
+        this.workTime = workTime;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
     public void setEra(String name, Integer id) {
         this.era.setEntry(name, id);
     }
@@ -105,42 +111,6 @@ public class HistoricalFigure extends HistoricalEntity {
 
     public void setSucceededBy(String name, Integer id) {
         this.succeededBy.setEntry(name, id);
-    }
-
-    /* Relation Helper */
-    public Era fetchEra(){
-        if (this.era.getValue() != null){
-            return Eras.collection.get(this.era.getValue());
-        }
-        return null;
-    }
-
-    public HistoricalFigure fetchFather(){
-        if (this.father.getValue() != null){
-            return HistoricalFigures.collection.get(this.father.getValue());
-        }
-        return null;
-    }
-
-    public HistoricalFigure fetchMother(){
-        if (this.mother.getValue() != null){
-            return HistoricalFigures.collection.get(this.mother.getValue());
-        }
-        return null;
-    }
-
-    public HistoricalFigure fetchPrecededBy(){
-        if (this.precededBy.getValue() != null){
-            return HistoricalFigures.collection.get(this.precededBy.getValue());
-        }
-        return null;
-    }
-
-    public HistoricalFigure fetchSucceededBy(){
-        if (this.succeededBy.getValue() != null){
-            return HistoricalFigures.collection.get(this.succeededBy.getValue());
-        }
-        return null;
     }
 
     /* Constructors */

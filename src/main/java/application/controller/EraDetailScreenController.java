@@ -48,7 +48,7 @@ public class EraDetailScreenController {
 
     @FXML
     public void onClickBack(ActionEvent event) throws IOException {
-        sideBarController.switchByGetFxml("/application/fxml/EraScreen.fxml", event);
+        sideBarController.switchByGetFxml("/application/view/EraScreen.fxml", event);
     }
 
     public void setEra(Era era) {
@@ -66,7 +66,7 @@ public class EraDetailScreenController {
                 kingText.setOnMouseClicked(mouseEvent -> {
                     HistoricalFigure figure = HistoricalFigures.collection.get(entry.getValue());
                     try {
-                        FXMLLoader loader = new FXMLLoader(App.convertToURL("/application/fxml/FigureDetailScreen.fxml"));
+                        FXMLLoader loader = new FXMLLoader(App.convertToURL("/application/view/FigureDetailScreen.fxml"));
                         Parent root = loader.load();
                         FigureDetailScreenController controller = loader.getController();
                         controller.setFigure(figure);

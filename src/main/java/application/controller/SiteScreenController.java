@@ -86,7 +86,7 @@ public class SiteScreenController {
                 if(event.getClickCount() == 2 && (!row.isEmpty())){
                     HistoricSite site = row.getItem();
                     try {
-                        FXMLLoader loader = new FXMLLoader(App.convertToURL("/application/fxml/SiteDetailScreen.fxml"));
+                        FXMLLoader loader = new FXMLLoader(App.convertToURL("/application/view/SiteDetailScreen.fxml"));
                         Parent root = loader.load();
                         SiteDetailScreenController controller = loader.getController();
                         controller.setHistoricSite(site);

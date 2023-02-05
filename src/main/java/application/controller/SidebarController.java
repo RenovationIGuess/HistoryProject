@@ -33,32 +33,32 @@ public class SidebarController {
 
     @FXML
     void switchToMain(ActionEvent event) throws IOException {
-        switchByGetFxml("/application/fxml/MainScreen.fxml", event);
+        switchByGetFxml("/application/view/MainScreen.fxml", event);
     }
 
     @FXML
     void switchToHistoricalFigures(ActionEvent event) throws IOException {
-        switchByGetFxml("/application/fxml/HistoricalFiguresScreen.fxml", event);
+        switchByGetFxml("/application/view/HistoricalFiguresScreen.fxml", event);
     }
 
     @FXML
     void switchToHistoricSite(ActionEvent event) throws IOException {
-        switchByGetFxml("/application/fxml/HistoricSiteScreen.fxml", event);
+        switchByGetFxml("/application/view/HistoricSiteScreen.fxml", event);
     }
 
     @FXML
     void switchToEras(ActionEvent event) throws IOException {
-        switchByGetFxml("/application/fxml/EraScreen.fxml", event);
+        switchByGetFxml("/application/view/EraScreen.fxml", event);
     }
 
     @FXML
     void switchToEvents(ActionEvent event) throws IOException {
-        switchByGetFxml("/application/fxml/EventScreen.fxml", event);
+        switchByGetFxml("/application/view/EventScreen.fxml", event);
     }
 
     @FXML
     void switchToFestivals(ActionEvent event) throws IOException {
-        switchByGetFxml("/application/fxml/FestivalScreen.fxml", event);
+        switchByGetFxml("/application/view/FestivalScreen.fxml", event);
     }
 
 }

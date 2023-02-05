@@ -1,5 +1,15 @@
 package history.relation;
 
+/**
+ * Đây là lớp được tạo thủ công để lưu trữ
+ * liên kết, sử dụng như một cấu trúc dữ liệu
+ * theo cặp (key - value)
+ * Lý do tạo :trong các thư viện được thêm vào chương trình
+ * có javafx.util.Pair không thể sử dụng được
+ * để phục vụ nhu cầu thay đổi dữ liệu (tạo liên kết).
+ * @param <K> key
+ * @param <V> value
+ */
 public class Pair<K, V> {
     private K key;
     private V value;

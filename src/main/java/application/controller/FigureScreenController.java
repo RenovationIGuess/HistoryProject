@@ -84,7 +84,7 @@ public class FigureScreenController {
                 if(event.getClickCount() == 2 && (!row.isEmpty())){
                     HistoricalFigure figure = row.getItem();
                     try {
-                        FXMLLoader loader = new FXMLLoader(App.convertToURL("/application/fxml/FigureDetailScreen.fxml"));
+                        FXMLLoader loader = new FXMLLoader(App.convertToURL("/application/view/FigureDetailScreen.fxml"));
                         Parent root = loader.load();
                         FigureDetailScreenController controller = loader.getController();
                         controller.setFigure(figure);

@@ -1,12 +1,9 @@
 package history.era;
 
 import history.HistoricalEntity;
-import history.historicalfigure.HistoricalFigure;
-import history.historicalfigure.HistoricalFigures;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -14,12 +11,12 @@ import java.util.Map;
  * gồm các thuộc tính
  *      name: tên triều đại
  *      aliases: tên gọi khác
- *      belongsToTimestamp:
+ *      belongsToTimestamp: thuộc về thời kỳ
  *      homeland: quê hương
  *      founder: người sáng lập
  *      locationOfCaptal: vị trí kinh đô
  *      time: thời gian
- *      listOfKings: danh sách vua cai trị
+ *      listOfKings: danh sách vua cai trị (liên kết ID)
  */
 
 public class Era extends HistoricalEntity {
@@ -32,7 +29,6 @@ public class Era extends HistoricalEntity {
     private Map<String, Integer> listOfKingsId = new HashMap<>();
 
     /* Getters */
-
     public String getBelongsToTimestamp() {
         return belongsToTimestamp;
     }
@@ -58,7 +54,6 @@ public class Era extends HistoricalEntity {
     }
 
     /* Setters */
-
     public void setBelongsToTimestamp(String belongsToTimestamp) {
         this.belongsToTimestamp = belongsToTimestamp;
     }
@@ -83,16 +78,6 @@ public class Era extends HistoricalEntity {
         this.listOfKingsId = newListOfKings;
     }
 
-    public List<HistoricalEntity> fetchListOfKings(){
-        List<HistoricalEntity> kings = new ArrayList<>();
-        for (Map.Entry<String, Integer> king : listOfKingsId.entrySet())
-        {
-            HistoricalFigure figure = HistoricalFigures.collection.get(king.getValue());
-            kings.add(figure);
-        }
-        return kings;
-    }
-
     /* Constructors */
     public Era() {
         super();
@@ -113,7 +98,7 @@ public class Era extends HistoricalEntity {
         String founder,
         String locationOfCapital,
         String time,
-        ArrayList<String> listOfKings
+        Collection<String> listOfKings
     ) {
         super(name);
         this.id = Eras.collection.getSequenceId();
@@ -122,9 +107,9 @@ public class Era extends HistoricalEntity {
         this.founder = founder;
         this.locationOfCapital = locationOfCapital;
         this.time = time;
-        Eras.collection.add(this);
         for (String king : listOfKings){
             listOfKingsId.put(king, null);
         }
+        Eras.collection.add(this);
     }
 }

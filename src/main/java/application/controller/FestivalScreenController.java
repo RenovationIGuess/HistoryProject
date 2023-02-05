@@ -86,7 +86,7 @@ public class FestivalScreenController {
                 if(event.getClickCount() == 2 && (!row.isEmpty())){
                     Festival fes = row.getItem();
                     try {
-                        FXMLLoader loader = new FXMLLoader(App.convertToURL("/application/fxml/FesDetailScreen.fxml"));
+                        FXMLLoader loader = new FXMLLoader(App.convertToURL("/application/view/FesDetailScreen.fxml"));
                         Parent root = loader.load();
                         FesDetailScreenController controller = loader.getController();
                         controller.setFestival(fes);

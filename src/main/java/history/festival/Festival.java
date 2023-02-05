@@ -13,19 +13,20 @@ import java.util.Map;
  * gồm các thuộc tính
  *      name: tên lễ hội
  *      alias: tên gọi khác
- *      date: ngày tổ chức (bắt đầu)
+ *      date: ngày tổ chức (âm lịch)
  *      location: địa điểm tổ chức
- *      relatedFiguresId: danh sách nhân vật lịch sử liên quan
  *      firstTime: lần đầu tổ chức
  *      note: chú thích
+ *      relatedFiguresId: danh sách nhân vật lịch sử liên quan (liên kết ID)
  */
 public class Festival extends HistoricalEntity {
 
     private String date;
     private String location;
-    private Map<String, Integer> relatedFiguresId = new HashMap<>();
     private String firstTime;
     private String note;
+
+    private Map<String, Integer> relatedFiguresId = new HashMap<>();
 
     /* Getters */
 

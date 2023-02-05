@@ -35,7 +35,6 @@ public class HistoricSite extends HistoricalEntity {
     private Map<String, Integer> relatedFiguresId = new HashMap<>();;
 
     /* Getters */
-
     public String getLocation() {
         return location;
     }
@@ -89,11 +88,6 @@ public class HistoricSite extends HistoricalEntity {
         this.overview = overview;
     }
 
-    public void setRelatedFestival(String festival){
-        relatedFestivalId.clear();
-        relatedFestivalId.put(festival, null);
-    }
-
     public void setRelatedFestival(Map<String, Integer> newRelateFes) {
         this.relatedFestivalId = newRelateFes;
     }
@@ -114,11 +108,7 @@ public class HistoricSite extends HistoricalEntity {
         this.approvedYear = approvedYear;
     }
 
-    /* Helpers */
-    //Add sau
-
     /* Constructors */
-
     public HistoricSite() {
         super();
         this.id = HistoricSites.collection.getSequenceId();

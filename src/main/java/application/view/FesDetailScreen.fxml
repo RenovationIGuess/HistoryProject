@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.EventDetailScreenController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.FesDetailScreenController">
     <top>
         <MenuBar BorderPane.alignment="CENTER">
             <menus>
@@ -39,7 +39,7 @@
         <fx:include fx:id="sideBar" source="Sidebar.fxml" />
     </left>
     <center>
-        <VBox styleClass="background" stylesheets="@../stylesheet/background.css" BorderPane.alignment="CENTER">
+        <VBox alignment="CENTER" styleClass="background" stylesheets="@../stylesheet/stylesheet.css" BorderPane.alignment="CENTER">
          <children>
             <HBox>
                <children>
@@ -48,7 +48,7 @@
             </HBox>
             <HBox alignment="CENTER" prefWidth="550.0">
                <children>
-                  <Text fx:id="nameText" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" textAlignment="CENTER" wrappingWidth="540.0102157592773">
+                  <Text fx:id="nameText" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" textAlignment="CENTER" wrappingWidth="592.0101318359375">
                      <font>
                         <Font size="36.0" />
                      </font>
@@ -73,7 +73,7 @@
                         </VBox>
                         <VBox HBox.hgrow="ALWAYS">
                            <children>
-                              <Text fx:id="timeText" strokeType="OUTSIDE" strokeWidth="0.0" text="timeText" wrappingWidth="346.9366760253906" />
+                              <Text fx:id="dateText" strokeType="OUTSIDE" strokeWidth="0.0" text="timeText" wrappingWidth="301.33673095703125" />
                            </children>
                         </VBox>
                      </children>
@@ -91,16 +91,16 @@
                         </VBox>
                         <VBox HBox.hgrow="ALWAYS">
                            <children>
-                              <Text fx:id="locationText" strokeType="OUTSIDE" strokeWidth="0.0" text="locationText" wrappingWidth="346.9366760253906" />
+                              <Text fx:id="locationText" strokeType="OUTSIDE" strokeWidth="0.0" text="locationText" wrappingWidth="301.33673095703125" />
                            </children>
                         </VBox>
                      </children>
                   </HBox>
-                  <HBox layoutX="10.0" layoutY="36.0">
+                  <HBox layoutX="10.0" layoutY="43.0">
                      <children>
                         <VBox prefWidth="176.0">
                            <children>
-                              <Label text="Mô tả">
+                              <Label text="Lần đầu tổ chức">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
@@ -109,16 +109,16 @@
                         </VBox>
                         <VBox HBox.hgrow="ALWAYS">
                            <children>
-                              <Text fx:id="overviewText" strokeType="OUTSIDE" strokeWidth="0.0" text="overviewText" wrappingWidth="346.9366760253906" />
+                              <Text fx:id="firstTimeText" strokeType="OUTSIDE" strokeWidth="0.0" text="firstTimeText" wrappingWidth="301.33673095703125" />
                            </children>
                         </VBox>
                      </children>
                   </HBox>
-                  <HBox layoutX="10.0" layoutY="61.0">
+                  <HBox layoutX="10.0" layoutY="76.0">
                      <children>
                         <VBox prefWidth="176.0">
                            <children>
-                              <Label text="Nguyên nhân">
+                              <Label text="Ghi chú">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
@@ -127,30 +127,12 @@
                         </VBox>
                         <VBox HBox.hgrow="ALWAYS">
                            <children>
-                              <Text fx:id="causeText" strokeType="OUTSIDE" strokeWidth="0.0" text="causeText" wrappingWidth="346.9366760253906" />
+                              <Text fx:id="noteText" strokeType="OUTSIDE" strokeWidth="0.0" text="noteText" wrappingWidth="301.33673095703125" />
                            </children>
                         </VBox>
                      </children>
                   </HBox>
-                  <HBox layoutX="10.0" layoutY="87.0">
-                     <children>
-                        <VBox prefWidth="176.0">
-                           <children>
-                              <Label text="Kết quả">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </VBox>
-                        <VBox HBox.hgrow="ALWAYS">
-                           <children>
-                              <Text fx:id="resultText" strokeType="OUTSIDE" strokeWidth="0.0" text="resultText" wrappingWidth="346.9366760253906" />
-                           </children>
-                        </VBox>
-                     </children>
-                  </HBox>
-                  <HBox layoutX="10.0" layoutY="112.0">
+                  <HBox layoutX="10.0" layoutY="108.0">
                      <children>
                         <VBox prefWidth="176.0">
                            <children>
@@ -161,7 +143,7 @@
                               </Label>
                            </children>
                         </VBox>
-                        <FlowPane fx:id="relatedCharsFlowPane" hgap="15.0" prefWidth="200.0" vgap="5.0" HBox.hgrow="ALWAYS" />
+                        <FlowPane fx:id="relatedCharsFlowPane" hgap="15.0" vgap="5.0" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
                </children>

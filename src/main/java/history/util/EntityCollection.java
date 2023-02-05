@@ -1,5 +1,6 @@
-package history;
+package history.util;
 
+import history.HistoricalEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -7,7 +8,18 @@ import javafx.collections.transformation.FilteredList;
 import java.util.Collection;
 import java.util.Comparator;
 
+/**
+ * Đây là lớp lưu trữ tập hợp
+ * các thực thể lịch sử cùng loại
+ * (đối tượng cùng lớp)
+ * Có các thao tác tìm kiếm, sắp xếp, lấy ra
+ * đối tượng theo yêu cầu, kiểm tra đối tượng có
+ * trong tập hợp hay không
+ * @param <T> kiểu dữ liệu của đối tượng lưu trữ
+ */
 public class EntityCollection <T extends HistoricalEntity> {
+
+    /* Các đối tượng được lưu theo dạng danh sách ở đây */
     private ObservableList<T> data = FXCollections.observableArrayList();
 
     private int numberOfRecords = 0;
@@ -21,9 +33,7 @@ public class EntityCollection <T extends HistoricalEntity> {
     }
 
     /**
-     * Chuyển đổi danh sách tập hợp
-     * sang dạng ObservableArrayList để lưu tập hợp
-     * @param data danh sách tập hợp đối tượng dạng list
+     * @param data danh sách tập hợp đối tượng
      */
     public void setData(Collection<T> data){
         this.data = FXCollections.observableArrayList(data);
@@ -31,7 +41,7 @@ public class EntityCollection <T extends HistoricalEntity> {
     }
 
     /**
-     * Trả về danh sách các đối tượng lưu trữ trong tập hợp
+     * Trả về danh sách các đối tượng được lưu trữ trong tập hợp
      * @return Danh sách đối tượng được lưu trữ
      */
     public <V extends HistoricalEntity> ObservableList<V> getData(){
@@ -39,8 +49,8 @@ public class EntityCollection <T extends HistoricalEntity> {
     }
 
     /**
-     * Trả về true nếu tập hợp rỗng
-     * @return boolean
+     * Kiểm tra tập hợp rỗng hay không
+     * @return true nếu tập hợp rỗng
      */
     public boolean isEmpty(){
         return data.isEmpty();
@@ -65,19 +75,11 @@ public class EntityCollection <T extends HistoricalEntity> {
     }
 
     /**
-     * Xóa đối tượng có id khỏi tập hợp
-     * @param id id của đối tượng cần xóa
-     */
-    public void remove (int id){
-        data.removeIf(entity -> entity.isMatch(id));
-    }
-
-    /**
      * Trả về đối tượng lịch sử có id xác định lấy ra từ tập hợp
      * @param id id của đối tượng cần lấy
      * @return đối tượng lịch sử
      */
-    public T get(int id){
+    public T get(Integer id){
         for (T entity : data){
             if (entity.isMatch(id)) return entity;
         }
@@ -106,19 +108,10 @@ public class EntityCollection <T extends HistoricalEntity> {
     }
 
     /**
-     * Lưu trữ toàn bộ đối tượng trong tập hợp vào các file JSON
-     */
-    public void save(){
-        for (T element : data){
-            element.save();
-        }
-    }
-
-    /**
      * Sắp xếp lại tập hợp theo thứ tự tăng dần id
      */
     public void sortById(){
-        Comparator<T> comparator = (o1, o2) -> Integer.compare(o1.getId(), o2.getId());
+        Comparator<T> comparator = Comparator.comparingInt(HistoricalEntity::getId);
 
         data.sort(comparator);
     }

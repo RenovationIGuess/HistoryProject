@@ -47,7 +47,7 @@ public class EventDetailScreenController {
 
     @FXML
     public void onClickBack(ActionEvent event) throws IOException {
-        sideBarController.switchByGetFxml("/application/fxml/EventScreen.fxml", event);
+        sideBarController.switchByGetFxml("/application/view/EventScreen.fxml", event);
     }
 
     public void setEvent(Event event) {
@@ -65,7 +65,7 @@ public class EventDetailScreenController {
                 figureText.setOnMouseClicked(mouseEvent -> {
                     HistoricalFigure figure = HistoricalFigures.collection.get(entry.getValue());
                     try {
-                        FXMLLoader loader = new FXMLLoader(App.convertToURL("/application/fxml/FigureDetailScreen.fxml"));
+                        FXMLLoader loader = new FXMLLoader(App.convertToURL("/application/view/FigureDetailScreen.fxml"));
                         Parent root = loader.load();
                         FigureDetailScreenController controller = loader.getController();
                         controller.setFigure(figure);

@@ -1,9 +1,16 @@
 package history;
 
-import json.JSON;
+import helper.JsonHelper;
 
 import java.util.*;
 
+/**
+ *  Đây là lớp trừu tượng thể hiện bất kỳ thực thể liên quan đến lịch sử
+ *  gồm các thuộc tính:
+ *      id: ID (mã số nhận dạng),
+ *      name: tên của thực thể (tên hay gọi),
+ *      aliases: tên gọi khác của thực thể
+ */
 public abstract class HistoricalEntity {
 
     protected int id;
@@ -18,12 +25,12 @@ public abstract class HistoricalEntity {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Set<String> getAliases() {
         return aliases;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setAliases(String... aliases) {
@@ -32,33 +39,18 @@ public abstract class HistoricalEntity {
 
     /**
      * Thêm một tên gọi khác cho đối tượng
-     * @param alias tên gọi khác của đối tượng cần thêm
+     * @param aliases các tên gọi khác của đối tượng cần thêm
      */
-    public void addAlias(String alias){
-        if (!this.aliases.contains(alias)){
-            this.aliases.add(alias);
-        }
-    }
-
     public void addAlias(String ...aliases){
-        for (String alias: aliases){
-            this.addAlias(alias);
-        }
-    }
-
-    public void removeAlias(String alias){
-        this.aliases.remove(alias);
-    }
-
-    public void clearAlias() {
-        this.aliases.clear();
+        this.aliases.addAll(List.of(aliases));
     }
 
     /**
      * @param id id cần kiểm tra
-     * @return Đối tượng có id như vậy không
+     * @return true nếu đối tượng có id như thế
      */
-    public boolean isMatch(int id){
+    public boolean isMatch(Integer id){
+        if (id == null) return false;
         return this.getId() == id;
     }
 
@@ -68,13 +60,6 @@ public abstract class HistoricalEntity {
      * @return true nếu tên đối tượng khớp 1 phần với tên tìm kiếm
      */
     public boolean isMatch(String name){
-//        if (this.getName().toLowerCase().contains(name.toLowerCase()))
-//            return true;
-//        for (String alias : aliases){
-//            if (alias.toLowerCase().contains(name.toLowerCase()))
-//                return true;
-//        }
-//        return false;
         if (this.name != null){
             return this.name.toLowerCase().contains(name.toLowerCase());
         }
@@ -83,7 +68,7 @@ public abstract class HistoricalEntity {
 
     /**
      * Kiểm tra đối tượng có tên xác định
-     * @param name
+     * @param name tên của đối tượng kiểm tra
      * @return true nếu tên trùng
      */
     public boolean hasName(String name){
@@ -94,18 +79,18 @@ public abstract class HistoricalEntity {
      * @return String dạng JSON của đối tượng
      */
     public String toJSON(){
-        return JSON.toJSON(this);
+        return JsonHelper.stringify(this);
     }
 
     /**
-     * Dùng để lưu đối tượng vào file JSON
+     * Dùng để lưu đối tượng vào file JSON.
      * fileName = /[Tên class]/[id đối tượng].json
      * extensions: json
      */
     public void save(){
         String className = this.getClass().getSimpleName();
         String fileName = "\\" + className + "\\" + this.getId() + ".json";
-        JSON.writeJSON(fileName, this);
+        JsonHelper.writeJSON(fileName, this);
     }
 
     /**
@@ -121,8 +106,7 @@ public abstract class HistoricalEntity {
                 if (this.name == null){
                     return false;
                 }
-                else if (this.hasName(((HistoricalEntity) obj).getName()))
-                    return true;
+                else return this.hasName(((HistoricalEntity) obj).getName());
             }
         }
         return false;
@@ -137,12 +121,7 @@ public abstract class HistoricalEntity {
         return names;
     }
 
-    public void printObject(){
-        System.out.println(this.toJSON());
-    }
-
     /* Constructor */
-
     public HistoricalEntity() {
     }
 

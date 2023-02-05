@@ -55,7 +55,7 @@
                     <columns>
                       <TableColumn fx:id="colFesId" prefWidth="75.0" text="ID" />
                       <TableColumn fx:id="colFesName" prefWidth="150.0" text="Tên" />
-                        <TableColumn fx:id="colFesDate" prefWidth="200.0" text="Thời gian" />
+                        <TableColumn fx:id="colFesDate" prefWidth="200.0" text="Thời gian (Âm lịch)" />
                         <TableColumn fx:id="colFesLocate" prefWidth="200.0" text="Địa điểm" />
                     </columns>
                      <columnResizePolicy>
