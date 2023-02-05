@@ -15,7 +15,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CrawlFestival extends Crawl {
-    private static Integer nbFestival;
+//    private static Integer nbFestival;
 
     public CrawlFestival(){
         crawlData();
@@ -24,12 +24,12 @@ public class CrawlFestival extends Crawl {
     public static void crawlData() {
         String url_lehoi = "https://vi.wikipedia.org/wiki/L%E1%BB%85_h%E1%BB%99i_Vi%E1%BB%87t_Nam#Danh_s%C3%A1ch_m%E1%BB%99t_s%E1%BB%91_l%E1%BB%85_h%E1%BB%99i";
         // call scraping
-        HashMap<Integer, String> Name  = new HashMap<Integer,String>();
-        HashMap<Integer, String> Location  = new HashMap<Integer,String>();
-        HashMap<Integer, String> Day  = new HashMap<Integer,String>();
-        HashMap<Integer, String> FirstTime  = new HashMap<Integer,String>();
-        HashMap<Integer, String> RelatedFigure  = new HashMap<Integer,String>();
-        HashMap<Integer, String> Note  = new HashMap<Integer,String>();
+//        HashMap<Integer, String> Name  = new HashMap<Integer,String>();
+//        HashMap<Integer, String> Location  = new HashMap<Integer,String>();
+//        HashMap<Integer, String> Day  = new HashMap<Integer,String>();
+//        HashMap<Integer, String> FirstTime  = new HashMap<Integer,String>();
+//        HashMap<Integer, String> RelatedFigure  = new HashMap<Integer,String>();
+//        HashMap<Integer, String> Note  = new HashMap<Integer,String>();
 
         try {
             final Document document = Jsoup.connect(url_lehoi).get();
@@ -146,13 +146,13 @@ public class CrawlFestival extends Crawl {
         }
     }
 
-    public static void addHashmap(int i,HashMap<Integer,String> list,String text) {
-        if (text.equals("")) {
-            list.put(i,"Chưa rõ");
-        } else {
-            list.put(i,text);
-        }
-    }
+//    public static void addHashmap(int i,HashMap<Integer,String> list,String text) {
+//        if (text.equals("")) {
+//            list.put(i,"Chưa rõ");
+//        } else {
+//            list.put(i,text);
+//        }
+//    }
 
     public static void show(HashMap<Integer, String> hashMap) {
         Set<Integer> keySet = hashMap.keySet();
