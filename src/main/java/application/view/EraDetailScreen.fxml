@@ -64,6 +64,38 @@
                      <children>
                         <VBox prefWidth="176.0">
                            <children>
+                              <Label text="Tên khác">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <FlowPane fx:id="aliasFlowPane" hgap="15.0" vgap="5.0" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <VBox prefWidth="176.0">
+                           <children>
+                              <Label text="Mô tả">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox prefWidth="100.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Text fx:id="overviewText" strokeType="OUTSIDE" strokeWidth="0.0" text="overviewText" wrappingWidth="349.6773376464844" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <VBox prefWidth="176.0">
+                           <children>
                               <Label text="Thời kỳ">
                                  <font>
                                     <Font name="System Bold" size="12.0" />

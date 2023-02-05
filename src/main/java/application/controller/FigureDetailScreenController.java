@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -53,6 +54,9 @@ public class FigureDetailScreenController {
     private Text succeededByText;
 
     @FXML
+    private FlowPane aliasFlowPane;
+
+    @FXML
     private SidebarController sideBarController;
 
     private HistoricalFigure figure;
@@ -66,6 +70,10 @@ public class FigureDetailScreenController {
         this.figure = figure;
         nameText.setText(figure.getName());
         realNameText.setText(figure.getRealName());
+        for (String alias : figure.getAliases()) {
+            Text aliasText = new Text(alias);
+            aliasFlowPane.getChildren().add(aliasText);
+        }
         bornText.setText(figure.getBorn());
         diedText.setText(figure.getDied());
         overviewText.setText(figure.getOverview());
