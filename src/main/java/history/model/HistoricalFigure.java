@@ -1,6 +1,6 @@
-package history.historicalfigure;
+package history.model;
 
-import history.HistoricalEntity;
+import history.collection.HistoricalFigures;
 import history.relation.Pair;
 
 import java.util.List;
@@ -153,5 +153,14 @@ public class HistoricalFigure extends HistoricalEntity {
         this.precededBy = new Pair<>(preceded, null);
         this.succeededBy = new Pair<>(succeeded, null);
         HistoricalFigures.collection.add(this);
+    }
+
+    /**
+     * Dùng để lưu đối tượng vào file JSON.
+     * fileName = /[Tên class]/[id đối tượng].json
+     * extensions: json
+     */
+    public void save(){
+        HistoricalFigures.writeJSON(this);
     }
 }

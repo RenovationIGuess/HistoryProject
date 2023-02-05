@@ -1,6 +1,6 @@
-package history.historicsite;
+package history.model;
 
-import history.HistoricalEntity;
+import history.collection.HistoricSites;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,7 +18,7 @@ import java.util.Map;
  *      category: hạng mục
  *      relatedFiguresId: nhân vật liên quan
  */
-public class HistoricSite extends HistoricalEntity {
+public class HistoricSite extends HistoricalEntity implements Storable {
 
     private String location;
     private String constructionDate;
@@ -147,5 +147,14 @@ public class HistoricSite extends HistoricalEntity {
             this.relatedFiguresId.put(relatedChar, null);
         }
         HistoricSites.collection.add(this);
+    }
+
+    /**
+     * Dùng để lưu đối tượng vào file JSON.
+     * fileName = /[Tên class]/[id đối tượng].json
+     * extensions: json
+     */
+    public void save(){
+        HistoricSites.writeJSON(this);
     }
 }

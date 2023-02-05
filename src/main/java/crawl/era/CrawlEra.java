@@ -1,7 +1,7 @@
 package crawl.era;
 
 import crawl.Crawl;
-import history.era.Era;
+import history.model.Era;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

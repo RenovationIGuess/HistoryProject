@@ -1,9 +1,9 @@
-package history.historicsite;
+package history.collection;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import history.util.EntityCollection;
 import helper.JsonHelper;
-import history.HistoricalEntity;
+import history.model.HistoricalEntity;
+import history.model.HistoricSite;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -26,13 +26,20 @@ public class HistoricSites {
     /* Folder chứa toàn bộ file json ghi dữ liệu của đối tượng lớp HistoricSite */
     public final static String DIR_NAME = "\\HistoricSite";
 
+    /**
+     * Viết đối tượng ra file json
+     * @param site đối tượng lớp HistoricSite
+     */
+    public static void writeJSON(HistoricSite site){
+        String fileName = DIR_NAME + "\\" + site.getId() + ".json";
+        JsonHelper.writeJSON(fileName, site);
+    }
 
     /**
      * Đọc toàn bộ dữ liệu từ các file json từ folder
      * và chuyển thành đối tượng trong chương trình
      * sau đó lưu vào tập hợp
      */
-
     public static void loadJSON() {
         try {
             Stream<Path> paths = Files.list(Paths.get(JsonHelper.PREFIX_URL + DIR_NAME));

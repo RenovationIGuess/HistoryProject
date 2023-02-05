@@ -1,10 +1,10 @@
 package application;
 
-import history.era.Eras;
-import history.event.Events;
-import history.festival.Festivals;
-import history.historicalfigure.HistoricalFigures;
-import history.historicsite.HistoricSites;
+import history.collection.Eras;
+import history.collection.Events;
+import history.collection.Festivals;
+import history.collection.HistoricalFigures;
+import history.collection.HistoricSites;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

@@ -1,6 +1,6 @@
-package history.event;
+package history.model;
 
-import history.HistoricalEntity;
+import history.collection.Events;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -110,5 +110,14 @@ public class Event extends HistoricalEntity {
             this.relatedFiguresId.put(relatedChar, null);
         }
         Events.collection.add(this);
+    }
+
+    /**
+     * Dùng để lưu đối tượng vào file JSON.
+     * fileName = /[Tên class]/[id đối tượng].json
+     * extensions: json
+     */
+    public void save(){
+        Events.writeJSON(this);
     }
 }

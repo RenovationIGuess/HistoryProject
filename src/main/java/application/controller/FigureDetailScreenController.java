@@ -1,10 +1,10 @@
 package application.controller;
 
 import application.App;
-import history.era.Era;
-import history.era.Eras;
-import history.historicalfigure.HistoricalFigure;
-import history.historicalfigure.HistoricalFigures;
+import history.model.Era;
+import history.collection.Eras;
+import history.model.HistoricalFigure;
+import history.collection.HistoricalFigures;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

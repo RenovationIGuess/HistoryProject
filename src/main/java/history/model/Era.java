@@ -1,6 +1,6 @@
-package history.era;
+package history.model;
 
-import history.HistoricalEntity;
+import history.collection.Eras;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -111,5 +111,14 @@ public class Era extends HistoricalEntity {
             listOfKingsId.put(king, null);
         }
         Eras.collection.add(this);
+    }
+
+    /**
+     * Dùng để lưu đối tượng vào file JSON.
+     * fileName = /[Tên class]/[id đối tượng].json
+     * extensions: json
+     */
+    public void save(){
+        Eras.writeJSON(this);
     }
 }

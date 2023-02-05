@@ -1,8 +1,8 @@
 package application.controller;
 
 import application.App;
-import history.event.Event;
-import history.event.Events;
+import history.model.Event;
+import history.collection.Events;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

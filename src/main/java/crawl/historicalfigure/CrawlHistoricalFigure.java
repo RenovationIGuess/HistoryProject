@@ -1,7 +1,7 @@
 package crawl.historicalfigure;
 
 import crawl.Crawl;
-import history.historicalfigure.HistoricalFigure;
+import history.model.HistoricalFigure;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

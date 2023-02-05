@@ -1,9 +1,9 @@
-package history.historicalfigure;
+package history.collection;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import history.util.EntityCollection;
 import helper.JsonHelper;
-import history.HistoricalEntity;
+import history.model.HistoricalEntity;
+import history.model.HistoricalFigure;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -25,6 +25,15 @@ public class HistoricalFigures {
 
     /* Folder chứa toàn bộ file json ghi dữ liệu của đối tượng lớp HistoricalFigure */
     public final static String DIR_NAME = "\\HistoricalFigure";
+
+    /**
+     * Viết đối tượng ra file json
+     * @param figure đối tượng lớp HistoricalFigure
+     */
+    public static void writeJSON(HistoricalFigure figure){
+        String fileName = DIR_NAME + "\\" + figure.getId() + ".json";
+        JsonHelper.writeJSON(fileName, figure);
+    }
 
     /**
      * Đọc toàn bộ dữ liệu từ các file json từ folder

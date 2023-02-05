@@ -1,16 +1,16 @@
 package history.relation;
 
-import history.HistoricalEntity;
-import history.era.Era;
-import history.era.Eras;
-import history.event.Event;
-import history.event.Events;
-import history.festival.Festival;
-import history.festival.Festivals;
-import history.historicalfigure.HistoricalFigure;
-import history.historicalfigure.HistoricalFigures;
-import history.historicsite.HistoricSite;
-import history.historicsite.HistoricSites;
+import history.model.HistoricalEntity;
+import history.model.Era;
+import history.collection.Eras;
+import history.model.Event;
+import history.collection.Events;
+import history.model.Festival;
+import history.collection.Festivals;
+import history.model.HistoricalFigure;
+import history.collection.HistoricalFigures;
+import history.model.HistoricSite;
+import history.collection.HistoricSites;
 
 import java.util.Collection;
 import java.util.Map;

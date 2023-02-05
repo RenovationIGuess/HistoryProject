@@ -1,7 +1,7 @@
 package crawl.festival;
 
 import crawl.Crawl;
-import history.festival.Festival;
+import history.model.Festival;
 import org.jsoup.Jsoup;
 
 import org.jsoup.nodes.Document;

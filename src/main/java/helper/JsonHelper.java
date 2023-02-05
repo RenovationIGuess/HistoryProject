@@ -1,7 +1,7 @@
 package helper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import history.HistoricalEntity;
+import history.model.HistoricalEntity;
 
 import java.io.File;
 import java.io.IOException;

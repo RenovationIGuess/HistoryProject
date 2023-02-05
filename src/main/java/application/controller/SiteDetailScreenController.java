@@ -1,9 +1,9 @@
 package application.controller;
 
 import application.App;
-import history.historicalfigure.HistoricalFigure;
-import history.historicalfigure.HistoricalFigures;
-import history.historicsite.HistoricSite;
+import history.model.HistoricalFigure;
+import history.collection.HistoricalFigures;
+import history.model.HistoricSite;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

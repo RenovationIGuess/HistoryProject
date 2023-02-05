@@ -1,8 +1,8 @@
-package history.festival;
+package history.model;
 
-import history.HistoricalEntity;
-import history.historicalfigure.HistoricalFigure;
-import history.historicalfigure.HistoricalFigures;
+import history.collection.Festivals;
+import history.collection.HistoricalFigures;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -112,5 +112,14 @@ public class Festival extends HistoricalEntity {
             this.relatedFiguresId.put(relatedChar, null);
         }
         Festivals.collection.add(this);
+    }
+
+    /**
+     * Dùng để lưu đối tượng vào file JSON.
+     * fileName = /[Tên class]/[id đối tượng].json
+     * extensions: json
+     */
+    public void save(){
+        Festivals.writeJSON(this);
     }
 }

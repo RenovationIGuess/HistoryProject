@@ -1,4 +1,4 @@
-package history;
+package history.model;
 
 import helper.JsonHelper;
 
@@ -11,7 +11,7 @@ import java.util.*;
  *      name: tên của thực thể (tên hay gọi),
  *      aliases: tên gọi khác của thực thể
  */
-public abstract class HistoricalEntity {
+public abstract class HistoricalEntity implements Storable {
 
     protected int id;
     protected String name;
@@ -80,17 +80,6 @@ public abstract class HistoricalEntity {
      */
     public String toJSON(){
         return JsonHelper.stringify(this);
-    }
-
-    /**
-     * Dùng để lưu đối tượng vào file JSON.
-     * fileName = /[Tên class]/[id đối tượng].json
-     * extensions: json
-     */
-    public void save(){
-        String className = this.getClass().getSimpleName();
-        String fileName = "\\" + className + "\\" + this.getId() + ".json";
-        JsonHelper.writeJSON(fileName, this);
     }
 
     /**

@@ -1,8 +1,8 @@
 package application.controller;
 
 import application.App;
-import history.era.Era;
-import history.era.Eras;
+import history.model.Era;
+import history.collection.Eras;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

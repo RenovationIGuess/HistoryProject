@@ -51,10 +51,10 @@
                 <fx:include fx:id="searchBar" source="SearchBar.fxml" />
                 <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
                     <children>
-                  <TableView fx:id="siteTable">
+                  <TableView fx:id="siteTable" HBox.hgrow="ALWAYS">
                     <columns>
                       <TableColumn fx:id="colSiteId" prefWidth="75.0" text="ID" />
-                      <TableColumn fx:id="colSiteName" prefWidth="150.0" text="Tên" />
+                      <TableColumn fx:id="colSiteName" prefWidth="200.0" text="Tên" />
                         <TableColumn fx:id="colSiteDate" prefWidth="200.0" text="Khởi công" />
                         <TableColumn fx:id="colSiteLocate" prefWidth="200.0" text="Địa điểm" />
                     </columns>

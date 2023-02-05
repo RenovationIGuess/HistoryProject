@@ -1,8 +1,8 @@
 package application.controller;
 
 import application.App;
-import history.historicalfigure.HistoricalFigure;
-import history.historicalfigure.HistoricalFigures;
+import history.model.HistoricalFigure;
+import history.collection.HistoricalFigures;
 import history.relation.Pair;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;

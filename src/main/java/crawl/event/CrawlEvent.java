@@ -1,7 +1,7 @@
 package crawl.event;
 
 import crawl.Crawl;
-import history.event.Event;
+import history.model.Event;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

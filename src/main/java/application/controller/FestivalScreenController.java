@@ -1,8 +1,8 @@
 package application.controller;
 
 import application.App;
-import history.festival.Festival;
-import history.festival.Festivals;
+import history.model.Festival;
+import history.collection.Festivals;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

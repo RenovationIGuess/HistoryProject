@@ -1,8 +1,8 @@
 package crawl.historicsite;
 
 import crawl.Crawl;
-import history.historicsite.HistoricSite;
-import history.historicsite.HistoricSites;
+import history.model.HistoricSite;
+import history.collection.HistoricSites;
 import javafx.collections.ObservableList;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

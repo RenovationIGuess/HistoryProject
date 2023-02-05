@@ -1,8 +1,8 @@
 package application.controller;
 
 import application.App;
-import history.historicsite.HistoricSite;
-import history.historicsite.HistoricSites;
+import history.model.HistoricSite;
+import history.collection.HistoricSites;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

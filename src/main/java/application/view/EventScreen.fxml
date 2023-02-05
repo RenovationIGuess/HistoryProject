@@ -54,7 +54,7 @@
                   <TableView fx:id="eventTable">
                     <columns>
                       <TableColumn fx:id="colEventId" prefWidth="75.0" text="ID" />
-                      <TableColumn fx:id="colEventName" prefWidth="150.0" text="Tên" />
+                      <TableColumn fx:id="colEventName" prefWidth="200.0" text="Tên" />
                         <TableColumn fx:id="colEventDate" prefWidth="200.0" text="Thời gian" />
                         <TableColumn fx:id="colEventLocate" prefWidth="200.0" text="Địa điểm" />
                     </columns>

@@ -57,7 +57,7 @@
                         <Font size="18.0" />
                     </font>
                 </Text>
-                <Text layoutX="38.0" layoutY="378.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Để tìm kiếm nhân vật, di tích, triều đại hoặc lễ hội hãy chọn mục tương ứng ở phía bên trái để tìm kiếm." wrappingWidth="408.3496398925781">
+                <Text layoutX="38.0" layoutY="378.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Để tìm kiếm nhân vật, di tích, triều đại hoặc lễ hội hãy chọn mục tương ứng ở phía bên trái để tìm kiếm. Để xem thông tin chi tiết của đối tượng, nhấp đúp chuột vào hàng của đối tượng cần xem" wrappingWidth="408.3496398925781">
                     <font>
                         <Font size="18.0" />
                     </font>

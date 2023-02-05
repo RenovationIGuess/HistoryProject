@@ -1,6 +1,6 @@
-package history.util;
+package history.collection;
 
-import history.HistoricalEntity;
+import history.model.HistoricalEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
