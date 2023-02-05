@@ -271,48 +271,49 @@ public class Relation {
                 // Duyet qua cac fes
                 // Neu fes nao co ten thuoc doan text le hoi cua
                 // phan site thi lay id cua no
-                //
+                //s
                 String fesContent = entry.getKey();
                 boolean found = false;
 
-                // Dau tien la tim theo ten goc
-                // Neu tim theo ten goc khong thay thi bat dau xu li xau va tim o note, dia chi,...
-                for (Festival f : listOfFestivals) {
-                    Pattern p = Pattern.compile(Pattern.quote(f.getName()), Pattern.CASE_INSENSITIVE);
-                    Matcher m = p.matcher(fesContent);
+                if (!fesContent.equals("Chưa rõ")) {
+                    // Dau tien la tim theo ten goc
+                    // Neu tim theo ten goc khong thay thi bat dau xu li xau va tim o note, dia chi,...
+                    for (Festival f : listOfFestivals) {
+                        Pattern p = Pattern.compile(Pattern.quote(f.getName()), Pattern.CASE_INSENSITIVE);
+                        Matcher m = p.matcher(fesContent);
 
-                    if (m.find()) {
-                        relatedFesList.put(fesContent, f.getId());
-                        found = true;
-                        break;
-                    } else {
-                        // Xu li xau
-                        String fesName = f.getName();
-                        String fesLocation = f.getLocation();
-                        String fesNote = f.getNote();
-
-                        // Mot so truong hop loc chu le hoi thi ra duoc dia diem
-                        if (fesName.toLowerCase().contains("lễ hội")) {
-                            int startIndex = fesName.toLowerCase().indexOf("lễ hội");
-                            String possiblyLocation = fesName.substring(startIndex + 6).trim();
-
-                            if (possiblyLocation.equalsIgnoreCase(fesName)) {
-                                relatedFesList.put(fesContent, f.getId());
-                                found = true;
-                                break;
-                            }
+                        if (m.find()) {
+                            relatedFesList.put(fesContent, f.getId());
+                            found = true;
+                            break;
                         } else {
-                            // Ten khong ra thi check location va note
-                            p = Pattern.compile(Pattern.quote(s.getName()), Pattern.CASE_INSENSITIVE);
-                            m = p.matcher(fesNote);
+                            // Xu li xau
+                            String fesName = f.getName();
+                            String fesLocation = f.getLocation();
+                            String fesNote = f.getNote();
 
-                            if (m.find()) {
-                                relatedFesList.put(fesContent, f.getId());
-                                found = true;
-                                break;
+                            // Mot so truong hop loc chu le hoi thi ra duoc dia diem
+                            if (fesName.toLowerCase().contains("lễ hội")) {
+                                int startIndex = fesName.toLowerCase().indexOf("lễ hội");
+                                String possiblyLocation = fesName.substring(startIndex + 6).trim();
+
+                                if (possiblyLocation.equalsIgnoreCase(s.getName())) {
+                                    relatedFesList.put(fesContent, f.getId());
+                                    found = true;
+                                    break;
+                                }
                             } else {
-                                // Thu xem le hoi dang xet co cung dia chi voi di tich khong?
-                                // Neu co le hoi => dia chi giong nhau co the thuoc
+                                // Ten khong ra thi check location va note
+                                p = Pattern.compile(Pattern.quote(s.getName()), Pattern.CASE_INSENSITIVE);
+                                m = p.matcher(fesNote);
+
+                                if (m.find()) {
+                                    relatedFesList.put(fesContent, f.getId());
+                                    found = true;
+                                    break;
+                                } else {
+                                    // Thu xem le hoi dang xet co cung dia chi voi di tich khong?
+                                    // Neu co le hoi => dia chi giong nhau co the thuoc
 //                                if (!fesLocation.equals("")) {
 //                                    String[] splitLocations = fesLocation.split(",");
 //                                    for (String splitLocation : splitLocations) {
@@ -327,13 +328,56 @@ public class Relation {
 //                                    }
 //                                }
 
-                                // Neu tim theo note cua fes va dia chi cua fes khong co thi thu tim
+                                    // Neu tim theo note cua fes va dia chi cua fes khong co thi thu tim
+                                    // ten fes trong overview cua di tich
+                                    if (!found) {
+                                        p = Pattern.compile(Pattern.quote(fesName), Pattern.CASE_INSENSITIVE);
+                                        m = p.matcher(s.getOverview());
+                                        if (m.find()) {
+                                            relatedFesList.put(fesContent, f.getId());
+                                            found = true;
+                                            break;
+                                        }
+                                    } else break;
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    // Neu chua ro thi ta thu tim tu le hoi sang xem co le hoi nao
+                    // Relate den di tich nay hay khong
+                    for (Festival f : listOfFestivals) {
+                        // Xu li xau
+                        String fesName = f.getName();
+                        String fesNote = f.getNote();
+
+                        // Mot so truong hop loc chu le hoi thi ra duoc dia diem
+                        if (fesName.toLowerCase().contains("lễ hội")) {
+                            int startIndex = fesName.toLowerCase().indexOf("lễ hội");
+                            String possiblyLocation = fesName.substring(startIndex + 6).trim();
+
+                            if (possiblyLocation.equalsIgnoreCase(s.getName())) {
+                                relatedFesList.put(fesName, f.getId());
+                                found = true;
+                                break;
+                            }
+                        } else {
+                            // Ten khong ra thi check note
+                            Pattern p = Pattern.compile(Pattern.quote(s.getName()), Pattern.CASE_INSENSITIVE);
+                            Matcher m = p.matcher(fesNote);
+
+                            if (m.find()) {
+                                relatedFesList.put(fesName, f.getId());
+                                found = true;
+                                break;
+                            } else {
+                                // Neu tim theo note cua fes khong co thi thu tim
                                 // ten fes trong overview cua di tich
                                 if (!found) {
                                     p = Pattern.compile(Pattern.quote(fesName), Pattern.CASE_INSENSITIVE);
                                     m = p.matcher(s.getOverview());
                                     if (m.find()) {
-                                        relatedFesList.put(fesContent, f.getId());
+                                        relatedFesList.put(fesName, f.getId());
                                         found = true;
                                         break;
                                     }
