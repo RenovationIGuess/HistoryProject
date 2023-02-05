@@ -1,5 +1,6 @@
 package crawl.event;
 
+import crawl.Crawl;
 import history.event.Event;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class crawlEvent {
+public class CrawlEvent extends Crawl {
     // Array chứa link của các event
     private static ArrayList<String> eventLinks = new ArrayList<>();
 
@@ -297,7 +298,7 @@ public class crawlEvent {
         getDataFromLink();
     }
 
-    public crawlEvent() {
+    public CrawlEvent() {
         crawlData();
     }
 }

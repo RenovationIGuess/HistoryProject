@@ -1,5 +1,6 @@
-package crawl.site;
+package crawl.historicsite;
 
+import crawl.Crawl;
 import history.historicsite.HistoricSite;
 import history.historicsite.HistoricSites;
 import javafx.collections.ObservableList;
@@ -9,57 +10,12 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.*;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class crawlHistorySite {
+public class CrawlHistoricSite extends Crawl {
     private static ArrayList<String> siteLinks = new ArrayList<>();
-
-    public static boolean notCharName(String test) {
-        // Xem co phai xau rong k?
-        if (test.equals("")) return true;
-
-        // Xem neu chi co 1 ky tu
-        if (test.length() == 1) return true;
-
-        // Kiem tra xem co chu so khong?
-        Pattern p = Pattern.compile("[0-9]");
-        Matcher m = p.matcher(test);
-
-        if (m.find()) {
-            return true;
-        }
-
-        // Kiem tra neu ten qua ngan
-        String[] splitted = test.split(" ");
-        if (splitted.length < 2) return true;
-        else {
-            // Kiem tra co phai tat ca deu in hoa khong?
-            for (String s : splitted) {
-                if (!Character.isUpperCase(s.charAt(0))) {
-                    return true;
-                }
-            }
-        }
-
-        // Mang chua nhung tu khong hop le doi voi ten 1 nhan vat
-        String[] notValid = {"nhà", "triều", "miếu", "sông", "phủ", "đền", "biển", "thành", "di sản", "cố đô",
-                "di tích", "tổ chức", "thế kỷ", "trận", "chùa", "đường", "phố", "bản", "người", "động",
-                "bộ", "sửa", "xã", "kháng chiến", "chiến khu", "quốc lộ", "cách mạng", "chú thích", "nguồn", "đảo", "chiến dịch",
-                "trung đoàn", "đại đoàn", "chiều", "xã", "huyện", "tỉnh", "thủy điện", "hang", "UBND", "ủy", "thời", "khảo cổ",
-                "lịch sử", "đá", "thị trấn", "cực", "vĩ độ", "kinh độ", "tọa độ", "việt nam", "trống",
-                "biên giới", "tiếng", "cờ", "ruộng", "biên giới", "này", "kiểm chứng", "'", "[", "]", "/", "km", "cm", "suối",
-                "gỗ", "trám", "-"
-        };
-        String lowerCaseTest = test.toLowerCase();
-        for (String s : notValid) {
-            if (lowerCaseTest.contains(s)) return true;
-        }
-        return false;
-    }
 
     public static void getDataFromSecondWikiLink() {
         String secondLink = "https://vi.wikipedia.org/wiki/Danh_s%C3%A1ch_Di_t%C3%ADch_qu%E1%BB%91c_gia_Vi%E1%BB%87t_Nam";
@@ -909,22 +865,6 @@ public class crawlHistorySite {
         }
     }
 
-    // Cac truong hop cua dia diem
-    public static boolean locationCheck(String location) {
-        return location.equals("Khu vực") ||
-                location.equals("Địa chỉ") ||
-                location.equals("Địa điểm") ||
-                location.equals("Vị trí");
-    }
-
-    // Cac truong hop cua thoi gian xay dung, hoan thanh
-    public static boolean timeCheck(String time) {
-        return time.equals("Khởi công") ||
-                time.equals("Hoàn thành") ||
-                time.equals("Thành lập") ||
-                time.equals("Khởi lập");
-    }
-
     public static void crawlSiteData(String link) {
         System.out.println("\nDang crawl di tich o link: " + link);
 
@@ -1172,7 +1112,7 @@ public class crawlHistorySite {
         getDataFromSecondWikiLink();
     }
 
-    public crawlHistorySite() {
+    public CrawlHistoricSite() {
         crawlData();
     }
 }

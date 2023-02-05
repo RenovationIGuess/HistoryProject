@@ -1,10 +1,10 @@
 package history.relation;
 
-import crawl.festival.crawlFestival;
-import crawl.timestamp.crawlTimeStamp;
-import crawl.event.crawlEvent;
-import crawl.site.crawlHistorySite;
-import crawl.character.crawlCharacter;
+import crawl.festival.CrawlFestival;
+import crawl.era.CrawlEra;
+import crawl.event.CrawlEvent;
+import crawl.historicsite.CrawlHistoricSite;
+import crawl.historicalfigure.CrawlHistoricalFigure;
 import history.era.Era;
 import history.era.Eras;
 import history.event.Event;
@@ -28,11 +28,11 @@ public class Relation {
     }
 
     public static void crawlData() {
-        crawlFestival.crawlData();
-        crawlHistorySite.crawlData();
-        crawlEvent.crawlData();
-        crawlTimeStamp.crawlData();
-        crawlCharacter.crawlData();
+        CrawlFestival.crawlData();
+        CrawlHistoricSite.crawlData();
+        CrawlEvent.crawlData();
+        CrawlEra.crawlData();
+        CrawlHistoricalFigure.crawlData();
     }
 
     // Dùng dể kiểm tra xem có phải hoàng đế?
@@ -58,21 +58,21 @@ public class Relation {
                 s.equalsIgnoreCase("tộc");
     }
 
-    // Dung de luu tat ca cung luc
-    public static void createRelation() {
-        // Lay cac gia tri crawl duoc
+    /**
+     * Tao lien ket giua nhan vat voi le hoi
+     */
+    public static void addCharAndFesRelation() {
         // Lay nhan vat
         ObservableList<HistoricalFigure> listOfFigures = HistoricalFigures.collection.getData();
-        // Lay di tich
-        ObservableList<HistoricSite> listOfSites = HistoricSites.collection.getData();
-        // Lay su kien
-        ObservableList<Event> listOfEvents = Events.collection.getData();
-        // Lay era
-        ObservableList<Era> listOfEras = Eras.collection.getData();
+        if (listOfFigures.size() == 0) {
+            CrawlHistoricalFigure.crawlData();
+        }
         // Lay le hoi
         ObservableList<Festival> listOfFestivals = Festivals.collection.getData();
+        if (listOfFestivals.size() == 0) {
+            CrawlFestival.crawlData();
+        }
 
-        // Tao lien ket giua nhan vat voi le hoi
         for (Festival f : listOfFestivals) {
             Map<String, Integer> relatedCharList = new HashMap<>();
             for (Map.Entry<String, Integer> entry : f.getRelatedFiguresId().entrySet()) {
@@ -159,8 +159,28 @@ public class Relation {
             }
             f.setRelatedFigures(relatedCharList);
         }
+    }
 
-        // Tao lien ket giua nhan vat, le hoi voi di tich
+    /**
+     * Tao lien ket giua nhan vat, le hoi voi di tich
+     */
+    public static void addCharFesSiteRelation() {
+        // Lay nhan vat
+        ObservableList<HistoricalFigure> listOfFigures = HistoricalFigures.collection.getData();
+        if (listOfFigures.size() == 0) {
+            CrawlHistoricalFigure.crawlData();
+        }
+        // Lay di tich
+        ObservableList<HistoricSite> listOfSites = HistoricSites.collection.getData();
+        if (listOfSites.size() == 0) {
+            CrawlHistoricSite.crawlData();
+        }
+        // Lay le hoi
+        ObservableList<Festival> listOfFestivals = Festivals.collection.getData();
+        if (listOfFestivals.size() == 0) {
+            CrawlFestival.crawlData();
+        }
+
         for (HistoricSite s : listOfSites) {
             // Luu nhan vat voi le hoi lien quan de dung setter
             Map<String, Integer> relatedCharList = new HashMap<>();
@@ -254,14 +274,72 @@ public class Relation {
                 //
                 String fesContent = entry.getKey();
                 boolean found = false;
+
+                // Dau tien la tim theo ten goc
+                // Neu tim theo ten goc khong thay thi bat dau xu li xau va tim o note, dia chi,...
                 for (Festival f : listOfFestivals) {
                     Pattern p = Pattern.compile(Pattern.quote(f.getName()), Pattern.CASE_INSENSITIVE);
                     Matcher m = p.matcher(fesContent);
 
                     if (m.find()) {
-                        relatedFesList.put(f.getName(), f.getId());
+                        relatedFesList.put(fesContent, f.getId());
                         found = true;
                         break;
+                    } else {
+                        // Xu li xau
+                        String fesName = f.getName();
+                        String fesLocation = f.getLocation();
+                        String fesNote = f.getNote();
+
+                        // Mot so truong hop loc chu le hoi thi ra duoc dia diem
+                        if (fesName.toLowerCase().contains("lễ hội")) {
+                            int startIndex = fesName.toLowerCase().indexOf("lễ hội");
+                            String possiblyLocation = fesName.substring(startIndex + 6).trim();
+
+                            if (possiblyLocation.equalsIgnoreCase(fesName)) {
+                                relatedFesList.put(fesContent, f.getId());
+                                found = true;
+                                break;
+                            }
+                        } else {
+                            // Ten khong ra thi check location va note
+                            p = Pattern.compile(Pattern.quote(s.getName()), Pattern.CASE_INSENSITIVE);
+                            m = p.matcher(fesNote);
+
+                            if (m.find()) {
+                                relatedFesList.put(fesContent, f.getId());
+                                found = true;
+                                break;
+                            } else {
+                                // Thu xem le hoi dang xet co cung dia chi voi di tich khong?
+                                // Neu co le hoi => dia chi giong nhau co the thuoc
+                                if (!fesLocation.equals("")) {
+                                    String[] splitLocations = fesLocation.split(",");
+                                    for (String splitLocation : splitLocations) {
+                                        p = Pattern.compile(Pattern.quote(splitLocation.trim()), Pattern.CASE_INSENSITIVE);
+                                        m = p.matcher(s.getLocation());
+
+                                        if (m.find()) {
+                                            relatedFesList.put(fesContent, f.getId());
+                                            found = true;
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                // Neu tim theo note cua fes va dia chi cua fes khong co thi thu tim
+                                // ten fes trong overview cua di tich
+                                if (!found) {
+                                    p = Pattern.compile(Pattern.quote(fesName), Pattern.CASE_INSENSITIVE);
+                                    m = p.matcher(s.getOverview());
+                                    if (m.find()) {
+                                        relatedFesList.put(fesContent, f.getId());
+                                        found = true;
+                                        break;
+                                    }
+                                } else break;
+                            }
+                        }
                     }
                 }
                 // Neu le hoi duoc tim thay con khong thi cu de gia tri cu
@@ -269,8 +347,23 @@ public class Relation {
             }
             s.setRelatedFestival(relatedFesList);
         }
+    }
 
-        // Tao lien ket trong chinh nhan vat => era, father, mother, precededBy, succeededBy
+    /**
+     * Tao lien ket trong chinh nhan vat => era, father, mother, precededBy, succeededBy
+     */
+    public static void addCharRelation() {
+        // Lay nhan vat
+        ObservableList<HistoricalFigure> listOfFigures = HistoricalFigures.collection.getData();
+        if (listOfFigures.size() == 0) {
+            CrawlHistoricalFigure.crawlData();
+        }
+        // Lay era
+        ObservableList<Era> listOfEras = Eras.collection.getData();
+        if (listOfEras.size() == 0) {
+            CrawlEra.crawlData();
+        }
+
         for (HistoricalFigure hf : listOfFigures) {
             // Lien ket voi cha, me, tien / ke nhiem
             String fatherName = hf.getFather().getKey();
@@ -702,9 +795,24 @@ public class Relation {
                 }
             }
         }
+    }
 
-        // Tao lien ket giua nhan vat voi trieu dai lich su
-        // Sau khi da gan trieu dai duoc cho da so nhan vat
+    /**
+     * Tao lien ket giua nhan vat voi trieu dai lich su
+     * Sau khi da gan trieu dai duoc cho da so nhan vat
+     */
+    public static void addCharEraRelation() {
+        // Lay nhan vat
+        ObservableList<HistoricalFigure> listOfFigures = HistoricalFigures.collection.getData();
+        if (listOfFigures.size() == 0) {
+            CrawlHistoricalFigure.crawlData();
+        }
+        // Lay era
+        ObservableList<Era> listOfEras = Eras.collection.getData();
+        if (listOfEras.size() == 0) {
+            CrawlEra.crawlData();
+        }
+
         for (Era e : listOfEras) {
             Map<String, Integer> relatedCharList = new HashMap<>();
             for (Map.Entry<String, Integer> entry : e.getListOfKingsId().entrySet()) {
@@ -723,8 +831,8 @@ public class Relation {
                             // K tinh truong hop chu nha,...
                             for (String splitName : splitNames) {
                                 if (
-                                    Character.isUpperCase(splitName.charAt(0)) &&
-                                            !eraFilter(splitName)
+                                        Character.isUpperCase(splitName.charAt(0)) &&
+                                                !eraFilter(splitName)
                                 ) {
                                     Pattern p = Pattern.compile(Pattern.quote(splitName), Pattern.CASE_INSENSITIVE);
                                     Matcher m = p.matcher(e.getName());
@@ -836,8 +944,23 @@ public class Relation {
             }
             e.setListOfKingsId(relatedCharList);
         }
+    }
 
-        // Tao lien ket su kien voi nhan vat
+    /**
+     * Tao lien ket su kien voi nhan vat
+     */
+    public static void addCharEventRelation() {
+        // Lay nhan vat
+        ObservableList<HistoricalFigure> listOfFigures = HistoricalFigures.collection.getData();
+        if (listOfFigures.size() == 0) {
+            CrawlHistoricalFigure.crawlData();
+        }
+        // Lay su kien
+        ObservableList<Event> listOfEvents = Events.collection.getData();
+        if (listOfEvents.size() == 0) {
+            CrawlEvent.crawlData();
+        }
+
         for (Event e : listOfEvents) {
             Map<String, Integer> relatedCharList = new HashMap<>();
             for (Map.Entry<String, Integer> entry : e.getRelatedFiguresId().entrySet()) {
@@ -914,6 +1037,28 @@ public class Relation {
             }
             e.setRelatedFigures(relatedCharList);
         }
+    }
+
+    // Dung de luu tat ca cung luc
+    public static void createRelation() {
+        // Lay cac gia tri crawl duoc
+        // Lay nhan vat
+//        ObservableList<HistoricalFigure> listOfFigures = HistoricalFigures.collection.getData();
+        // Lay di tich
+//        ObservableList<HistoricSite> listOfSites = HistoricSites.collection.getData();
+        // Lay su kien
+//        ObservableList<Event> listOfEvents = Events.collection.getData();
+        // Lay era
+//        ObservableList<Era> listOfEras = Eras.collection.getData();
+        // Lay le hoi
+//        ObservableList<Festival> listOfFestivals = Festivals.collection.getData();
+
+//        crawlData();
+        addCharAndFesRelation();
+        addCharFesSiteRelation();
+        addCharRelation();
+        addCharEraRelation();
+        addCharEventRelation();
 
         // Luu vao file JSON
         HistoricalFigures.collection.save();

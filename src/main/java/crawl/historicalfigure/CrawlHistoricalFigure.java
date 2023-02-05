@@ -1,5 +1,6 @@
-package crawl.character;
+package crawl.historicalfigure;
 
+import crawl.Crawl;
 import history.historicalfigure.HistoricalFigure;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -10,11 +11,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.regex.*;
 
-public class crawlCharacter {
+public class CrawlHistoricalFigure extends Crawl {
     // ArrayList lưu các url để truy cập và crawl dữ liệu nhân vật
     private static ArrayList<String> charInfoLinks = new ArrayList<>();
 
-    public crawlCharacter() {
+    public CrawlHistoricalFigure() {
         crawlData();
     }
 
@@ -88,128 +89,6 @@ public class crawlCharacter {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    /**
-     * Kiểm tra xem phần text đang lấy có đúng là
-     * liên quan đến chức vụ không?
-     * @param position xâu muốn kiểm tra
-     * @return true nếu đúng đang nói về chức vụ / còn lại là false
-     */
-    public static boolean positionCheck(String position) {
-        return position.equals("Công việc") ||
-                position.equals("Nghề nghiệp") ||
-                position.equals("Cấp bậc") ||
-                position.equals("Đơn vị") ||
-                position.equals("Chức quan cao nhất") ||
-                position.equals("Chức vụ") ||
-                position.equals("Vị trí");
-//        position.contains("Hoàng đế") ||
-//                position.contains("Hoàng hậu") ||
-//                position.contains("Vua") ||
-//                position.contains("Vương") ||
-    }
-
-    /**
-     * Dùng để kiểm tra xem đoạn xâu dùng Regex để lọc
-     * có phải đoạn xâu mô tả chức vụ của nhân vật ls không?
-     * Nếu chứa những xâu ở dưới thì tức là mô tả thân thế,...
-     * => không đúng
-     * @param text đoạn xâu muốn kiểm tra
-     * @return true nếu là mô tả thân thế / false nếu ngược lại
-     */
-    public static boolean checkNotPosition(String text) {
-        return text.contains("làng") ||
-                text.contains("con của");
-    }
-
-    /**
-     * Dùng để kiểm tra xem có phải phần đang xét
-     * là thời gian làm việc với chức vụ A của nvat ls B không?
-     * @param workTime xâu cần check
-     * @return true nếu đúng những trường hợp ở dưới
-     */
-    public static boolean workTimeCheck(String workTime) {
-        return workTime.equals("Trị vì") ||
-                workTime.equals("trị vì") ||
-                workTime.equals("Tại vị") ||
-                workTime.equals("Nhiệm kỳ") ||
-                workTime.equals("Năm tại ngũ") ||
-                workTime.equals("Hoạt động");
-    }
-
-    /**
-     * Kiểm tra xem phần đang xét có phải nói về
-     * Bố của nvat lsu không?
-     * @param father
-     * @return true nếu đúng các cases
-     */
-    public static boolean fatherCheck(String father) {
-        return father.equals("Thân phụ") ||
-                father.equals("Cha") ||
-                father.equals("Bố mẹ");
-    }
-
-    /**
-     * Tương tự ở trên nhưng là kiểm tra mẹ
-     * @param mother
-     * @return true nếu đúng các cases
-     */
-    public static boolean motherCheck(String mother) {
-        return mother.equals("Thân mẫu") ||
-                mother.equals("Mẹ") ||
-                mother.equals("Bố mẹ");
-    }
-
-    /**
-     * Kiểm tra triều đại
-     * @param era
-     * @return
-     */
-    public static boolean eraCheck(String era) {
-        return era.equals("Hoàng tộc") ||
-                era.equals("Triều đại") ||
-                era.equals("Gia tộc") ||
-                era.equals("Kỷ nguyên");
-    }
-
-    /**
-     * Kiểm tra ngày, nơi sinh
-     * @param birth
-     * @return
-     */
-    public static boolean birthCheck(String birth) {
-        return birth.equals("Ngày sinh") ||
-                birth.equals("Sinh");
-    }
-
-    /**
-     * Kiểm tra tên thật => realName
-     * @param realName
-     * @return
-     */
-    public static boolean realNameCheck(String realName) {
-        return realName.equals("Húy") ||
-                realName.equals("Tên thật") ||
-                realName.equals("tên thật") ||
-                realName.equals("Tên đầy đủ") ||
-                realName.equals("Tên húy");
-    }
-
-    /**
-     * Kiểm tra tên khác => alterName
-     * @param alterName
-     * @return
-     */
-    public static boolean alterNameCheck(String alterName) {
-        return alterName.equals("Thụy hiệu") ||
-                alterName.equals("Niên hiệu") ||
-                alterName.equals("Tên khác") ||
-                alterName.equals("Tước hiệu") ||
-                alterName.equals("Tước vị") ||
-                alterName.equals("Hiệu") ||
-                alterName.equals("Bút danh") ||
-                alterName.equals("Miếu hiệu");
     }
 
     /**

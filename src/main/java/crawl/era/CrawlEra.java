@@ -1,5 +1,6 @@
-package crawl.timestamp;
+package crawl.era;
 
+import crawl.Crawl;
 import history.era.Era;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -11,9 +12,9 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class crawlTimeStamp {
+public class CrawlEra extends Crawl {
 
-    public crawlTimeStamp() {
+    public CrawlEra() {
         crawlData();
     }
 

@@ -1,4 +1,4 @@
-package crawl.character;
+package crawl.historicalfigure;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
