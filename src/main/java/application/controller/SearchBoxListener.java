@@ -1,7 +1,8 @@
-package application;
+package application.controller;
 
 /**
- *
+ * Đây là giao diện để cài đặt các thao tác
+ * tìm kiếm khi sử dụng thanh tìm kiếm trên giao diện
  */
 public interface SearchBoxListener {
     /**

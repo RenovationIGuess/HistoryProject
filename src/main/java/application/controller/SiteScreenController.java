@@ -1,7 +1,6 @@
 package application.controller;
 
 import application.App;
-import application.SearchBoxListener;
 import history.historicsite.HistoricSite;
 import history.historicsite.HistoricSites;
 import javafx.collections.FXCollections;

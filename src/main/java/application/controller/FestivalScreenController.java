@@ -1,7 +1,6 @@
 package application.controller;
 
 import application.App;
-import application.SearchBoxListener;
 import history.festival.Festival;
 import history.festival.Festivals;
 import javafx.collections.FXCollections;

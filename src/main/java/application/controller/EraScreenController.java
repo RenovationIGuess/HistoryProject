@@ -1,7 +1,6 @@
 package application.controller;
 
 import application.App;
-import application.SearchBoxListener;
 import history.era.Era;
 import history.era.Eras;
 import javafx.collections.FXCollections;
