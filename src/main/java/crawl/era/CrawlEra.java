@@ -51,6 +51,7 @@ public class CrawlEra extends Crawl {
                             String location = "Chưa rõ"; // Dia chi kinh do - neu co
                             String hometown = "Chưa rõ"; // Que huong - neu co
                             String eraTime = "Chưa rõ"; // Thoi gian cua trieu dai
+                            String overview = "Chưa rõ"; // Mo ta cua trieu dai
                             ArrayList<String> kingList = new ArrayList<>();
 
                             while (!contentDivChild.get(i + 1).tagName().equals("h2")) {
@@ -59,6 +60,70 @@ public class CrawlEra extends Crawl {
                                 if (currentElement.tagName().equals("h3")) {
                                     Element eraNameElement = currentElement.selectFirst("span[class=mw-headline]");
                                     if (eraNameElement != null) {
+                                        Element aTag = eraNameElement.selectFirst("a");
+                                        if (aTag != null) {
+                                            String link = "https://vi.wikipedia.org" + aTag.attr("href");
+
+                                            try {
+                                                Document detailDoc = Jsoup.connect(link).timeout(120000).get();
+//                                                #mw-content-text > div.mw-parser-output > p:nth-child(2)
+                                                Element detailDiv = detailDoc
+                                                        .selectFirst("#mw-content-text > div.mw-parser-output");
+
+                                                if (detailDiv != null) {
+                                                    // Lay ra doan van dau tien
+                                                    Element infoP = detailDiv.selectFirst("p");
+                                                    infoP.select("sup").remove();
+                                                    String firstPContent = infoP.text();
+
+                                                    // Loc thong tin tu doan van ban dau tien
+                                                    // Lay mo ta ngan gon cua di tich
+                                                    // Loai bo doan trong ngoac dau tien cho chac
+                                                    if (overview.equals("Chưa rõ")) {
+                                                        int firstOpenParen = firstPContent.indexOf("(");
+                                                        int firstCloseParen = firstPContent.indexOf(")");
+                                                        if (firstOpenParen != -1 && firstCloseParen != -1) {
+                                                            String firstParen = firstPContent.substring(firstOpenParen + 1, firstCloseParen);
+                                                            if (firstParen.contains("là")) {
+                                                                firstPContent = firstPContent.substring(firstCloseParen + 1);
+                                                            }
+                                                        }
+
+                                                        boolean outLoop = true;
+                                                        while (outLoop) {
+                                                            // kiem tra sau chu "la" la gi?
+                                                            int start = firstPContent.indexOf("là"); // tra ve vi tri chu l cua "la" dau tien tim thay
+                                                            if (start != -1 && start < firstPContent.length() - 3) {
+                                                                // Neu la chu in hoa || hoac la con, lang? ... => bo TH chu la nay di :v
+                                                                if (
+                                                                        Character.isUpperCase(firstPContent.charAt(start + 3)) ||
+                                                                                firstPContent.charAt(start + 2) != ' '
+                                                                ) {
+                                                                    // Con truong hop la mot
+                                                                    // Truong hop chu lam
+                                                                    if (firstPContent.charAt(start + 2) == 'm' && firstPContent.charAt(start + 3) == ' ') {
+                                                                        outLoop = false;
+                                                                    } else firstPContent = firstPContent.substring(start + 3);
+                                                                } else outLoop = false;
+                                                            } else outLoop = false;
+                                                        }
+
+                                                        p = Pattern.compile("(là|bao gồm|nơi)[^.]*[.]", Pattern.CASE_INSENSITIVE);
+                                                        m = p.matcher(firstPContent);
+
+                                                        if (m.find()) {
+                                                            String result = m.group(0);
+                                                            if (!result.contains(":")) {
+                                                                overview = result.substring(0, result.length() - 1);
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            } catch (IOException err) {
+                                                err.printStackTrace();
+                                            }
+                                        }
+
                                         String eraNameEleContent = eraNameElement.text();
                                         // Xem xem co dau ngoac nao khong
                                         int countParen = (int) eraNameEleContent.chars().filter(c -> c == '(').count();
@@ -184,6 +249,7 @@ public class CrawlEra extends Crawl {
                                             System.out.println("Founder: " + founder);
                                             System.out.println("Location: " + location);
                                             System.out.println("Time: " + eraTime);
+                                            System.out.println("Overview: " + overview);
                                             System.out.print("List of kings: [");
                                             if (kingList.size() > 0) {
                                                 for (int t = 0; t < kingList.size(); ++t) {
@@ -203,6 +269,7 @@ public class CrawlEra extends Crawl {
                                                 founder,
                                                 location,
                                                 eraTime,
+                                                overview,
                                                 kingList
                                             );
 

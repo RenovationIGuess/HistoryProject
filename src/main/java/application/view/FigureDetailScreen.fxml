@@ -7,6 +7,7 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -72,6 +73,20 @@
                               <Text fx:id="realNameText" strokeType="OUTSIDE" strokeWidth="0.0" text="realNameText" wrappingWidth="369.3366394042969" VBox.vgrow="ALWAYS" />
                            </children>
                         </VBox>
+                     </children>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <VBox prefHeight="18.0" prefWidth="176.0">
+                           <children>
+                              <Label text="Tên khác">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <FlowPane fx:id="aliasFlowPane" hgap="15.0" vgap="5.0" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
                   <HBox layoutX="10.0" layoutY="10.0">

@@ -26,6 +26,7 @@ public class Era extends HistoricalEntity {
     private String founder;
     private String locationOfCapital;
     private String time;
+    private String overview;
     private Map<String, Integer> listOfKingsId = new HashMap<>();
 
     /* Getters */
@@ -47,6 +48,10 @@ public class Era extends HistoricalEntity {
 
     public String getTime() {
         return time;
+    }
+
+    public String getOverview() {
+        return overview;
     }
 
     public Map<String, Integer> getListOfKingsId() {
@@ -78,6 +83,10 @@ public class Era extends HistoricalEntity {
         this.listOfKingsId = newListOfKings;
     }
 
+    public void setOverview(String overview) {
+        this.overview = overview;
+    }
+
     /* Constructors */
     public Era() {
         super();
@@ -98,6 +107,7 @@ public class Era extends HistoricalEntity {
         String founder,
         String locationOfCapital,
         String time,
+        String overview,
         Collection<String> listOfKings
     ) {
         super(name);
@@ -107,6 +117,7 @@ public class Era extends HistoricalEntity {
         this.founder = founder;
         this.locationOfCapital = locationOfCapital;
         this.time = time;
+        this.overview = overview;
         for (String king : listOfKings){
             listOfKingsId.put(king, null);
         }

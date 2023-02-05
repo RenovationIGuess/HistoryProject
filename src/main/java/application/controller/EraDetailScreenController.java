@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.concurrent.Flow;
 
 public class EraDetailScreenController {
 
@@ -42,6 +43,12 @@ public class EraDetailScreenController {
     private Text timeText;
 
     @FXML
+    private FlowPane aliasFlowPane;
+
+    @FXML
+    private Text overviewText;
+
+    @FXML
     private SidebarController sideBarController;
 
     private Era era;
@@ -59,6 +66,11 @@ public class EraDetailScreenController {
         founderText.setText(era.getFounder());
         capLocateText.setText(era.getLocationOfCapital());
         timeText.setText(era.getTime());
+        for (String alias : era.getAliases()) {
+            Text aliasText = new Text(alias);
+            aliasFlowPane.getChildren().add(aliasText);
+        }
+        overviewText.setText(era.getOverview());
         for(Map.Entry<String, Integer> entry : era.getListOfKingsId().entrySet()){
             Text kingText = new Text(entry.getKey());
             if(entry.getValue() != null) {
