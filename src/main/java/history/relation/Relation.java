@@ -313,19 +313,19 @@ public class Relation {
                             } else {
                                 // Thu xem le hoi dang xet co cung dia chi voi di tich khong?
                                 // Neu co le hoi => dia chi giong nhau co the thuoc
-                                if (!fesLocation.equals("")) {
-                                    String[] splitLocations = fesLocation.split(",");
-                                    for (String splitLocation : splitLocations) {
-                                        p = Pattern.compile(Pattern.quote(splitLocation.trim()), Pattern.CASE_INSENSITIVE);
-                                        m = p.matcher(s.getLocation());
-
-                                        if (m.find()) {
-                                            relatedFesList.put(fesContent, f.getId());
-                                            found = true;
-                                            break;
-                                        }
-                                    }
-                                }
+//                                if (!fesLocation.equals("")) {
+//                                    String[] splitLocations = fesLocation.split(",");
+//                                    for (String splitLocation : splitLocations) {
+//                                        p = Pattern.compile(Pattern.quote(splitLocation.trim()), Pattern.CASE_INSENSITIVE);
+//                                        m = p.matcher(s.getLocation());
+//
+//                                        if (m.find()) {
+//                                            relatedFesList.put(fesContent, f.getId());
+//                                            found = true;
+//                                            break;
+//                                        }
+//                                    }
+//                                }
 
                                 // Neu tim theo note cua fes va dia chi cua fes khong co thi thu tim
                                 // ten fes trong overview cua di tich
